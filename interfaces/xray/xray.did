@@ -1,0 +1,165 @@
+type Result_1 = 
+ variant {
+   err: text;
+   ok: nat;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+service : {
+  accessLogCount: () -> (nat) query;
+  accessLogView: (offset: nat, limit: nat) ->
+   (vec record {
+          action: text;
+          at: int;
+          id: nat;
+          studyId: nat;
+          who: principal;
+        }) query;
+  addAdmin: (w: principal) -> (bool);
+  addImage: (seriesId: nat, imagePath: text, instanceNumber: nat) ->
+   (Result_1);
+  addImageOrTrap: (seriesId: nat, imagePath: text, instanceNumber: nat) ->
+   (nat);
+  addPatient: (mrn: text, name: text, sex: text, birthYear: nat) ->
+   (Result_1);
+  addPatientOrTrap: (mrn: text, name: text, sex: text, birthYear: nat) ->
+   (nat);
+  addSeries: (studyId: nat, description: text) -> (Result_1);
+  addSeriesOrTrap: (studyId: nat, description: text) -> (nat);
+  addStudy: (patientId: nat, modality: text, bodyPart: text, description:
+   text) -> (Result_1);
+  addStudyOrTrap: (patientId: nat, modality: text, bodyPart: text,
+   description: text) -> (nat);
+  assignRole: (who: principal, role: text) -> (Result);
+  assignRoleOrTrap: (who: principal, role: text) -> ();
+  claimOwner: () -> (bool);
+  finalizeReport: (studyId: nat) -> (Result);
+  finalizeReportOrTrap: (studyId: nat) -> ();
+  getAdmins: () -> (vec principal) query;
+  getOwner: () -> (opt principal) query;
+  invariantReportView: () -> (vec record {
+                                    detail: text;
+                                    rule: text;
+                                  }) query;
+  isPaused: () -> (bool) query;
+  lumenSealView: () ->
+   (vec
+     record {
+       accessEvents: nat;
+       checkedAt: int;
+       images: nat;
+       patients: nat;
+       reportsDraft: nat;
+       reportsFinal: nat;
+       series: nat;
+       staff: nat;
+       studies: nat;
+       violations: nat;
+     }) query;
+  modalityBoardView: () ->
+   (vec record {
+          acquired: nat;
+          modality: text;
+          reported: nat;
+          scheduled: nat;
+        }) query;
+  myRole: () -> (vec record {role: text;}) query;
+  openStudyOrTrap: (studyId: nat) -> ();
+  patientCount: () -> (nat) query;
+  patientView: (patientId: nat) ->
+   (vec
+     record {
+       birthYear: nat;
+       createdAt: int;
+       id: nat;
+       mrn: text;
+       name: text;
+       sex: text;
+     }) query;
+  patientsView: (offset: nat, limit: nat) ->
+   (vec
+     record {
+       birthYear: nat;
+       createdAt: int;
+       id: nat;
+       mrn: text;
+       name: text;
+       sex: text;
+       studyCount: nat;
+     }) query;
+  removeAdmin: (w: principal) -> (bool);
+  revokeRole: (who: principal) -> (Result);
+  revokeRoleOrTrap: (who: principal) -> ();
+  saveReport: (studyId: nat, findings: text, impression: text) -> (Result);
+  saveReportOrTrap: (studyId: nat, findings: text, impression: text) -> ();
+  seedDemo: () -> (bool);
+  seriesForStudyView: (studyId: nat) ->
+   (vec record {
+          createdAt: int;
+          description: text;
+          id: nat;
+          imageCount: nat;
+        }) query;
+  setPaused: (v: bool) -> (bool);
+  staffView: () -> (vec record {
+                          role: text;
+                          who: principal;
+                        }) query;
+  studiesForPatientView: (patientId: nat) ->
+   (vec
+     record {
+       bodyPart: text;
+       createdAt: int;
+       description: text;
+       id: nat;
+       imageCount: nat;
+       modality: text;
+       reportStatus: text;
+       seriesCount: nat;
+       status: text;
+     }) query;
+  studyCount: () -> (nat) query;
+  studyImagesView: (studyId: nat) ->
+   (vec
+     record {
+       createdAt: int;
+       id: nat;
+       imagePath: text;
+       instanceNumber: nat;
+       seriesId: nat;
+     }) query;
+  studyView: (studyId: nat) ->
+   (vec
+     record {
+       bodyPart: text;
+       createdAt: int;
+       description: text;
+       id: nat;
+       modality: text;
+       mrn: text;
+       patientId: nat;
+       patientName: text;
+       reportFindings: text;
+       reportImpression: text;
+       reportStatus: text;
+       status: text;
+     }) query;
+  transferOwner: (n: principal) -> (bool);
+  worklistView: (offset: nat, limit: nat) ->
+   (vec
+     record {
+       bodyPart: text;
+       createdAt: int;
+       imageCount: nat;
+       modality: text;
+       mrn: text;
+       patientId: nat;
+       patientName: text;
+       reportStatus: text;
+       status: text;
+       studyId: nat;
+     }) query;
+}

@@ -1,0 +1,79 @@
+service : {
+  addAdmin: (w: principal) -> (bool);
+  addCourse: (code: text, title: text, credits: nat, capacity: nat,
+   instructor: text, prereqs: vec nat, photoPath: opt text) -> (nat);
+  catalogView: () ->
+   (vec
+     record {
+       capacity: nat;
+       code: text;
+       credits: nat;
+       enrolled: nat;
+       id: nat;
+       instructor: text;
+       lockReason: text;
+       myState: text;
+       nowNs: int;
+       photoPath: text;
+       prereqIds: text;
+       title: text;
+       waitlistLen: nat;
+     }) query;
+  claimOwner: () -> (bool);
+  drop: (courseId: nat) -> ();
+  enroll: (courseId: nat) -> ();
+  getOwner: () -> (opt principal) query;
+  invariantReportView: () -> (vec record {
+                                    detail: text;
+                                    rule: text;
+                                  }) query;
+  isPaused: () -> (bool) query;
+  isRegistrationOpen: () -> (bool) query;
+  joinWaitlist: (courseId: nat) -> (nat);
+  leaveWaitlist: (courseId: nat) -> ();
+  myStandingView: () ->
+   (vec
+     record {
+       creditsCompleted: nat;
+       creditsInProgress: nat;
+       enrolledCount: nat;
+       gpaX100: nat;
+       maxLoad: nat;
+       nowNs: int;
+       transcriptCount: nat;
+     }) query;
+  myTranscriptView: () ->
+   (vec
+     record {
+       at: int;
+       code: text;
+       courseId: nat;
+       credits: nat;
+       gradeX100: nat;
+       title: text;
+     }) query;
+  recordGrade: (student: principal, courseId: nat, gradeX100: nat) -> ();
+  rollView: (courseId: nat) ->
+   (vec record {
+          load: nat;
+          student: principal;
+        }) query;
+  seedDemo: () -> (bool);
+  setCoursePhoto: (courseId: nat, photoPath: text) -> ();
+  setPaused: (v: bool) -> (bool);
+  setRegistrationOpen: (open: bool) -> ();
+  transferCredit: (student: principal, courseId: nat, gradeX100: nat) -> ();
+  transferOwner: (n: principal) -> (bool);
+  universitySealView: () ->
+   (vec
+     record {
+       checkedAt: int;
+       courses: nat;
+       seatsFilled: nat;
+       seatsTotal: nat;
+       students: nat;
+       transcriptLines: nat;
+       violations: nat;
+       waitlisted: nat;
+     }) query;
+}

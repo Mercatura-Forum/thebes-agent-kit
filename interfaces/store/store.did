@@ -1,0 +1,277 @@
+type StoreError = 
+ variant {
+   anonymous;
+   archived: ProductId;
+   badInput: text;
+   emptyCart;
+   insufficientStock:
+    record {
+      available: nat;
+      productId: ProductId;
+      requested: nat;
+    };
+   invalidDiscount: text;
+   invalidTransition: record {
+                        from: text;
+                        to: text;
+                      };
+   notFound: text;
+   notYours;
+ };
+type Result_2 = 
+ variant {
+   err: StoreError;
+   ok: int;
+ };
+type Result_1 = 
+ variant {
+   err: StoreError;
+   ok;
+ };
+type Result = 
+ variant {
+   err: StoreError;
+   ok: OrderId;
+ };
+type ProductView = 
+ record {
+   available: nat;
+   categoryId: nat;
+   categoryName: text;
+   description: text;
+   id: nat;
+   name: text;
+   onHand: nat;
+   photoPath: text;
+   priceE8s: nat;
+   "reserved": nat;
+ };
+type ProductId = nat;
+type OrderId = nat;
+type InvoiceView = 
+ record {
+   createdAt: int;
+   id: nat;
+   issuer: principal;
+   itemCount: nat;
+   recipient: principal;
+   status: text;
+   subtotalE8s: nat;
+   taxE8s: nat;
+   totalE8s: nat;
+ };
+type CategoryId = nat;
+service : {
+  addAdmin: (w: principal) -> (bool);
+  addCategory: (name: text) -> (CategoryId);
+  addProduct: (name: text, description: text, priceE8s: nat, initialStock:
+   nat, categoryId: nat, photoPath: opt text) -> (ProductId);
+  addToCart: (productId: ProductId, quantity: nat) -> ();
+  adminCancelOrder: (orderId: OrderId) -> ();
+  amAdmin: () -> (bool) query;
+  beginCheckout: () -> (Result_2);
+  beginCheckoutOrTrap: () -> (int);
+  cancelCheckout: () -> ();
+  cancelOrder: (orderId: OrderId) -> (Result_1);
+  cancelOrderOrTrap: (orderId: OrderId) -> ();
+  checkout: (code: text) -> (Result);
+  checkoutOrTrap: (code: text) -> (nat);
+  claimOwner: () -> (bool);
+  clearCart: () -> ();
+  conservationView: () ->
+   (vec
+     record {
+       checkedAt: int;
+       productsChecked: nat;
+       unitsOnHand: nat;
+       unitsReserved: nat;
+       violations: nat;
+     }) query;
+  createDiscount: (code: text, percentBps: nat, fixedE8s: nat,
+   minSubtotalE8s: nat, maxRedemptions: nat, expiresAtNs: int) -> ();
+  deliverOrder: (orderId: OrderId) -> ();
+  getAdminProductsView: () ->
+   (vec
+     record {
+       archived: bool;
+       available: nat;
+       categoryId: nat;
+       categoryName: text;
+       description: text;
+       id: nat;
+       name: text;
+       onHand: nat;
+       photoPath: text;
+       priceE8s: nat;
+       received: nat;
+       "reserved": nat;
+       returned: nat;
+       sold: nat;
+     }) query;
+  getAdmins: () -> (vec principal) query;
+  getAllOrdersView: (offset: nat, limit: nat) ->
+   (vec
+     record {
+       buyer: principal;
+       createdAt: int;
+       discountCode: text;
+       discountE8s: nat;
+       id: nat;
+       itemCount: nat;
+       status: text;
+       subtotalE8s: nat;
+       totalE8s: nat;
+     }) query;
+  getAuditView: (offset: nat, limit: nat) ->
+   (vec
+     record {
+       at: int;
+       detail: text;
+       id: nat;
+       kind: text;
+       orderId: nat;
+       productId: nat;
+       who: principal;
+     }) query;
+  getCartView: () ->
+   (vec
+     record {
+       available: nat;
+       name: text;
+       photoPath: text;
+       priceE8s: nat;
+       productId: nat;
+       quantity: nat;
+     }) query;
+  getCategoriesView: () ->
+   (vec record {
+          id: nat;
+          name: text;
+          productCount: nat;
+        }) query;
+  getDiscountsView: () ->
+   (vec
+     record {
+       active: bool;
+       code: text;
+       expiresAt: int;
+       fixedE8s: nat;
+       maxRedemptions: nat;
+       minSubtotalE8s: nat;
+       percentBps: nat;
+       redemptions: nat;
+     }) query;
+  getMyReservationLinesView: () ->
+   (vec
+     record {
+       name: text;
+       photoPath: text;
+       productId: nat;
+       quantity: nat;
+       unitPriceE8s: nat;
+     }) query;
+  getMyReservationView: () ->
+   (vec record {
+          expiresAt: int;
+          itemCount: nat;
+          nowNs: int;
+          subtotalE8s: nat;
+        }) query;
+  getOrderEventsView: (orderId: nat) ->
+   (vec record {
+          at: int;
+          detail: text;
+          kind: text;
+        }) query;
+  getOrderHistoryView: () ->
+   (vec
+     record {
+       createdAt: int;
+       discountCode: text;
+       discountE8s: nat;
+       id: nat;
+       itemCount: nat;
+       status: text;
+       subtotalE8s: nat;
+       totalE8s: nat;
+     }) query;
+  getOrderLinesView: (orderId: nat) ->
+   (vec record {
+          name: text;
+          productId: nat;
+          quantity: nat;
+          unitPriceE8s: nat;
+        }) query;
+  getOrderView: (orderId: nat) ->
+   (vec
+     record {
+       createdAt: int;
+       discountCode: text;
+       discountE8s: nat;
+       id: nat;
+       invoiceId: nat;
+       itemCount: nat;
+       status: text;
+       subtotalE8s: nat;
+       totalE8s: nat;
+     }) query;
+  getOwner: () -> (opt principal) query;
+  getProductsView: () -> (vec ProductView) query;
+  getShopStatsView: () ->
+   (vec
+     record {
+       activeHolds: nat;
+       activeProducts: nat;
+       auditEvents: nat;
+       categories: nat;
+       discountsActive: nat;
+       invoiceCount: nat;
+       ordersCancelled: nat;
+       ordersDelivered: nat;
+       ordersPlaced: nat;
+       ordersRefunded: nat;
+       ordersShipped: nat;
+       ordersTotal: nat;
+       products: nat;
+       revenueE8s: nat;
+       unitsOnHand: nat;
+       unitsReserved: nat;
+       unitsReturned: nat;
+       unitsSold: nat;
+     }) query;
+  invariantReportView: () ->
+   (vec
+     record {
+       actual: nat;
+       expected: nat;
+       name: text;
+       productId: nat;
+       rule: text;
+     }) query;
+  isPaused: () -> (bool) query;
+  myInvoicesView: () -> (vec InvoiceView) query;
+  quoteCheckoutView: (code: text) ->
+   (vec
+     record {
+       codeOk: bool;
+       discountE8s: nat;
+       note: text;
+       subtotalE8s: nat;
+       totalE8s: nat;
+     }) query;
+  refundOrder: (orderId: OrderId) -> ();
+  removeAdmin: (w: principal) -> (bool);
+  removeFromCart: (productId: ProductId) -> ();
+  renameCategory: (id: CategoryId, name: text) -> ();
+  restockProduct: (productId: ProductId, additionalStock: nat) -> ();
+  seedDemo: () -> (bool);
+  setCartQuantity: (productId: ProductId, quantity: nat) -> ();
+  setDiscountActive: (code: text, active: bool) -> ();
+  setPaused: (v: bool) -> (bool);
+  setProductArchived: (productId: ProductId, archived: bool) -> ();
+  setProductPhoto: (productId: ProductId, photoPath: text) -> ();
+  shipOrder: (orderId: OrderId) -> ();
+  transferOwner: (n: principal) -> (bool);
+  updateProduct: (productId: ProductId, name: text, description: text,
+   priceE8s: nat, categoryId: nat) -> ();
+}

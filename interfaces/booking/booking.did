@@ -1,0 +1,188 @@
+type Result_2 = 
+ variant {
+   err: text;
+   ok: text;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: nat;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+service : {
+  addAdmin: (w: principal) -> (bool);
+  addListing: (name: text, description: text, kind: text, durationMinutes:
+   nat, priceCents: nat, capacity: nat, cancelWindowMinutes: nat, photoPath:
+   opt text) -> (Result_1);
+  addListingOrTrap: (name: text, description: text, kind: text,
+   durationMinutes: nat, priceCents: nat, capacity: nat, cancelWindowMinutes:
+   nat, photoPath: opt text) -> (nat);
+  agendaView: (fromNs: int, toNs: int) ->
+   (vec
+     record {
+       bookingId: nat;
+       customer: principal;
+       depositCents: nat;
+       endNs: int;
+       listingId: nat;
+       listingName: text;
+       promoted: nat;
+       seats: nat;
+       startNs: int;
+       status: text;
+     }) query;
+  archiveListing: (id: nat, archived: bool) -> (Result);
+  archiveListingOrTrap: (id: nat, archived: bool) -> ();
+  auditView: (limit: nat) ->
+   (vec
+     record {
+       at: int;
+       kind: text;
+       note: text;
+       refA: nat;
+       refB: nat;
+       seq: nat;
+       who: principal;
+     }) query;
+  boardView: () ->
+   (vec
+     record {
+       capacity: nat;
+       endNs: int;
+       id: nat;
+       kind: text;
+       listingId: nat;
+       remaining: nat;
+       startNs: int;
+     }) query;
+  book: (slotId: nat, seats: nat) -> (Result_1);
+  bookOrTrap: (slotId: nat, seats: nat) -> (nat);
+  cancelBooking: (bookingId: nat) -> (Result_2);
+  cancelBookingOrTrap: (bookingId: nat) -> (vec record {outcome: text;});
+  checkIn: (bookingId: nat) -> (Result);
+  checkInOrTrap: (bookingId: nat) -> ();
+  claimOwner: () -> (bool);
+  closeSlot: (slotId: nat) -> (Result_1);
+  closeSlotOrTrap: (slotId: nat) -> (nat);
+  complete: (bookingId: nat) -> (Result);
+  completeOrTrap: (bookingId: nat) -> ();
+  conservationView: () ->
+   (vec
+     record {
+       capturedCents: nat;
+       collectedCents: nat;
+       forfeitedCents: nat;
+       heldCents: nat;
+       ok: nat;
+       refundedCents: nat;
+       violations: nat;
+     }) query;
+  getAdmins: () -> (vec principal) query;
+  getOwner: () -> (opt principal) query;
+  invariantReportView: () -> (vec record {
+                                    detail: text;
+                                    rule: text;
+                                  }) query;
+  isPaused: () -> (bool) query;
+  joinWaitlist: (slotId: nat, seats: nat) -> (Result_1);
+  joinWaitlistOrTrap: (slotId: nat, seats: nat) -> (nat);
+  leaveWaitlist: (slotId: nat) -> (Result);
+  leaveWaitlistOrTrap: (slotId: nat) -> ();
+  listingsView: () ->
+   (vec
+     record {
+       archived: nat;
+       cancelWindowMinutes: nat;
+       capacity: nat;
+       description: text;
+       durationMinutes: nat;
+       id: nat;
+       kind: text;
+       name: text;
+       nextFreeNs: int;
+       photoPath: text;
+       priceCents: nat;
+       slotsFree: nat;
+       slotsTotal: nat;
+       utilizationBps: nat;
+     }) query;
+  markNoShow: (bookingId: nat) -> (Result);
+  markNoShowOrTrap: (bookingId: nat) -> ();
+  myBookingsView: () ->
+   (vec
+     record {
+       cancelDeadlineNs: int;
+       depositCents: nat;
+       endNs: int;
+       id: nat;
+       kind: text;
+       listingId: nat;
+       listingName: text;
+       nowNs: int;
+       promoted: nat;
+       seats: nat;
+       startNs: int;
+       status: text;
+     }) query;
+  myWaitlistView: () ->
+   (vec
+     record {
+       listingId: nat;
+       listingName: text;
+       nowNs: int;
+       position: nat;
+       seats: nat;
+       slotId: nat;
+       startNs: int;
+     }) query;
+  publishSlots: (listingId: nat, startNs: int, endNs: int, intervalMinutes:
+   nat, capacity: nat) -> (Result_1);
+  publishSlotsOrTrap: (listingId: nat, startNs: int, endNs: int,
+   intervalMinutes: nat, capacity: nat) -> (nat);
+  removeAdmin: (w: principal) -> (bool);
+  seedDemo: () -> (bool);
+  setListingPhoto: (id: nat, photoPath: text) -> (Result);
+  setListingPhotoOrTrap: (id: nat, photoPath: text) -> ();
+  setPaused: (v: bool) -> (bool);
+  slotsView: (listingId: nat) ->
+   (vec
+     record {
+       capacity: nat;
+       endNs: int;
+       id: nat;
+       listingId: nat;
+       mySeats: nat;
+       myWaitPos: nat;
+       remaining: nat;
+       seatsBooked: nat;
+       startNs: int;
+       waitlistLen: nat;
+     }) query;
+  statsView: () ->
+   (vec
+     record {
+       auditEvents: nat;
+       bookingsTotal: nat;
+       cancelled: nat;
+       checkedIn: nat;
+       completed: nat;
+       confirmed: nat;
+       futureSeatsBooked: nat;
+       futureSeatsCapacity: nat;
+       listings: nat;
+       noShows: nat;
+       slotsClosed: nat;
+       slotsOpen: nat;
+       waitlistEntries: nat;
+     }) query;
+  timeView: () -> (vec record {nowNs: int;}) query;
+  transferOwner: (n: principal) -> (bool);
+  updateListing: (id: nat, name: text, description: text, kind: text,
+   priceCents: nat, cancelWindowMinutes: nat) -> (Result);
+  updateListingOrTrap: (id: nat, name: text, description: text, kind: 
+   text, priceCents: nat, cancelWindowMinutes: nat) -> ();
+}

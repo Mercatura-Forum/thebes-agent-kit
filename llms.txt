@@ -1,0 +1,27 @@
+# Thebes agent kit
+
+> Thebes is a Layer 1 chain where an application is a set of smart contracts: a Motoko or Rust backend that keeps its state on the chain, and a web contract that serves its pages. People sign in with passkeys through Memphis. This kit is the map an AI agent needs to build, deploy and run applications on Thebes.
+
+## Start here
+
+- [AGENTS.md](AGENTS.md): what Thebes is, which example to start from, the deploy workflow, and the rules that matter
+- [index.json](index.json): every example, module and CLI command, with exact method signatures, generated from the repositories at pinned commits
+- [interfaces/](interfaces/): the Candid interface of every example backend
+
+## Docs
+
+- [Deploying with the CLI](https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/main/docs/cli-deploy.md): your own key, or an API key charged to credits
+- [Deploy rules for agents](https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/main/SKILL.md): manifests, builds and upgrades
+- [Upgrading a contract](https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/main/docs/upgrading.md): ship a new version and keep the data
+- [HTTP outcalls](https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/main/docs/http-outcalls.md): fetch the open internet from a contract
+- [Quickstart](https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/main/docs/quickstart.md)
+
+## Toolkits
+
+- [@thebes/sdk](https://github.com/Mercatura-Forum/thebes-sdk): frontend boundary client, React hooks, Memphis passkey sign-in
+- [thebes-lib](https://github.com/Mercatura-Forum/thebes-lib): Motoko backend modules (Admin, Users, Pagination, MemphisAuth, Invoices, Media)
+- [thebes-deploy releases](https://github.com/Mercatura-Forum/Thebes-Protocol-/releases): the CLI
+
+## Examples
+
+- [Example catalog](https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/main/examples/README.md): full-stack applications and single-contract starters, each with a live copy

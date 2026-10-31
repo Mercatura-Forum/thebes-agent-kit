@@ -1,0 +1,90 @@
+{
+  "comment": "Hand-written descriptions of what the platform offers. tools/build-index.mjs joins each entry with the examples that use it (detected from their code) and refuses to build if a pointer names a file missing from the pinned repository.",
+  "capabilities": [
+    {
+      "id": "passkeys",
+      "title": "Passkey sign-in (Memphis)",
+      "summary": "People sign in with a passkey on their device, or approve a computer from their phone. A contract learns who is calling from a Memphis session; no passwords and no wallets.",
+      "backend": "thebes-lib MemphisAuth",
+      "frontend": "@thebes/sdk MemphisGate, useMemphis; runtime passkey.js and memphis-connect.js",
+      "detect": ["lib:MemphisAuth", "sdk:MemphisGate", "sdk:useMemphis", "sdk:useAuth"],
+      "pointers": [
+        { "repo": "Mercatura-Forum/thebes-sdk", "path": "README.md" },
+        { "repo": "Mercatura-Forum/thebes-lib", "path": "src/MemphisAuth.mo" }
+      ]
+    },
+    {
+      "id": "http-outcalls",
+      "title": "HTTP outcalls",
+      "summary": "A contract fetches a URL from the open internet; the validator set agrees on the response and it is carried in a finalized block.",
+      "rules": ["Never put a secret (API key, token, password) in an outcall request's URL, headers or body. Call an authenticated API through your own service."],
+      "detect": ["code:http_request"],
+      "pointers": [
+        { "repo": "Mercatura-Forum/Thebes-Protocol-", "path": "docs/http-outcalls.md" },
+        { "repo": "Mercatura-Forum/Thebes-Protocol-", "path": "examples/price-oracle" }
+      ]
+    },
+    {
+      "id": "randomness",
+      "title": "On-chain randomness",
+      "summary": "raw_rand returns bytes no single validator can predict or choose, for shuffles, draws and identifiers.",
+      "detect": ["code:raw_rand"],
+      "pointers": [
+        { "repo": "Mercatura-Forum/thebes-example-cards", "path": "README.md" }
+      ]
+    },
+    {
+      "id": "media",
+      "title": "Images and files on chain",
+      "summary": "Upload images and files to a media contract and serve them by URL.",
+      "backend": "thebes-lib Media",
+      "frontend": "@thebes/sdk useMediaUpload, mediaUrl",
+      "detect": ["lib:Media", "sdk:useMediaUpload", "sdk:mediaUrl"],
+      "pointers": [
+        { "repo": "Mercatura-Forum/thebes-lib", "path": "src/Media.mo" }
+      ]
+    },
+    {
+      "id": "invoices",
+      "title": "Invoices and settlement",
+      "summary": "Invoices with partial payments that never overshoot; the settling payment marks the invoice paid in the same call.",
+      "backend": "thebes-lib Invoices",
+      "detect": ["lib:Invoices"],
+      "pointers": [
+        { "repo": "Mercatura-Forum/thebes-lib", "path": "src/Invoices.mo" }
+      ]
+    },
+    {
+      "id": "roles",
+      "title": "Owners, admins and users",
+      "summary": "An owner and admins per contract, user profiles, and paged reads that stay inside one reply.",
+      "backend": "thebes-lib Admin, Users, Pagination",
+      "detect": ["lib:Admin", "lib:Users", "lib:Pagination"],
+      "pointers": [
+        { "repo": "Mercatura-Forum/thebes-lib", "path": "README.md" }
+      ]
+    },
+    {
+      "id": "upgrades",
+      "title": "Upgrades that keep the data",
+      "summary": "Ship a new version of a contract to the same id and keep its state. The build must use moc --legacy-persistence.",
+      "rules": ["Build every Motoko contract with moc --legacy-persistence, or let thebes-deploy build it from `source`."],
+      "detect": [],
+      "pointers": [
+        { "repo": "Mercatura-Forum/Thebes-Protocol-", "path": "docs/upgrading.md" },
+        { "repo": "Mercatura-Forum/Thebes-Protocol-", "path": "SKILL.md" }
+      ]
+    },
+    {
+      "id": "deploy",
+      "title": "Deploying",
+      "summary": "Sign installs with your own key, or deploy with an API key charged to credits; every new developer starts with free credits.",
+      "detect": [],
+      "pointers": [
+        { "repo": "Mercatura-Forum/Thebes-Protocol-", "path": "docs/cli-deploy.md" },
+        { "repo": "Mercatura-Forum/Thebes-Protocol-", "path": "docs/deploying.md" },
+        { "repo": "Mercatura-Forum/Thebes-Protocol-", "path": "docs/quickstart.md" }
+      ]
+    }
+  ]
+}

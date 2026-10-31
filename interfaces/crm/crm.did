@@ -1,0 +1,197 @@
+type Stage = 
+ variant {
+   lead;
+   lost;
+   proposal;
+   qualified;
+   won;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: nat;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type Page_1 = 
+ record {
+   items: vec Activity;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page = 
+ record {
+   items: vec Contact;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Deal = 
+ record {
+   closedAt: opt int;
+   contactId: nat;
+   createdAt: int;
+   id: nat;
+   ownerRep: principal;
+   stage: Stage;
+   title: text;
+   valueCents: nat;
+ };
+type Contact = 
+ record {
+   company: text;
+   createdAt: int;
+   email: text;
+   id: nat;
+   name: text;
+   ownerRep: principal;
+   phone: text;
+   photoPath: opt text;
+ };
+type ActivityKind = 
+ variant {
+   call;
+   email;
+   meeting;
+   note;
+ };
+type Activity = 
+ record {
+   at: int;
+   body: text;
+   by: principal;
+   contactId: nat;
+   id: nat;
+   kind: ActivityKind;
+ };
+service : {
+  activitiesView: (contactId: nat) ->
+   (vec
+     record {
+       at: int;
+       body: text;
+       by: principal;
+       contactId: nat;
+       id: nat;
+       kind: text;
+     }) query;
+  addAdmin: (w: principal) -> (bool);
+  addContact: (name: text, company: text, email: text, phone: text,
+   photoPath: opt text) -> (nat);
+  addDeal: (contactId: nat, title: text, valueCents: nat) -> (Result_1);
+  addDealOrTrap: (contactId: nat, title: text, valueCents: nat) -> (nat);
+  advanceDeal: (dealId: nat, stageText: text, note: text) -> (Result);
+  advanceDealOrTrap: (dealId: nat, stageText: text, note: text) -> ();
+  claimOwner: () -> (bool);
+  crmSealView: () ->
+   (vec
+     record {
+       activities: nat;
+       checkedAt: int;
+       contacts: nat;
+       deals: nat;
+       transitions: nat;
+       violations: nat;
+     }) query;
+  dealHistoryView: (dealId: nat) ->
+   (vec
+     record {
+       at: int;
+       by: principal;
+       dealId: nat;
+       from: text;
+       note: text;
+       seq: nat;
+       to: text;
+     }) query;
+  dealsView: (contactId: nat) ->
+   (vec
+     record {
+       contactId: nat;
+       createdAt: int;
+       id: nat;
+       stage: text;
+       title: text;
+       valueCents: nat;
+     }) query;
+  forecastView: (allReps: bool) ->
+   (vec
+     record {
+       nowNs: int;
+       openCents: nat;
+       openCount: nat;
+       weightedCents: nat;
+       wonCents: nat;
+     }) query;
+  funnelView: (allReps: bool) ->
+   (vec
+     record {
+       count: nat;
+       reachedCount: nat;
+       reachedValueCents: nat;
+       stage: text;
+       valueCents: nat;
+     }) query;
+  getActivities: (contactId: nat, offset: nat, limit: nat) -> (Page_1) query;
+  getAdmins: () -> (vec principal) query;
+  getContact: (contactId: nat) -> (opt Contact) query;
+  getDeals: (contactId: nat) -> (vec Deal) query;
+  getOwner: () -> (opt principal) query;
+  getPipeline: (allReps: bool) ->
+   (record {
+      lostCount: nat;
+      openCount: nat;
+      openValueCents: nat;
+      wonCount: nat;
+      wonValueCents: nat;
+    }) query;
+  invariantReportView: () -> (vec record {
+                                    detail: text;
+                                    rule: text;
+                                  }) query;
+  isPaused: () -> (bool) query;
+  listAllContacts: (offset: nat, limit: nat) -> (Page) query;
+  listMyContacts: (offset: nat, limit: nat) -> (Page) query;
+  logActivity: (contactId: nat, kindText: text, body: text) -> (Result_1);
+  logActivityOrTrap: (contactId: nat, kindText: text, body: text) -> (nat);
+  myContactsView: () ->
+   (vec
+     record {
+       company: text;
+       createdAt: int;
+       email: text;
+       id: nat;
+       name: text;
+       phone: text;
+       photoPath: text;
+     }) query;
+  myDealsView: () ->
+   (vec
+     record {
+       contactId: nat;
+       contactName: text;
+       createdAt: int;
+       id: nat;
+       stage: text;
+       title: text;
+       valueCents: nat;
+     }) query;
+  pipelineView: (allReps: bool) ->
+   (vec
+     record {
+       lostCount: nat;
+       openCount: nat;
+       openValueCents: nat;
+       wonCount: nat;
+       wonValueCents: nat;
+     }) query;
+  reassignContact: (contactId: nat, newRep: principal) -> (Result);
+  removeAdmin: (w: principal) -> (bool);
+  seedDemo: () -> (bool);
+  setContactPhoto: (contactId: nat, photoPath: text) -> (Result);
+  setContactPhotoOrTrap: (contactId: nat, photoPath: text) -> ();
+  setPaused: (v: bool) -> (bool);
+  transferOwner: (n: principal) -> (bool);
+}

@@ -1,0 +1,71 @@
+service : {
+  addAdmin: (w: principal) -> (bool);
+  addReward: (name: text, costPoints: nat, photoPath: opt text, stock:
+   nat) -> (nat);
+  claimOwner: () -> (bool);
+  getOwner: () -> (opt principal) query;
+  invariantReportView: () -> (vec record {
+                                    detail: text;
+                                    rule: text;
+                                  }) query;
+  isPaused: () -> (bool) query;
+  issuePoints: (member: principal, points: nat, memo: text) -> ();
+  leaderboardView: (limit: nat) ->
+   (vec record {
+          lifetimeEarned: nat;
+          member: principal;
+          tier: text;
+        }) query;
+  myAccountView: () ->
+   (vec
+     record {
+       balance: nat;
+       lifetimeEarned: nat;
+       multBps: nat;
+       nextTierAt: nat;
+       nowNs: int;
+       tier: text;
+     }) query;
+  myHistoryView: () ->
+   (vec record {
+          at: int;
+          id: nat;
+          kind: text;
+          memo: text;
+          points: nat;
+        }) query;
+  programSealView: () ->
+   (vec
+     record {
+       checkedAt: int;
+       circulation: nat;
+       members: nat;
+       rewardsRedeemed: nat;
+       totalEarned: nat;
+       totalRedeemed: nat;
+       violations: nat;
+     }) query;
+  redeem: (rewardId: nat) -> (nat);
+  removeAdmin: (w: principal) -> (bool);
+  rewardsView: () ->
+   (vec
+     record {
+       available: bool;
+       costPoints: nat;
+       id: nat;
+       initialStock: nat;
+       name: text;
+       photoPath: text;
+       stock: nat;
+     }) query;
+  seedDemo: () -> (bool);
+  setPaused: (v: bool) -> (bool);
+  setRewardAvailable: (rewardId: nat, available: bool) -> ();
+  transferOwner: (n: principal) -> (bool);
+  verifyBalanceView: () ->
+   (vec record {
+          consistent: bool;
+          recomputed: int;
+          stored: int;
+        }) query;
+}

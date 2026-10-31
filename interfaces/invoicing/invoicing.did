@@ -1,0 +1,117 @@
+type Status = 
+ variant {
+   draft;
+   issued;
+   paid;
+   void;
+ };
+type Page = 
+ record {
+   items: vec Invoice;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type LineItem = 
+ record {
+   description: text;
+   quantity: nat;
+   unitPriceE8s: nat;
+ };
+type InvoiceView = 
+ record {
+   createdAt: int;
+   dueNs: int;
+   id: nat;
+   issuer: principal;
+   itemCount: nat;
+   mineAsIssuer: nat;
+   nowNs: int;
+   paidE8s: nat;
+   recipient: principal;
+   status: text;
+   subtotalE8s: nat;
+   taxBps: nat;
+   taxE8s: nat;
+   totalE8s: nat;
+ };
+type InvoiceId = nat;
+type Invoice = 
+ record {
+   createdAt: int;
+   history: vec Event;
+   id: InvoiceId;
+   issuer: principal;
+   lineItems: vec LineItem;
+   recipient: principal;
+   status: Status;
+   subtotalE8s: nat;
+   taxBps: nat;
+   taxE8s: nat;
+   totalE8s: nat;
+ };
+type Event = 
+ record {
+   at: int;
+   by: principal;
+   event: text;
+ };
+/// Invoicing — a standalone Thebes example over the shared Invoices module,
+/// deepened with a SETTLEMENT LEDGER.
+/// 
+/// The property this example proves: **an invoice settles exactly — never
+/// over, never under, never out of order.** Totals are recomputed on-chain
+/// from line items (a client can never supply a total); payments accumulate
+/// against an issued invoice and can never exceed it; the invoice flips to
+/// `paid` in the same atomic step as the payment that completes it; an
+/// invoice that has taken money can no longer be voided. The public oracle
+/// `invariantReportView` re-proves five laws over every invoice on every
+/// read, and the footer seal carries the receivables conservation:
+/// billed == collected + outstanding + voided-away.
+/// 
+/// Status lifecycle (lib): draft ──issue──▶ issued ──(payments == total)──▶ paid
+///                           │                  │
+///                           └──────void────────┴──▶ void   (only while unpaid & 0 collected)
+service : {
+  agingView: () ->
+   (vec record {
+          bucket: text;
+          invoices: nat;
+          outstandingE8s: nat;
+        }) query;
+  claimOwner: () -> (bool);
+  createInvoice: (recipient: principal, descriptions: vec text, quantities:
+   vec nat, unitPricesE8s: vec nat, taxBps: nat) -> (Invoice);
+  getInvoice: (id: nat) -> (opt Invoice) query;
+  getLineItems: (id: nat) -> (vec LineItem) query;
+  getOwner: () -> (opt principal) query;
+  invariantReportView: () -> (vec record {
+                                    detail: text;
+                                    rule: text;
+                                  }) query;
+  invoiceCount: () -> (nat) query;
+  invoiceTrailView: (id: nat) ->
+   (vec record {
+          amountE8s: nat;
+          at: int;
+          by: principal;
+          event: text;
+        }) query;
+  invoicingSealView: () ->
+   (vec
+     record {
+       billedE8s: nat;
+       checkedAt: int;
+       collectedE8s: nat;
+       invoices: nat;
+       outstandingE8s: nat;
+       violations: nat;
+     }) query;
+  isPaused: () -> (bool) query;
+  issueOrTrap: (id: nat, dueNs: int) -> ();
+  myInvoices: (offset: nat, limit: nat) -> (Page) query;
+  myInvoicesView: () -> (vec InvoiceView) query;
+  recordPaymentOrTrap: (id: nat, amountE8s: nat, note: text) -> (nat);
+  seedDemo: () -> (bool);
+  setPaused: (v: bool) -> (bool);
+  voidOrTrap: (id: nat) -> ();
+}

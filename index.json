@@ -1,0 +1,4870 @@
+{
+  "schema": "https://github.com/Mercatura-Forum/thebes-agent-kit/blob/main/schema/index.schema.json",
+  "built_from": [
+    {
+      "repo": "Mercatura-Forum/Thebes-Protocol-",
+      "ref": "729faa00b85593bedfe84045cf9262d6d27a7113"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-sdk",
+      "ref": "8ad44fd342d289183a595093b99eaaeba4f7a6c7"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-lib",
+      "ref": "15aaa13b0e859da96e0202ea73c414b1e876fdce"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-store",
+      "ref": "a4a9295140e112052b30a7ddceca85ac396dc382"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-chat",
+      "ref": "31668742b5f5a096117c8296939c7ffdc41aeedc"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-finance",
+      "ref": "eeb44bf50746d7ffacc411a43714b44a35440a62"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-booking",
+      "ref": "afd630c91a9c6410107f7d1dde3b9d554b323c97"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-restaurant",
+      "ref": "00e42c64b8a83e28fd3fca8951aba61a231e3abd"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-crm",
+      "ref": "6d94fe1b18ae5b12af943e4b42f603bf6e6b45d6"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-loyalty",
+      "ref": "b523998fc3394f7145a7be83fcd2a1ad35ebaf7d"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-university",
+      "ref": "a95aead7bbe7f7d2528b891eb91cd92eadc58b2a"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-cards",
+      "ref": "99394cda68e0b74d860eba364a4d55d820e4f6df"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-invoicing",
+      "ref": "438c22545bc0ae6eb995a4d1527d62c4f51a66cb"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-xray",
+      "ref": "552d2b5a55dba5d82eccf69c81fb19e395491504"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-open-banking-iso20022",
+      "ref": "4da19cf20ff2f63c37f7581388e13ae8e0c44ff0"
+    }
+  ],
+  "toolchain": {
+    "moc": "1.4.1"
+  },
+  "capabilities": [
+    {
+      "id": "passkeys",
+      "title": "Passkey sign-in (Memphis)",
+      "summary": "People sign in with a passkey on their device, or approve a computer from their phone. A contract learns who is calling from a Memphis session; no passwords and no wallets.",
+      "backend": "thebes-lib MemphisAuth",
+      "frontend": "@thebes/sdk MemphisGate, useMemphis; runtime passkey.js and memphis-connect.js",
+      "pointers": [
+        "https://github.com/Mercatura-Forum/thebes-sdk/blob/8ad44fd342d289183a595093b99eaaeba4f7a6c7/README.md",
+        "https://github.com/Mercatura-Forum/thebes-lib/blob/15aaa13b0e859da96e0202ea73c414b1e876fdce/src/MemphisAuth.mo"
+      ],
+      "used_by": [
+        "booking",
+        "cards",
+        "chat",
+        "crm",
+        "finance",
+        "invoicing",
+        "loyalty",
+        "open-banking-iso20022",
+        "restaurant",
+        "store",
+        "university",
+        "xray"
+      ]
+    },
+    {
+      "id": "http-outcalls",
+      "title": "HTTP outcalls",
+      "summary": "A contract fetches a URL from the open internet; the validator set agrees on the response and it is carried in a finalized block.",
+      "rules": [
+        "Never put a secret (API key, token, password) in an outcall request's URL, headers or body. Call an authenticated API through your own service."
+      ],
+      "pointers": [
+        "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/http-outcalls.md",
+        "https://github.com/Mercatura-Forum/Thebes-Protocol-/tree/729faa00b85593bedfe84045cf9262d6d27a7113/examples/price-oracle"
+      ],
+      "used_by": []
+    },
+    {
+      "id": "randomness",
+      "title": "On-chain randomness",
+      "summary": "raw_rand returns bytes no single validator can predict or choose, for shuffles, draws and identifiers.",
+      "pointers": [
+        "https://github.com/Mercatura-Forum/thebes-example-cards/blob/99394cda68e0b74d860eba364a4d55d820e4f6df/README.md"
+      ],
+      "used_by": [
+        "cards"
+      ]
+    },
+    {
+      "id": "media",
+      "title": "Images and files on chain",
+      "summary": "Upload images and files to a media contract and serve them by URL.",
+      "backend": "thebes-lib Media",
+      "frontend": "@thebes/sdk useMediaUpload, mediaUrl",
+      "pointers": [
+        "https://github.com/Mercatura-Forum/thebes-lib/blob/15aaa13b0e859da96e0202ea73c414b1e876fdce/src/Media.mo"
+      ],
+      "used_by": [
+        "booking",
+        "chat",
+        "crm",
+        "finance",
+        "loyalty",
+        "restaurant",
+        "store",
+        "university",
+        "xray"
+      ]
+    },
+    {
+      "id": "invoices",
+      "title": "Invoices and settlement",
+      "summary": "Invoices with partial payments that never overshoot; the settling payment marks the invoice paid in the same call.",
+      "backend": "thebes-lib Invoices",
+      "pointers": [
+        "https://github.com/Mercatura-Forum/thebes-lib/blob/15aaa13b0e859da96e0202ea73c414b1e876fdce/src/Invoices.mo"
+      ],
+      "used_by": [
+        "invoicing",
+        "restaurant",
+        "store"
+      ]
+    },
+    {
+      "id": "roles",
+      "title": "Owners, admins and users",
+      "summary": "An owner and admins per contract, user profiles, and paged reads that stay inside one reply.",
+      "backend": "thebes-lib Admin, Users, Pagination",
+      "pointers": [
+        "https://github.com/Mercatura-Forum/thebes-lib/blob/15aaa13b0e859da96e0202ea73c414b1e876fdce/README.md"
+      ],
+      "used_by": [
+        "booking",
+        "cards",
+        "chat",
+        "crm",
+        "finance",
+        "invoicing",
+        "loyalty",
+        "open-banking-iso20022",
+        "restaurant",
+        "store",
+        "university",
+        "xray"
+      ]
+    },
+    {
+      "id": "upgrades",
+      "title": "Upgrades that keep the data",
+      "summary": "Ship a new version of a contract to the same id and keep its state. The build must use moc --legacy-persistence.",
+      "rules": [
+        "Build every Motoko contract with moc --legacy-persistence, or let thebes-deploy build it from `source`."
+      ],
+      "pointers": [
+        "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/upgrading.md",
+        "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/SKILL.md"
+      ],
+      "used_by": []
+    },
+    {
+      "id": "deploy",
+      "title": "Deploying",
+      "summary": "Sign installs with your own key, or deploy with an API key charged to credits; every new developer starts with free credits.",
+      "pointers": [
+        "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/cli-deploy.md",
+        "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/deploying.md",
+        "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/quickstart.md"
+      ],
+      "used_by": []
+    }
+  ],
+  "examples": [
+    {
+      "id": "booking",
+      "name": "Booking",
+      "repo": "Mercatura-Forum/thebes-example-booking",
+      "ref": "afd630c91a9c6410107f7d1dde3b9d554b323c97",
+      "shows": "reservation engine — seated slots, waitlists, deposit escrow",
+      "guard": "capacity never oversells + escrow conservation oracle",
+      "summary": "Harbor — an on-chain reservation engine built on Thebes Protocol: a Motoko backend that holds listings, seated slots, waitlists and a deposit escrow, and a React frontend served as certified assets.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/177129167469535/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-booking/blob/afd630c91a9c6410107f7d1dde3b9d554b323c97/AGENTS.md",
+      "contracts": [
+        {
+          "name": "booking",
+          "type": "backend-motoko",
+          "cid": 11001522932367,
+          "interface": "interfaces/booking/booking.did",
+          "methods": [
+            {
+              "name": "addAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "addListing",
+              "kind": "update",
+              "signature": "(name: text, description: text, kind: text, durationMinutes: nat, priceCents: nat, capacity: nat, cancelWindowMinutes: nat, photoPath: opt text) -> (Result_1)"
+            },
+            {
+              "name": "addListingOrTrap",
+              "kind": "update",
+              "signature": "(name: text, description: text, kind: text, durationMinutes: nat, priceCents: nat, capacity: nat, cancelWindowMinutes: nat, photoPath: opt text) -> (nat)"
+            },
+            {
+              "name": "agendaView",
+              "kind": "query",
+              "signature": "(fromNs: int, toNs: int) -> (vec record { bookingId: nat; customer: principal; depositCents: nat; endNs: int; listingId: nat; listingName: text; promoted: nat; seats: nat; startNs: int; status: text; }) query"
+            },
+            {
+              "name": "archiveListing",
+              "kind": "update",
+              "signature": "(id: nat, archived: bool) -> (Result)"
+            },
+            {
+              "name": "archiveListingOrTrap",
+              "kind": "update",
+              "signature": "(id: nat, archived: bool) -> ()"
+            },
+            {
+              "name": "auditView",
+              "kind": "query",
+              "signature": "(limit: nat) -> (vec record { at: int; kind: text; note: text; refA: nat; refB: nat; seq: nat; who: principal; }) query"
+            },
+            {
+              "name": "boardView",
+              "kind": "query",
+              "signature": "() -> (vec record { capacity: nat; endNs: int; id: nat; kind: text; listingId: nat; remaining: nat; startNs: int; }) query"
+            },
+            {
+              "name": "book",
+              "kind": "update",
+              "signature": "(slotId: nat, seats: nat) -> (Result_1)"
+            },
+            {
+              "name": "bookOrTrap",
+              "kind": "update",
+              "signature": "(slotId: nat, seats: nat) -> (nat)"
+            },
+            {
+              "name": "cancelBooking",
+              "kind": "update",
+              "signature": "(bookingId: nat) -> (Result_2)"
+            },
+            {
+              "name": "cancelBookingOrTrap",
+              "kind": "update",
+              "signature": "(bookingId: nat) -> (vec record {outcome: text;})"
+            },
+            {
+              "name": "checkIn",
+              "kind": "update",
+              "signature": "(bookingId: nat) -> (Result)"
+            },
+            {
+              "name": "checkInOrTrap",
+              "kind": "update",
+              "signature": "(bookingId: nat) -> ()"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "closeSlot",
+              "kind": "update",
+              "signature": "(slotId: nat) -> (Result_1)"
+            },
+            {
+              "name": "closeSlotOrTrap",
+              "kind": "update",
+              "signature": "(slotId: nat) -> (nat)"
+            },
+            {
+              "name": "complete",
+              "kind": "update",
+              "signature": "(bookingId: nat) -> (Result)"
+            },
+            {
+              "name": "completeOrTrap",
+              "kind": "update",
+              "signature": "(bookingId: nat) -> ()"
+            },
+            {
+              "name": "conservationView",
+              "kind": "query",
+              "signature": "() -> (vec record { capturedCents: nat; collectedCents: nat; forfeitedCents: nat; heldCents: nat; ok: nat; refundedCents: nat; violations: nat; }) query"
+            },
+            {
+              "name": "getAdmins",
+              "kind": "query",
+              "signature": "() -> (vec principal) query"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "() -> (vec record { detail: text; rule: text; }) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "joinWaitlist",
+              "kind": "update",
+              "signature": "(slotId: nat, seats: nat) -> (Result_1)"
+            },
+            {
+              "name": "joinWaitlistOrTrap",
+              "kind": "update",
+              "signature": "(slotId: nat, seats: nat) -> (nat)"
+            },
+            {
+              "name": "leaveWaitlist",
+              "kind": "update",
+              "signature": "(slotId: nat) -> (Result)"
+            },
+            {
+              "name": "leaveWaitlistOrTrap",
+              "kind": "update",
+              "signature": "(slotId: nat) -> ()"
+            },
+            {
+              "name": "listingsView",
+              "kind": "query",
+              "signature": "() -> (vec record { archived: nat; cancelWindowMinutes: nat; capacity: nat; description: text; durationMinutes: nat; id: nat; kind: text; name: text; nextFreeNs: int; photoPath: text; priceCents: nat; slotsFree: nat; slotsTotal: nat; utilizationBps: nat; }) query"
+            },
+            {
+              "name": "markNoShow",
+              "kind": "update",
+              "signature": "(bookingId: nat) -> (Result)"
+            },
+            {
+              "name": "markNoShowOrTrap",
+              "kind": "update",
+              "signature": "(bookingId: nat) -> ()"
+            },
+            {
+              "name": "myBookingsView",
+              "kind": "query",
+              "signature": "() -> (vec record { cancelDeadlineNs: int; depositCents: nat; endNs: int; id: nat; kind: text; listingId: nat; listingName: text; nowNs: int; promoted: nat; seats: nat; startNs: int; status: text; }) query"
+            },
+            {
+              "name": "myWaitlistView",
+              "kind": "query",
+              "signature": "() -> (vec record { listingId: nat; listingName: text; nowNs: int; position: nat; seats: nat; slotId: nat; startNs: int; }) query"
+            },
+            {
+              "name": "publishSlots",
+              "kind": "update",
+              "signature": "(listingId: nat, startNs: int, endNs: int, intervalMinutes: nat, capacity: nat) -> (Result_1)"
+            },
+            {
+              "name": "publishSlotsOrTrap",
+              "kind": "update",
+              "signature": "(listingId: nat, startNs: int, endNs: int, intervalMinutes: nat, capacity: nat) -> (nat)"
+            },
+            {
+              "name": "removeAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "seedDemo",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "setListingPhoto",
+              "kind": "update",
+              "signature": "(id: nat, photoPath: text) -> (Result)"
+            },
+            {
+              "name": "setListingPhotoOrTrap",
+              "kind": "update",
+              "signature": "(id: nat, photoPath: text) -> ()"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(v: bool) -> (bool)"
+            },
+            {
+              "name": "slotsView",
+              "kind": "query",
+              "signature": "(listingId: nat) -> (vec record { capacity: nat; endNs: int; id: nat; listingId: nat; mySeats: nat; myWaitPos: nat; remaining: nat; seatsBooked: nat; startNs: int; waitlistLen: nat; }) query"
+            },
+            {
+              "name": "statsView",
+              "kind": "query",
+              "signature": "() -> (vec record { auditEvents: nat; bookingsTotal: nat; cancelled: nat; checkedIn: nat; completed: nat; confirmed: nat; futureSeatsBooked: nat; futureSeatsCapacity: nat; listings: nat; noShows: nat; slotsClosed: nat; slotsOpen: nat; waitlistEntries: nat; }) query"
+            },
+            {
+              "name": "timeView",
+              "kind": "query",
+              "signature": "() -> (vec record {nowNs: int;}) query"
+            },
+            {
+              "name": "transferOwner",
+              "kind": "update",
+              "signature": "(n: principal) -> (bool)"
+            },
+            {
+              "name": "updateListing",
+              "kind": "update",
+              "signature": "(id: nat, name: text, description: text, kind: text, priceCents: nat, cancelWindowMinutes: nat) -> (Result)"
+            },
+            {
+              "name": "updateListingOrTrap",
+              "kind": "update",
+              "signature": "(id: nat, name: text, description: text, kind: text, priceCents: nat, cancelWindowMinutes: nat) -> ()"
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 177129167469535
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin"
+        ],
+        "sdk": [
+          "MemphisAuth",
+          "RecoveryPhrasePanel",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArg",
+          "encodeArgs",
+          "mediaUrl",
+          "query",
+          "ready",
+          "update",
+          "useMediaUpload",
+          "useMemphis",
+          "useQuery"
+        ],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "booking",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.booking].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "cards",
+      "name": "Cards",
+      "repo": "Mercatura-Forum/thebes-example-cards",
+      "ref": "99394cda68e0b74d860eba364a4d55d820e4f6df",
+      "shows": "\"Majlis\" — Estimation & Tarneeb, four players",
+      "guard": "fair on-chain shuffle via raw_rand",
+      "summary": "Majlis — an on-chain card game (Estimation and Tarneeb) built on Thebes Protocol: a Motoko backend that holds the table, the shuffled deck, and the full game state machine, and a React frontend served as certified assets. It demonstrates the shape of a Thebes application — passkey sign-in, controller-gated admin, protocol-randomness shuffles, and on-chain reads — in one self-contained example.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/185079164137313/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-cards/blob/99394cda68e0b74d860eba364a4d55d820e4f6df/AGENTS.md",
+      "contracts": [
+        {
+          "name": "cards",
+          "type": "backend-motoko",
+          "cid": 92881495833199,
+          "interface": "interfaces/cards/cards.did",
+          "methods": [
+            {
+              "name": "addBot",
+              "kind": "update",
+              "signature": "(tableId: nat) -> (nat)"
+            },
+            {
+              "name": "bid",
+              "kind": "update",
+              "signature": "(tableId: nat, number: nat, suitRank: nat) -> ()"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "closeTable",
+              "kind": "update",
+              "signature": "(tableId: nat) -> ()"
+            },
+            {
+              "name": "conservationView",
+              "kind": "query",
+              "signature": "() -> (vec record { checkedAt: int; liveGames: nat; tablesChecked: nat; violations: nat; }) query"
+            },
+            {
+              "name": "createTable",
+              "kind": "update",
+              "signature": "(gameText: text, displayName: text) -> (nat)"
+            },
+            {
+              "name": "estimate",
+              "kind": "update",
+              "signature": "(tableId: nat, value: nat) -> ()"
+            },
+            {
+              "name": "gameStateView",
+              "kind": "query",
+              "signature": "(tableId: nat) -> (vec record { bidNumber: nat; bidSuitRank: nat; current: nat; dealer: nat; declarer: nat; eventSeq: nat; game: text; handNumber: nat; idleNs: int; lastMoveAt: int; leadSuit: int; matchHands: nat; mySeat: int; nowNs: int; phase: text; trump: nat; version: nat; winnerSeat: int; }) query"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "(tableId: nat) -> (vec record { actual: nat; expected: nat; rule: text; }) query"
+            },
+            {
+              "name": "joinTable",
+              "kind": "update",
+              "signature": "(tableId: nat, displayName: text) -> (nat)"
+            },
+            {
+              "name": "leaderboardView",
+              "kind": "query",
+              "signature": "(limit: nat) -> (vec record { games: nat; name: text; points: int; wins: nat; }) query"
+            },
+            {
+              "name": "myHandView",
+              "kind": "query",
+              "signature": "(tableId: nat) -> (vec record {card: nat;}) query"
+            },
+            {
+              "name": "myStatsView",
+              "kind": "query",
+              "signature": "() -> (vec record { games: nat; name: text; points: int; wins: nat; }) query"
+            },
+            {
+              "name": "nudge",
+              "kind": "update",
+              "signature": "(tableId: nat) -> ()"
+            },
+            {
+              "name": "openTables",
+              "kind": "query",
+              "signature": "() -> (vec record { bots: nat; game: text; handNumber: nat; id: nat; phase: text; seatsTaken: nat; }) query"
+            },
+            {
+              "name": "passBid",
+              "kind": "update",
+              "signature": "(tableId: nat) -> ()"
+            },
+            {
+              "name": "playCard",
+              "kind": "update",
+              "signature": "(tableId: nat, card: nat) -> ()"
+            },
+            {
+              "name": "rematch",
+              "kind": "update",
+              "signature": "(tableId: nat) -> ()"
+            },
+            {
+              "name": "seatsView",
+              "kind": "query",
+              "signature": "(tableId: nat) -> (vec record { cardsLeft: nat; estimate: int; isBot: bool; name: text; played: int; score: int; seat: nat; seated: bool; tricksWon: nat; }) query"
+            },
+            {
+              "name": "startHand",
+              "kind": "update",
+              "signature": "(tableId: nat) -> ()"
+            },
+            {
+              "name": "tableEventsView",
+              "kind": "query",
+              "signature": "(tableId: nat, offset: nat, limit: nat) -> (vec record { at: int; card: int; detail: text; kind: text; seat: int; }) query"
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 185079164137313
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin"
+        ],
+        "sdk": [
+          "MemphisAuth",
+          "RecoveryPhrasePanel",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArg",
+          "encodeArgs",
+          "query",
+          "ready",
+          "update",
+          "useMemphis",
+          "useQuery"
+        ],
+        "code": [
+          "raw_rand"
+        ]
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "cards",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.cards].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "chat",
+      "name": "Chat",
+      "repo": "Mercatura-Forum/thebes-example-chat",
+      "ref": "31668742b5f5a096117c8296939c7ffdc41aeedc",
+      "shows": "multi-room salon — profiles, reactions, moderation",
+      "guard": "accountable conversation: tombstones, bookkept trims, on-chain cooldown + oracle",
+      "summary": "An on-chain social room built on Thebes Protocol: a Motoko backend that holds rooms, messages, member profiles and the roster, and a React frontend served as certified assets.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/186131445741167/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-chat/blob/31668742b5f5a096117c8296939c7ffdc41aeedc/AGENTS.md",
+      "contracts": [
+        {
+          "name": "chat",
+          "type": "backend-motoko",
+          "cid": 7572702803352,
+          "interface": "interfaces/chat/chat.did",
+          "methods": [
+            {
+              "name": "addAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "amAdmin",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "createRoom",
+              "kind": "update",
+              "signature": "(name: text, topic: text) -> (nat)"
+            },
+            {
+              "name": "deleteMessage",
+              "kind": "update",
+              "signature": "(roomId: nat, messageId: nat) -> ()",
+              "doc": "Delete a message: its author may take it back; admins may moderate it. A TOMBSTONE remains — the conversation's shape is never quietly rewritten."
+            },
+            {
+              "name": "getAdmins",
+              "kind": "query",
+              "signature": "() -> (vec principal) query"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "() -> (vec record { detail: text; roomId: nat; rule: text; }) query"
+            },
+            {
+              "name": "isBanned",
+              "kind": "query",
+              "signature": "(p: principal) -> (bool) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "memphisSignOut",
+              "kind": "update",
+              "signature": "(token: blob) -> ()"
+            },
+            {
+              "name": "messagesView",
+              "kind": "query",
+              "signature": "(roomId: nat, n: nat) -> (vec record { avatarPath: text; deleted: bool; id: nat; mine: bool; myReactions: text; name: text; nowNs: int; reactions: text; sender: principal; \"text\": text; timestamp: int; }) query",
+              "doc": "The room, joined server-side: name + avatar + reactions per message."
+            },
+            {
+              "name": "myProfile",
+              "kind": "query",
+              "signature": "() -> (opt Profile) query"
+            },
+            {
+              "name": "myProfileView",
+              "kind": "query",
+              "signature": "() -> (vec record { avatarPath: text; createdAt: int; displayName: text; }) query"
+            },
+            {
+              "name": "post",
+              "kind": "update",
+              "signature": "(\"text\": text) -> ()",
+              "doc": "Legacy single-room surface: posts to room 1."
+            },
+            {
+              "name": "postAs",
+              "kind": "update",
+              "signature": "(token: blob, \"text\": text) -> (Result)"
+            },
+            {
+              "name": "postTo",
+              "kind": "update",
+              "signature": "(roomId: nat, \"text\": text) -> (nat)",
+              "doc": "Post to a room. Rejected while banned, unregistered, or inside the cooldown."
+            },
+            {
+              "name": "presenceBeat",
+              "kind": "update",
+              "signature": "() -> ()",
+              "doc": "The client pings this while the room is open; posting also counts."
+            },
+            {
+              "name": "profileOf",
+              "kind": "query",
+              "signature": "(p: principal) -> (opt Profile) query"
+            },
+            {
+              "name": "react",
+              "kind": "update",
+              "signature": "(roomId: nat, messageId: nat, emoji: text) -> ()"
+            },
+            {
+              "name": "recent",
+              "kind": "query",
+              "signature": "(n: nat) -> (vec Message) query"
+            },
+            {
+              "name": "register",
+              "kind": "update",
+              "signature": "(displayName: text) -> (Profile)",
+              "doc": "Create or update the caller's display name."
+            },
+            {
+              "name": "removeAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "roomsView",
+              "kind": "query",
+              "signature": "() -> (vec record { id: nat; keptMessages: nat; lastActivity: int; name: text; topic: text; totalEverSent: nat; }) query"
+            },
+            {
+              "name": "roster",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page) query",
+              "doc": "Paginated member roster in principal order."
+            },
+            {
+              "name": "rosterView",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (vec record { avatarPath: text; createdAt: int; displayName: text; here: bool; \"principal\": principal; }) query",
+              "doc": "Members with presence, most recently seen first (paged)."
+            },
+            {
+              "name": "salonSealView",
+              "kind": "query",
+              "signature": "() -> (vec record { checkedAt: int; keptMessages: nat; membersHere: nat; roomCount: nat; totalEverSent: nat; violations: nat; }) query",
+              "doc": "One line for the footer: rooms, messages on the books, violations."
+            },
+            {
+              "name": "seedDemo",
+              "kind": "update",
+              "signature": "() -> (bool)",
+              "doc": "Seed a small salon on a fresh deploy: a default room + demo voices."
+            },
+            {
+              "name": "setBanned",
+              "kind": "update",
+              "signature": "(who: principal, value: bool) -> ()"
+            },
+            {
+              "name": "setMyAvatar",
+              "kind": "update",
+              "signature": "(path: text) -> (bool)",
+              "doc": "Store the caller's media-contract avatar path (e.g. \"/avatar/{principal}\")."
+            },
+            {
+              "name": "setMyAvatarOrTrap",
+              "kind": "update",
+              "signature": "(path: text) -> ()"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(v: bool) -> (bool)"
+            },
+            {
+              "name": "transferOwner",
+              "kind": "update",
+              "signature": "(n: principal) -> (bool)"
+            },
+            {
+              "name": "userCount",
+              "kind": "query",
+              "signature": "() -> (nat) query"
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 186131445741167
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin",
+          "MemphisAuth",
+          "Pagination",
+          "Users"
+        ],
+        "sdk": [
+          "MemphisAuth",
+          "RecoveryPhrasePanel",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArg",
+          "encodeArgs",
+          "identity",
+          "mediaUrl",
+          "query",
+          "ready",
+          "update",
+          "useMediaUpload",
+          "useMemphis",
+          "useQuery"
+        ],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "chat",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.chat].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "crm",
+      "name": "CRM",
+      "repo": "Mercatura-Forum/thebes-example-crm",
+      "ref": "6d94fe1b18ae5b12af943e4b42f603bf6e6b45d6",
+      "shows": "sales pipeline — contacts, deals, stage trails",
+      "guard": "append-only trails that replay to the booked stage + per-rep ownership",
+      "summary": "An on-chain CRM built on Thebes Protocol: a Motoko backend that holds contacts, a forward-only sales pipeline with append-only stage trails, and an immutable activity log, and a React frontend served as certified assets.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/40115267434385/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-crm/blob/6d94fe1b18ae5b12af943e4b42f603bf6e6b45d6/AGENTS.md",
+      "contracts": [
+        {
+          "name": "crm",
+          "type": "backend-motoko",
+          "cid": 210315207987620,
+          "interface": "interfaces/crm/crm.did",
+          "methods": [
+            {
+              "name": "activitiesView",
+              "kind": "query",
+              "signature": "(contactId: nat) -> (vec record { at: int; body: text; by: principal; contactId: nat; id: nat; kind: text; }) query"
+            },
+            {
+              "name": "addAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "addContact",
+              "kind": "update",
+              "signature": "(name: text, company: text, email: text, phone: text, photoPath: opt text) -> (nat)"
+            },
+            {
+              "name": "addDeal",
+              "kind": "update",
+              "signature": "(contactId: nat, title: text, valueCents: nat) -> (Result_1)"
+            },
+            {
+              "name": "addDealOrTrap",
+              "kind": "update",
+              "signature": "(contactId: nat, title: text, valueCents: nat) -> (nat)"
+            },
+            {
+              "name": "advanceDeal",
+              "kind": "update",
+              "signature": "(dealId: nat, stageText: text, note: text) -> (Result)"
+            },
+            {
+              "name": "advanceDealOrTrap",
+              "kind": "update",
+              "signature": "(dealId: nat, stageText: text, note: text) -> ()"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "crmSealView",
+              "kind": "query",
+              "signature": "() -> (vec record { activities: nat; checkedAt: int; contacts: nat; deals: nat; transitions: nat; violations: nat; }) query"
+            },
+            {
+              "name": "dealHistoryView",
+              "kind": "query",
+              "signature": "(dealId: nat) -> (vec record { at: int; by: principal; dealId: nat; from: text; note: text; seq: nat; to: text; }) query"
+            },
+            {
+              "name": "dealsView",
+              "kind": "query",
+              "signature": "(contactId: nat) -> (vec record { contactId: nat; createdAt: int; id: nat; stage: text; title: text; valueCents: nat; }) query"
+            },
+            {
+              "name": "forecastView",
+              "kind": "query",
+              "signature": "(allReps: bool) -> (vec record { nowNs: int; openCents: nat; openCount: nat; weightedCents: nat; wonCents: nat; }) query"
+            },
+            {
+              "name": "funnelView",
+              "kind": "query",
+              "signature": "(allReps: bool) -> (vec record { count: nat; reachedCount: nat; reachedValueCents: nat; stage: text; valueCents: nat; }) query"
+            },
+            {
+              "name": "getActivities",
+              "kind": "query",
+              "signature": "(contactId: nat, offset: nat, limit: nat) -> (Page_1) query"
+            },
+            {
+              "name": "getAdmins",
+              "kind": "query",
+              "signature": "() -> (vec principal) query"
+            },
+            {
+              "name": "getContact",
+              "kind": "query",
+              "signature": "(contactId: nat) -> (opt Contact) query"
+            },
+            {
+              "name": "getDeals",
+              "kind": "query",
+              "signature": "(contactId: nat) -> (vec Deal) query"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "getPipeline",
+              "kind": "query",
+              "signature": "(allReps: bool) -> (record { lostCount: nat; openCount: nat; openValueCents: nat; wonCount: nat; wonValueCents: nat; }) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "() -> (vec record { detail: text; rule: text; }) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "listAllContacts",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page) query"
+            },
+            {
+              "name": "listMyContacts",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page) query"
+            },
+            {
+              "name": "logActivity",
+              "kind": "update",
+              "signature": "(contactId: nat, kindText: text, body: text) -> (Result_1)"
+            },
+            {
+              "name": "logActivityOrTrap",
+              "kind": "update",
+              "signature": "(contactId: nat, kindText: text, body: text) -> (nat)"
+            },
+            {
+              "name": "myContactsView",
+              "kind": "query",
+              "signature": "() -> (vec record { company: text; createdAt: int; email: text; id: nat; name: text; phone: text; photoPath: text; }) query"
+            },
+            {
+              "name": "myDealsView",
+              "kind": "query",
+              "signature": "() -> (vec record { contactId: nat; contactName: text; createdAt: int; id: nat; stage: text; title: text; valueCents: nat; }) query"
+            },
+            {
+              "name": "pipelineView",
+              "kind": "query",
+              "signature": "(allReps: bool) -> (vec record { lostCount: nat; openCount: nat; openValueCents: nat; wonCount: nat; wonValueCents: nat; }) query"
+            },
+            {
+              "name": "reassignContact",
+              "kind": "update",
+              "signature": "(contactId: nat, newRep: principal) -> (Result)"
+            },
+            {
+              "name": "removeAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "seedDemo",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "setContactPhoto",
+              "kind": "update",
+              "signature": "(contactId: nat, photoPath: text) -> (Result)"
+            },
+            {
+              "name": "setContactPhotoOrTrap",
+              "kind": "update",
+              "signature": "(contactId: nat, photoPath: text) -> ()"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(v: bool) -> (bool)"
+            },
+            {
+              "name": "transferOwner",
+              "kind": "update",
+              "signature": "(n: principal) -> (bool)"
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 40115267434385
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin",
+          "Pagination"
+        ],
+        "sdk": [
+          "MemphisAuth",
+          "RecoveryPhrasePanel",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArg",
+          "encodeArgs",
+          "mediaUrl",
+          "query",
+          "ready",
+          "update",
+          "useMediaUpload",
+          "useMemphis",
+          "useQuery",
+          "useUpdate"
+        ],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "crm",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.crm].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "finance",
+      "name": "Finance",
+      "repo": "Mercatura-Forum/thebes-example-finance",
+      "ref": "eeb44bf50746d7ffacc411a43714b44a35440a62",
+      "shows": "personal ledger — accounts, double-entry transfers, budgets",
+      "guard": "no-overdraft + global conservation seal (Σ balances = Σ postings)",
+      "summary": "An on-chain personal-finance manager built on Thebes Protocol: a Motoko backend that holds each caller's accounts, transactions, transfers and budgets, and a React frontend served as certified assets.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/179495140191996/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-finance/blob/eeb44bf50746d7ffacc411a43714b44a35440a62/AGENTS.md",
+      "contracts": [
+        {
+          "name": "finance",
+          "type": "backend-motoko",
+          "cid": 153572387472391,
+          "interface": "interfaces/finance/finance.did",
+          "methods": [
+            {
+              "name": "accountsView",
+              "kind": "query",
+              "signature": "() -> (vec AccountView) query"
+            },
+            {
+              "name": "budgetsView",
+              "kind": "query",
+              "signature": "(startNs: int, endNs: int) -> (vec BudgetView) query"
+            },
+            {
+              "name": "cashflowView",
+              "kind": "query",
+              "signature": "(startNs: int, endNs: int, buckets: nat) -> (vec record { bucketStartNs: int; expenseCents: nat; incomeCents: nat; }) query"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "createAccount",
+              "kind": "update",
+              "signature": "(name: text, kindText: text, creditLimitCents: nat) -> (nat)"
+            },
+            {
+              "name": "financeSealView",
+              "kind": "query",
+              "signature": "() -> (vec record { accounts: nat; checkedAt: int; inconsistentAccounts: nat; ledgerSumCents: int; storedSumCents: int; transactions: nat; }) query"
+            },
+            {
+              "name": "getAccount",
+              "kind": "query",
+              "signature": "(accountId: nat) -> (opt Account) query"
+            },
+            {
+              "name": "getBudgetStatus",
+              "kind": "query",
+              "signature": "(category: text, startNs: int, endNs: int) -> (record { limitCents: nat; remaining: int; spentCents: nat; }) query"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "getTransactions",
+              "kind": "query",
+              "signature": "(accountId: nat, offset: nat, limit: nat) -> (Page) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "() -> (vec record { detail: text; rule: text; }) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "listAccounts",
+              "kind": "query",
+              "signature": "() -> (vec Account) query"
+            },
+            {
+              "name": "netWorthView",
+              "kind": "query",
+              "signature": "() -> (vec record { accounts: nat; assetsCents: int; creditCents: int; netCents: int; nowNs: int; }) query"
+            },
+            {
+              "name": "postTransaction",
+              "kind": "update",
+              "signature": "(accountId: nat, kindText: text, amountCents: nat, category: text, note: text, receiptPath: opt text) -> (Result)"
+            },
+            {
+              "name": "postTransactionOrTrap",
+              "kind": "update",
+              "signature": "(accountId: nat, kindText: text, amountCents: nat, category: text, note: text, receiptPath: opt text) -> (nat)"
+            },
+            {
+              "name": "seedDemo",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "setBudget",
+              "kind": "update",
+              "signature": "(category: text, limitCents: nat) -> ()"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(v: bool) -> (bool)"
+            },
+            {
+              "name": "setReceipt",
+              "kind": "update",
+              "signature": "(txId: nat, receiptPath: text) -> (Result_1)"
+            },
+            {
+              "name": "setReceiptOrTrap",
+              "kind": "update",
+              "signature": "(txId: nat, receiptPath: text) -> ()"
+            },
+            {
+              "name": "transactionsView",
+              "kind": "query",
+              "signature": "(accountId: nat, offset: nat, limit: nat) -> (vec TxView) query"
+            },
+            {
+              "name": "transfer",
+              "kind": "update",
+              "signature": "(fromId: nat, toId: nat, amountCents: nat, note: text) -> (Result)"
+            },
+            {
+              "name": "transferOrTrap",
+              "kind": "update",
+              "signature": "(fromId: nat, toId: nat, amountCents: nat, note: text) -> (nat)"
+            },
+            {
+              "name": "transferOwner",
+              "kind": "update",
+              "signature": "(n: principal) -> (bool)"
+            },
+            {
+              "name": "verifyBalance",
+              "kind": "query",
+              "signature": "(accountId: nat) -> (record { consistent: bool; recomputed: int; stored: int; }) query"
+            },
+            {
+              "name": "verifyBalanceView",
+              "kind": "query",
+              "signature": "(accountId: nat) -> (vec BalanceCheck) query"
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 179495140191996
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin",
+          "Pagination"
+        ],
+        "sdk": [
+          "MemphisGate",
+          "SignOutChip",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArgs",
+          "mediaUrl",
+          "query",
+          "ready",
+          "update",
+          "useMediaUpload",
+          "useQuery"
+        ],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "finance",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.finance].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "invoicing",
+      "name": "Invoicing",
+      "repo": "Mercatura-Forum/thebes-example-invoicing",
+      "ref": "438c22545bc0ae6eb995a4d1527d62c4f51a66cb",
+      "shows": "invoices over the shared Invoices module (also embedded in Store & Restaurant)",
+      "guard": "exact settlement: partial payments never overshoot, the settling payment flips paid atomically, no void after money",
+      "summary": "Folio — on-chain invoicing with a settlement ledger, built on Thebes Protocol: a Motoko backend over the shared thebes-lib Invoices module, and a document-first React frontend served as certified assets.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/128363932940845/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-invoicing/blob/438c22545bc0ae6eb995a4d1527d62c4f51a66cb/AGENTS.md",
+      "contracts": [
+        {
+          "name": "invoicing",
+          "type": "backend-motoko",
+          "cid": 237703272547546,
+          "interface": "interfaces/invoicing/invoicing.did",
+          "methods": [
+            {
+              "name": "agingView",
+              "kind": "query",
+              "signature": "() -> (vec record { bucket: text; invoices: nat; outstandingE8s: nat; }) query"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "createInvoice",
+              "kind": "update",
+              "signature": "(recipient: principal, descriptions: vec text, quantities: vec nat, unitPricesE8s: vec nat, taxBps: nat) -> (Invoice)"
+            },
+            {
+              "name": "getInvoice",
+              "kind": "query",
+              "signature": "(id: nat) -> (opt Invoice) query"
+            },
+            {
+              "name": "getLineItems",
+              "kind": "query",
+              "signature": "(id: nat) -> (vec LineItem) query"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "() -> (vec record { detail: text; rule: text; }) query"
+            },
+            {
+              "name": "invoiceCount",
+              "kind": "query",
+              "signature": "() -> (nat) query"
+            },
+            {
+              "name": "invoiceTrailView",
+              "kind": "query",
+              "signature": "(id: nat) -> (vec record { amountE8s: nat; at: int; by: principal; event: text; }) query"
+            },
+            {
+              "name": "invoicingSealView",
+              "kind": "query",
+              "signature": "() -> (vec record { billedE8s: nat; checkedAt: int; collectedE8s: nat; invoices: nat; outstandingE8s: nat; violations: nat; }) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "issueOrTrap",
+              "kind": "update",
+              "signature": "(id: nat, dueNs: int) -> ()"
+            },
+            {
+              "name": "myInvoices",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page) query"
+            },
+            {
+              "name": "myInvoicesView",
+              "kind": "query",
+              "signature": "() -> (vec InvoiceView) query"
+            },
+            {
+              "name": "recordPaymentOrTrap",
+              "kind": "update",
+              "signature": "(id: nat, amountE8s: nat, note: text) -> (nat)"
+            },
+            {
+              "name": "seedDemo",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(v: bool) -> (bool)"
+            },
+            {
+              "name": "voidOrTrap",
+              "kind": "update",
+              "signature": "(id: nat) -> ()"
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 128363932940845
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin",
+          "Invoices",
+          "Pagination"
+        ],
+        "sdk": [
+          "MemphisGate",
+          "SignOutChip",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArg",
+          "encodeArgs",
+          "identity",
+          "query",
+          "ready",
+          "update",
+          "useQuery"
+        ],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "invoicing",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.invoicing].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "loyalty",
+      "name": "Loyalty",
+      "repo": "Mercatura-Forum/thebes-example-loyalty",
+      "ref": "b523998fc3394f7145a7be83fcd2a1ad35ebaf7d",
+      "shows": "points, tier multipliers, stocked rewards",
+      "guard": "circulation conserved + per-entry auditable tier bonuses",
+      "summary": "An on-chain loyalty program built on Thebes Protocol: a Motoko backend that holds member cards, point balances, a stocked reward catalog, and an immutable ledger, and a React frontend served as certified assets.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/173835690051930/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-loyalty/blob/b523998fc3394f7145a7be83fcd2a1ad35ebaf7d/AGENTS.md",
+      "contracts": [
+        {
+          "name": "loyalty",
+          "type": "backend-motoko",
+          "cid": 226362356292661,
+          "interface": "interfaces/loyalty/loyalty.did",
+          "methods": [
+            {
+              "name": "addAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "addReward",
+              "kind": "update",
+              "signature": "(name: text, costPoints: nat, photoPath: opt text, stock: nat) -> (nat)"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "() -> (vec record { detail: text; rule: text; }) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "issuePoints",
+              "kind": "update",
+              "signature": "(member: principal, points: nat, memo: text) -> ()"
+            },
+            {
+              "name": "leaderboardView",
+              "kind": "query",
+              "signature": "(limit: nat) -> (vec record { lifetimeEarned: nat; member: principal; tier: text; }) query"
+            },
+            {
+              "name": "myAccountView",
+              "kind": "query",
+              "signature": "() -> (vec record { balance: nat; lifetimeEarned: nat; multBps: nat; nextTierAt: nat; nowNs: int; tier: text; }) query"
+            },
+            {
+              "name": "myHistoryView",
+              "kind": "query",
+              "signature": "() -> (vec record { at: int; id: nat; kind: text; memo: text; points: nat; }) query"
+            },
+            {
+              "name": "programSealView",
+              "kind": "query",
+              "signature": "() -> (vec record { checkedAt: int; circulation: nat; members: nat; rewardsRedeemed: nat; totalEarned: nat; totalRedeemed: nat; violations: nat; }) query"
+            },
+            {
+              "name": "redeem",
+              "kind": "update",
+              "signature": "(rewardId: nat) -> (nat)"
+            },
+            {
+              "name": "removeAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "rewardsView",
+              "kind": "query",
+              "signature": "() -> (vec record { available: bool; costPoints: nat; id: nat; initialStock: nat; name: text; photoPath: text; stock: nat; }) query"
+            },
+            {
+              "name": "seedDemo",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(v: bool) -> (bool)"
+            },
+            {
+              "name": "setRewardAvailable",
+              "kind": "update",
+              "signature": "(rewardId: nat, available: bool) -> ()"
+            },
+            {
+              "name": "transferOwner",
+              "kind": "update",
+              "signature": "(n: principal) -> (bool)"
+            },
+            {
+              "name": "verifyBalanceView",
+              "kind": "query",
+              "signature": "() -> (vec record { consistent: bool; recomputed: int; stored: int; }) query"
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 173835690051930
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin"
+        ],
+        "sdk": [
+          "MemphisGate",
+          "SignOutChip",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArg",
+          "encodeArgs",
+          "identity",
+          "mediaUrl",
+          "query",
+          "ready",
+          "update",
+          "useMediaUpload",
+          "useQuery",
+          "useUpdate"
+        ],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "loyalty",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.loyalty].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "open-banking-iso20022",
+      "name": "Open banking (ISO 20022)",
+      "repo": "Mercatura-Forum/thebes-example-open-banking-iso20022",
+      "ref": "4da19cf20ff2f63c37f7581388e13ae8e0c44ff0",
+      "shows": "a message validation + audit hub for the ISO 20022 payment standard — capability metadata, hash-linked records, bounded reads (backend contract; no web frontend)",
+      "guard": "append-only audit trail + explicit standards discovery",
+      "summary": "An educational reference for imagining financial systems on-chain — and what their foundational standards look like when you express them in a typed language that is safe.",
+      "live": null,
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-open-banking-iso20022/blob/4da19cf20ff2f63c37f7581388e13ae8e0c44ff0/AGENTS.md",
+      "contracts": [
+        {
+          "name": "iso20022",
+          "type": "backend-motoko",
+          "cid": 222063180174277,
+          "interface": "interfaces/open-banking-iso20022/iso20022.did",
+          "methods": [
+            {
+              "name": "ackOutboundDelivery",
+              "kind": "update",
+              "signature": "(ack: DeliveryAck) -> (opt OutboundBatch)"
+            },
+            {
+              "name": "acknowledgePacs002",
+              "kind": "update",
+              "signature": "(paymentId: nat, transactionStatus: text, reason: opt text) -> (HubPayment)"
+            },
+            {
+              "name": "addAdmin",
+              "kind": "update",
+              "signature": "(who: principal) -> (bool)"
+            },
+            {
+              "name": "administrativeToXml",
+              "kind": "query",
+              "signature": "(doc: AdministrativeMessage) -> (text) query"
+            },
+            {
+              "name": "auditCount",
+              "kind": "query",
+              "signature": "() -> (nat) query"
+            },
+            {
+              "name": "auditDemoPacs008",
+              "kind": "update",
+              "signature": "() -> (AuditRecord)"
+            },
+            {
+              "name": "auditPacs008",
+              "kind": "update",
+              "signature": "(doc: Pacs008CreditTransfer, rawXml: opt blob) -> (AuditRecord)"
+            },
+            {
+              "name": "auditPacs008Xml",
+              "kind": "update",
+              "signature": "(xml: blob) -> (AuditXmlResult)"
+            },
+            {
+              "name": "auditProof",
+              "kind": "query",
+              "signature": "(id: nat) -> (opt AuditProof) query"
+            },
+            {
+              "name": "auditTip",
+              "kind": "query",
+              "signature": "() -> (AuditTip) query"
+            },
+            {
+              "name": "bindGuidelineRuleSet",
+              "kind": "update",
+              "signature": "(profileId: text, ruleSetId: text) -> (bool)"
+            },
+            {
+              "name": "camt053Statement",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_13) query"
+            },
+            {
+              "name": "camt053StatementByAccount",
+              "kind": "query",
+              "signature": "(accountId: text, fromBookedAtInclusive: int, toBookedAtExclusive: int, offset: nat, limit: nat) -> (Page_13) query"
+            },
+            {
+              "name": "camt053StatementByAccountStable",
+              "kind": "query",
+              "signature": "(accountId: text, fromBookedAtInclusive: int, toBookedAtExclusive: int, offset: nat, limit: nat) -> (Page_13) query"
+            },
+            {
+              "name": "camt053Xml",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (text) query"
+            },
+            {
+              "name": "camt053XmlByAccount",
+              "kind": "query",
+              "signature": "(accountId: text, fromBookedAtInclusive: int, toBookedAtExclusive: int, offset: nat, limit: nat) -> (text) query"
+            },
+            {
+              "name": "camt054Notification",
+              "kind": "query",
+              "signature": "(paymentId: nat) -> (opt StatementEntry) query"
+            },
+            {
+              "name": "camt054Xml",
+              "kind": "query",
+              "signature": "(paymentId: nat) -> (opt text) query"
+            },
+            {
+              "name": "capabilities",
+              "kind": "query",
+              "signature": "() -> (vec Capability) query"
+            },
+            {
+              "name": "certifiedAuditDisclosure",
+              "kind": "query",
+              "signature": "() -> (CertifiedAuditDisclosure) query"
+            },
+            {
+              "name": "certifiedAuditDisclosureJson",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "certifiedDisclosureCertificate",
+              "kind": "query",
+              "signature": "() -> (CertifiedDisclosureCertificate) query"
+            },
+            {
+              "name": "certifiedDisclosureCertificateJson",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "certifiedParticipantBalance",
+              "kind": "query",
+              "signature": "(bicfi: text) -> (opt CertifiedBalanceDisclosure) query"
+            },
+            {
+              "name": "checkSettlementLiquidity",
+              "kind": "query",
+              "signature": "(paymentId: nat) -> (SettlementLiquidityCheck) query"
+            },
+            {
+              "name": "checkpointMap",
+              "kind": "query",
+              "signature": "() -> (vec CheckpointMapEntry) query"
+            },
+            {
+              "name": "checkpointSecondaryIndexes",
+              "kind": "update",
+              "signature": "() -> (SecondaryIndexHealth)"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "clearConnectorGuidelineProfile",
+              "kind": "update",
+              "signature": "(connectorId: text) -> (bool)"
+            },
+            {
+              "name": "complianceReportToXml",
+              "kind": "query",
+              "signature": "(report: ComplianceReport) -> (text) query"
+            },
+            {
+              "name": "configureOperatingDay",
+              "kind": "update",
+              "signature": "(config: OperatingDayConfig) -> (OperatingDayStatus)"
+            },
+            {
+              "name": "connectorEnvelopeSigningHash",
+              "kind": "query",
+              "signature": "(env: TransportEnvelope) -> (blob) query"
+            },
+            {
+              "name": "correlateAdministrativeWorkflow",
+              "kind": "update",
+              "signature": "(doc: AdministrativeMessage) -> (WorkflowCorrelationResult)"
+            },
+            {
+              "name": "correlateDemoDirectDebitReturnWorkflow",
+              "kind": "update",
+              "signature": "() -> (WorkflowState)"
+            },
+            {
+              "name": "correlateDemoRequestToPayWorkflow",
+              "kind": "update",
+              "signature": "() -> (WorkflowState)"
+            },
+            {
+              "name": "correlateDirectDebitWorkflow",
+              "kind": "update",
+              "signature": "(doc: DirectDebitMessage, rawXml: opt blob) -> (WorkflowCorrelationResult)"
+            },
+            {
+              "name": "correlateInvestigationWorkflow",
+              "kind": "update",
+              "signature": "(doc: InvestigationMessage) -> (WorkflowCorrelationResult)"
+            },
+            {
+              "name": "correlateRequestToPayWorkflow",
+              "kind": "update",
+              "signature": "(doc: RequestToPayMessage) -> (WorkflowCorrelationResult)"
+            },
+            {
+              "name": "coverPaymentToXml",
+              "kind": "query",
+              "signature": "(doc: CoverPayment) -> (text) query"
+            },
+            {
+              "name": "decodeAdministrativeXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (AdministrativeXmlDecode) query"
+            },
+            {
+              "name": "decodeCamt053Xml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (StatementXmlDecode) query"
+            },
+            {
+              "name": "decodeCamt054Xml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (StatementXmlDecode) query"
+            },
+            {
+              "name": "decodeCoverPaymentXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (CoverPaymentXmlDecode) query"
+            },
+            {
+              "name": "decodeCsvPayments",
+              "kind": "query",
+              "signature": "(csv: blob) -> (LegacyPaymentFileDecode) query"
+            },
+            {
+              "name": "decodeDirectDebitXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (DirectDebitXmlDecode) query"
+            },
+            {
+              "name": "decodeFixedWidthPayments",
+              "kind": "query",
+              "signature": "(payload: blob) -> (LegacyPaymentFileDecode) query"
+            },
+            {
+              "name": "decodeInvestigationXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (InvestigationXmlDecode) query"
+            },
+            {
+              "name": "decodeIsoBreadth",
+              "kind": "query",
+              "signature": "(xml: blob) -> (BreadthDecode) query"
+            },
+            {
+              "name": "decodeIsoBreadthWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (BreadthDecode) query"
+            },
+            {
+              "name": "decodeMt",
+              "kind": "query",
+              "signature": "(payload: blob, hint: opt text) -> (MtDecode) query",
+              "doc": "A FIN message read into its record under the active guideline; hint names the type when block 2 is absent."
+            },
+            {
+              "name": "decodeMt103",
+              "kind": "query",
+              "signature": "(mt: blob) -> (Mt103Decode) query"
+            },
+            {
+              "name": "decodeMt940",
+              "kind": "query",
+              "signature": "(mt: blob) -> (MtStatementDecode) query"
+            },
+            {
+              "name": "decodeMt942",
+              "kind": "query",
+              "signature": "(mt: blob) -> (MtStatementDecode) query"
+            },
+            {
+              "name": "decodeMtWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, payload: blob, hint: opt text) -> (MtDecode) query"
+            },
+            {
+              "name": "decodePacs008Xml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (Pacs008XmlDecode) query"
+            },
+            {
+              "name": "decodePacs009Xml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (Pacs009XmlDecode) query"
+            },
+            {
+              "name": "decodePain001Xml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (Pain001XmlDecode) query"
+            },
+            {
+              "name": "decodeRequestToPayXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (RequestToPayXmlDecode) query"
+            },
+            {
+              "name": "decodeStatusReportXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (StatusReportXmlDecode) query"
+            },
+            {
+              "name": "demoAdmi002Reject",
+              "kind": "query",
+              "signature": "() -> (AdministrativeMessage) query"
+            },
+            {
+              "name": "demoAdmi002RejectXml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoAdmi004ConnectionCheck",
+              "kind": "query",
+              "signature": "() -> (AdministrativeMessage) query"
+            },
+            {
+              "name": "demoAdmi004ConnectionCheckXml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoAdmi007Ack",
+              "kind": "query",
+              "signature": "() -> (AdministrativeMessage) query"
+            },
+            {
+              "name": "demoAdmi007AckXml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoAdmi011ConnectionAck",
+              "kind": "query",
+              "signature": "() -> (AdministrativeMessage) query"
+            },
+            {
+              "name": "demoAdmi011ConnectionAckXml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoCamt029",
+              "kind": "query",
+              "signature": "() -> (InvestigationMessage) query"
+            },
+            {
+              "name": "demoCamt055",
+              "kind": "query",
+              "signature": "() -> (RequestToPayMessage) query"
+            },
+            {
+              "name": "demoCamt055Xml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoCamt056",
+              "kind": "query",
+              "signature": "() -> (InvestigationMessage) query"
+            },
+            {
+              "name": "demoCamt056Xml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoCamt110",
+              "kind": "query",
+              "signature": "() -> (InvestigationMessage) query"
+            },
+            {
+              "name": "demoCamt110Xml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoCamt111",
+              "kind": "query",
+              "signature": "() -> (InvestigationMessage) query"
+            },
+            {
+              "name": "demoCamt111Xml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoComplianceReportXml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoCoverPayment",
+              "kind": "query",
+              "signature": "() -> (CoverPayment) query"
+            },
+            {
+              "name": "demoCoverPaymentXml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoCrossBorderPacs008",
+              "kind": "query",
+              "signature": "() -> (Pacs008CreditTransfer) query"
+            },
+            {
+              "name": "demoCrossBorderPain001",
+              "kind": "query",
+              "signature": "() -> (CustomerCreditTransferInitiation) query"
+            },
+            {
+              "name": "demoPacs003",
+              "kind": "query",
+              "signature": "() -> (DirectDebitMessage) query"
+            },
+            {
+              "name": "demoPacs003Xml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoPacs008",
+              "kind": "query",
+              "signature": "() -> (Pacs008CreditTransfer) query"
+            },
+            {
+              "name": "demoPacs008Xml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoPacs009Core",
+              "kind": "query",
+              "signature": "() -> (Pacs009FinancialInstitutionCreditTransfer) query"
+            },
+            {
+              "name": "demoPacs009Xml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoPacs028",
+              "kind": "query",
+              "signature": "() -> (InvestigationMessage) query"
+            },
+            {
+              "name": "demoPain001",
+              "kind": "query",
+              "signature": "() -> (CustomerCreditTransferInitiation) query"
+            },
+            {
+              "name": "demoPain001Xml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoPain008",
+              "kind": "query",
+              "signature": "() -> (DirectDebitMessage) query"
+            },
+            {
+              "name": "demoPain008Xml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoPain013",
+              "kind": "query",
+              "signature": "() -> (RequestToPayMessage) query"
+            },
+            {
+              "name": "demoPain013Xml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "demoPain014Accepted",
+              "kind": "query",
+              "signature": "() -> (RequestToPayMessage) query"
+            },
+            {
+              "name": "demoPain014AcceptedXml",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "directDebitToXml",
+              "kind": "query",
+              "signature": "(doc: DirectDebitMessage) -> (text) query"
+            },
+            {
+              "name": "dispatchOrQueuePacs008",
+              "kind": "update",
+              "signature": "(paymentId: nat, priority: nat, bypassFifo: bool) -> (SettlementDispatchResult)"
+            },
+            {
+              "name": "dispatchPacs008",
+              "kind": "update",
+              "signature": "(paymentId: nat) -> (Pacs008CreditTransfer)"
+            },
+            {
+              "name": "duplicateFilterInfo",
+              "kind": "query",
+              "signature": "() -> (DuplicateFilterInfo) query"
+            },
+            {
+              "name": "duplicateSignalFor",
+              "kind": "query",
+              "signature": "(messageId: text, uetr: text) -> (DuplicateSignal) query"
+            },
+            {
+              "name": "encodeIsoBreadth",
+              "kind": "query",
+              "signature": "(message: BreadthMessage, options: BreadthEmitOptions) -> (Result) query",
+              "doc": "A record written in its family's official shape, or the fields the schema needs and the record lacks."
+            },
+            {
+              "name": "encodeMt",
+              "kind": "query",
+              "signature": "(message: MtMessage, mtType: text, parties: MtParty) -> (Result) query",
+              "doc": "A record written as the named FIN type; parties names the envelope's institutions where the record does not."
+            },
+            {
+              "name": "failOutboundDelivery",
+              "kind": "update",
+              "signature": "(batchId: nat, detail: text) -> (opt OutboundBatch)"
+            },
+            {
+              "name": "getAdmins",
+              "kind": "query",
+              "signature": "() -> (vec principal) query"
+            },
+            {
+              "name": "getAudit",
+              "kind": "query",
+              "signature": "(id: nat) -> (opt AuditRecord) query"
+            },
+            {
+              "name": "getComplianceProfile",
+              "kind": "query",
+              "signature": "() -> (ComplianceProfile) query"
+            },
+            {
+              "name": "getConnector",
+              "kind": "query",
+              "signature": "(id: text) -> (opt ConnectorConfig) query"
+            },
+            {
+              "name": "getConnectorGuidelineProfile",
+              "kind": "query",
+              "signature": "(connectorId: text) -> (opt ConnectorGuidelineProfile) query"
+            },
+            {
+              "name": "getCrossBorderEducationGuideline",
+              "kind": "query",
+              "signature": "() -> (UsageGuideline) query"
+            },
+            {
+              "name": "getDefaultGuidelineProfile",
+              "kind": "query",
+              "signature": "() -> (GuidelineProfileSummary) query"
+            },
+            {
+              "name": "getDefaultGuidelineProfileId",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "getEndOfDayRun",
+              "kind": "query",
+              "signature": "(id: nat) -> (opt EndOfDayStatementRun) query"
+            },
+            {
+              "name": "getGuideline",
+              "kind": "query",
+              "signature": "() -> (UsageGuideline) query"
+            },
+            {
+              "name": "getGuidelineProfile",
+              "kind": "query",
+              "signature": "(profileId: text) -> (opt GuidelineProfile) query"
+            },
+            {
+              "name": "getMemphisAudience",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "getMemphisGateConfig",
+              "kind": "query",
+              "signature": "() -> (record { memphis: principal; origin: text; version: nat64; }) query"
+            },
+            {
+              "name": "getOperatingDay",
+              "kind": "query",
+              "signature": "(currency: text) -> (opt OperatingDayConfig) query"
+            },
+            {
+              "name": "getOutboundBatch",
+              "kind": "query",
+              "signature": "(id: nat) -> (opt OutboundBatch) query"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "getParticipantDirectoryEntry",
+              "kind": "query",
+              "signature": "(bicfi: text) -> (opt ParticipantDirectoryEntry) query"
+            },
+            {
+              "name": "getPayment",
+              "kind": "query",
+              "signature": "(id: nat) -> (opt HubPayment) query"
+            },
+            {
+              "name": "getPaymentByUetr",
+              "kind": "query",
+              "signature": "(uetr: text) -> (opt HubPayment) query"
+            },
+            {
+              "name": "getPaymentComplianceReport",
+              "kind": "query",
+              "signature": "(paymentId: nat) -> (opt ComplianceScreeningRecord) query"
+            },
+            {
+              "name": "getSettlementDebitLimit",
+              "kind": "query",
+              "signature": "(bicfi: text) -> (SettlementLiquidityLimit) query"
+            },
+            {
+              "name": "getSettlementLedger",
+              "kind": "query",
+              "signature": "() -> (SettlementLedgerConfig) query"
+            },
+            {
+              "name": "getSettlementParticipantAccount",
+              "kind": "query",
+              "signature": "(bicfi: text) -> (opt IcrcAccount) query"
+            },
+            {
+              "name": "getSettlementQueueEntry",
+              "kind": "query",
+              "signature": "(paymentId: nat) -> (opt SettlementQueueEntry) query"
+            },
+            {
+              "name": "getTransportRecord",
+              "kind": "query",
+              "signature": "(id: nat) -> (opt TransportRecord) query"
+            },
+            {
+              "name": "getWorkflowByMessageId",
+              "kind": "query",
+              "signature": "(messageId: text) -> (opt WorkflowState) query"
+            },
+            {
+              "name": "getWorkflowByUetr",
+              "kind": "query",
+              "signature": "(uetr: text) -> (opt WorkflowState) query"
+            },
+            {
+              "name": "getWorkflowState",
+              "kind": "query",
+              "signature": "(id: text) -> (opt WorkflowState) query"
+            },
+            {
+              "name": "guidelineRuleSet",
+              "kind": "query",
+              "signature": "(profileId: text) -> (opt text) query",
+              "doc": "The rule set a guideline profile is bound to (CBPRPLUS-EDU is bound to CBPRPLUS unless rebound)."
+            },
+            {
+              "name": "integrationProfilePacks",
+              "kind": "query",
+              "signature": "() -> (vec IntegrationProfilePack) query"
+            },
+            {
+              "name": "investigationToXml",
+              "kind": "query",
+              "signature": "(doc: InvestigationMessage) -> (text) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "isoBreadthFamilies",
+              "kind": "query",
+              "signature": "() -> (vec text) query",
+              "doc": "The families the schema-profile codec reads and writes, by message definition identifier."
+            },
+            {
+              "name": "isoRuleSetRules",
+              "kind": "query",
+              "signature": "(ruleSetId: text) -> (vec RuleView) query"
+            },
+            {
+              "name": "isoRuleSets",
+              "kind": "query",
+              "signature": "() -> (vec RuleSetSummary) query"
+            },
+            {
+              "name": "isoSchemaProfiles",
+              "kind": "query",
+              "signature": "() -> (vec SchemaProfileSummary) query",
+              "doc": "Every official schema the canister carries as a generated profile: the compact codec's families, the business application header and the schema-profile codec's families (43)."
+            },
+            {
+              "name": "leaseOutboundBatches",
+              "kind": "update",
+              "signature": "(connectorId: text, limit: nat, leaseMillis: nat) -> (vec OutboundBatch)"
+            },
+            {
+              "name": "listAuditViews",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_12) query"
+            },
+            {
+              "name": "listAudits",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_11) query"
+            },
+            {
+              "name": "listCertifiedParticipantBalances",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_10) query"
+            },
+            {
+              "name": "listCertifiedParticipantBalancesJson",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (text) query"
+            },
+            {
+              "name": "listConnectorGuidelineProfiles",
+              "kind": "query",
+              "signature": "() -> (vec ConnectorGuidelineProfile) query"
+            },
+            {
+              "name": "listConnectors",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_9) query"
+            },
+            {
+              "name": "listDeadLetters",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_1) query"
+            },
+            {
+              "name": "listEndOfDayRuns",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_8) query"
+            },
+            {
+              "name": "listGuidelineProfiles",
+              "kind": "query",
+              "signature": "() -> (vec GuidelineProfileSummary) query"
+            },
+            {
+              "name": "listHeldPaymentViews",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_4) query"
+            },
+            {
+              "name": "listOperatingDayOpeningBalances",
+              "kind": "query",
+              "signature": "(currency: text) -> (vec OperatingDayOpeningBalance) query"
+            },
+            {
+              "name": "listOutboundBatches",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_7) query"
+            },
+            {
+              "name": "listOutboundBatchesByConnectorStatus",
+              "kind": "query",
+              "signature": "(connectorId: text, status: text, offset: nat, limit: nat) -> (Page_7) query"
+            },
+            {
+              "name": "listOutboundBatchesByConnectorStatusStable",
+              "kind": "query",
+              "signature": "(connectorId: text, status: text, offset: nat, limit: nat) -> (Page_7) query"
+            },
+            {
+              "name": "listOutboundBatchesForConnector",
+              "kind": "query",
+              "signature": "(connectorId: text, offset: nat, limit: nat) -> (Page_7) query"
+            },
+            {
+              "name": "listParticipantDirectory",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_6) query"
+            },
+            {
+              "name": "listPaymentComplianceReports",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_5) query"
+            },
+            {
+              "name": "listPaymentViews",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_4) query"
+            },
+            {
+              "name": "listPaymentViewsByCreditorAgent",
+              "kind": "query",
+              "signature": "(bicfi: text, offset: nat, limit: nat) -> (Page_4) query"
+            },
+            {
+              "name": "listPaymentViewsByCreditorAgentStable",
+              "kind": "query",
+              "signature": "(bicfi: text, offset: nat, limit: nat) -> (Page_4) query"
+            },
+            {
+              "name": "listPaymentViewsByStatus",
+              "kind": "query",
+              "signature": "(status: text, offset: nat, limit: nat) -> (Page_4) query"
+            },
+            {
+              "name": "listPaymentViewsByStatusStable",
+              "kind": "query",
+              "signature": "(status: text, offset: nat, limit: nat) -> (Page_4) query"
+            },
+            {
+              "name": "listPayments",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_3) query"
+            },
+            {
+              "name": "listSettlementLiquidityPositions",
+              "kind": "query",
+              "signature": "() -> (vec SettlementLiquidityPosition) query"
+            },
+            {
+              "name": "listSettlementParticipantAccounts",
+              "kind": "query",
+              "signature": "() -> (vec SettlementParticipantAccount) query"
+            },
+            {
+              "name": "listSettlementQueue",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_2) query"
+            },
+            {
+              "name": "listSettlementQueueByStatus",
+              "kind": "query",
+              "signature": "(status: text, offset: nat, limit: nat) -> (Page_2) query"
+            },
+            {
+              "name": "listTransportRecords",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page_1) query"
+            },
+            {
+              "name": "listWorkflowStates",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (Page) query"
+            },
+            {
+              "name": "mtBridgeMappings",
+              "kind": "query",
+              "signature": "() -> (vec MtMapping) query",
+              "doc": "The field-to-element mapping tables the bridge implements — the same data the fixture set carries."
+            },
+            {
+              "name": "mtBridgeTypes",
+              "kind": "query",
+              "signature": "() -> (vec record { text; text; }) query",
+              "doc": "The bridge's message types and the ISO family each reads into."
+            },
+            {
+              "name": "openOperatingDay",
+              "kind": "update",
+              "signature": "(currency: text, businessDate: text, cutoffAt: int, closesAt: int) -> (OperatingDayStatus)"
+            },
+            {
+              "name": "operatingDayStatus",
+              "kind": "query",
+              "signature": "(currency: text) -> (OperatingDayStatus) query"
+            },
+            {
+              "name": "oraclePhaseRegistry",
+              "kind": "query",
+              "signature": "() -> (vec PhaseOracleSpec) query"
+            },
+            {
+              "name": "outboundBatchCount",
+              "kind": "query",
+              "signature": "() -> (nat) query"
+            },
+            {
+              "name": "pacs008ToXml",
+              "kind": "query",
+              "signature": "(doc: Pacs008CreditTransfer) -> (text) query"
+            },
+            {
+              "name": "pacs009ToXml",
+              "kind": "query",
+              "signature": "(doc: Pacs009FinancialInstitutionCreditTransfer) -> (text) query"
+            },
+            {
+              "name": "pain001ToXml",
+              "kind": "query",
+              "signature": "(doc: CustomerCreditTransferInitiation) -> (text) query"
+            },
+            {
+              "name": "parseMt103Fields",
+              "kind": "query",
+              "signature": "(mt: text) -> (vec Mt103Field) query"
+            },
+            {
+              "name": "paymentCount",
+              "kind": "query",
+              "signature": "() -> (nat) query"
+            },
+            {
+              "name": "paymentXmlBundle",
+              "kind": "query",
+              "signature": "(paymentId: nat) -> (opt PaymentXmlBundle) query"
+            },
+            {
+              "name": "pfmiSelfAssessment",
+              "kind": "query",
+              "signature": "() -> (vec PfmiPrincipleAssessment) query"
+            },
+            {
+              "name": "putGuidelineProfile",
+              "kind": "update",
+              "signature": "(profile: GuidelineProfile) -> (GuidelineProfileSummary)"
+            },
+            {
+              "name": "queuePaymentOutbound",
+              "kind": "update",
+              "signature": "(connectorId: text, paymentId: nat, format: text) -> (OutboundBatch)"
+            },
+            {
+              "name": "queuePaymentXmlBundle",
+              "kind": "update",
+              "signature": "(connectorId: text, paymentId: nat) -> (OutboundBatch)"
+            },
+            {
+              "name": "queueSettlementPayment",
+              "kind": "update",
+              "signature": "(paymentId: nat, priority: nat, bypassFifo: bool, reason: text) -> (SettlementQueueEntry)"
+            },
+            {
+              "name": "rebuildSecondaryIndexes",
+              "kind": "update",
+              "signature": "() -> (SecondaryIndexHealth)"
+            },
+            {
+              "name": "refreshCertifiedDisclosure",
+              "kind": "update",
+              "signature": "() -> (CertifiedDisclosureRoot)"
+            },
+            {
+              "name": "refreshCertifiedParticipantBalance",
+              "kind": "update",
+              "signature": "(bicfi: text) -> (CertifiedParticipantBalance)"
+            },
+            {
+              "name": "refreshCertifiedSettlementBalances",
+              "kind": "update",
+              "signature": "() -> (vec CertifiedParticipantBalance)"
+            },
+            {
+              "name": "registerConnector",
+              "kind": "update",
+              "signature": "(id: text, publicKeyHash: opt blob, allowedFormats: vec text, allowedEndpoints: vec text) -> (ConnectorConfig)"
+            },
+            {
+              "name": "rejectComplianceHold",
+              "kind": "update",
+              "signature": "(paymentId: nat, reason: text) -> (HubPayment)"
+            },
+            {
+              "name": "releaseComplianceHold",
+              "kind": "update",
+              "signature": "(paymentId: nat, reason: text) -> (HubPayment)"
+            },
+            {
+              "name": "removeAdmin",
+              "kind": "update",
+              "signature": "(who: principal) -> (bool)"
+            },
+            {
+              "name": "requestToPayToXml",
+              "kind": "query",
+              "signature": "(doc: RequestToPayMessage) -> (text) query"
+            },
+            {
+              "name": "resetComplianceProfile",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "resetGuidelineToCrossBorderEducationBaseline",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "resetGuidelineToEgyptEducationBaseline",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "resolveQueuedSettlementOffset",
+              "kind": "update",
+              "signature": "(paymentIdA: nat, paymentIdB: nat) -> (SettlementOffsetResult)"
+            },
+            {
+              "name": "retryOutboundBatch",
+              "kind": "update",
+              "signature": "(batchId: nat) -> (opt OutboundBatch)"
+            },
+            {
+              "name": "returnPayment",
+              "kind": "update",
+              "signature": "(paymentId: nat, reason: text) -> (HubPayment)"
+            },
+            {
+              "name": "roundTripIsoBreadth",
+              "kind": "query",
+              "signature": "(xml: blob, options: BreadthEmitOptions) -> (Result) query",
+              "doc": "The message read, written and read again: #ok is the written document when the two readings are equal — the property the integration kit's breadth runner asserts on every fixture."
+            },
+            {
+              "name": "runEndOfDay",
+              "kind": "update",
+              "signature": "(currency: text) -> (EndOfDayStatementRun)"
+            },
+            {
+              "name": "screenCoverPayment",
+              "kind": "query",
+              "signature": "(doc: CoverPayment) -> (ComplianceReport) query"
+            },
+            {
+              "name": "screenDemoCoverPayment",
+              "kind": "query",
+              "signature": "() -> (ComplianceReport) query"
+            },
+            {
+              "name": "screenPacs008",
+              "kind": "query",
+              "signature": "(doc: Pacs008CreditTransfer) -> (ComplianceReport) query"
+            },
+            {
+              "name": "screenPacs009",
+              "kind": "query",
+              "signature": "(doc: Pacs009FinancialInstitutionCreditTransfer) -> (ComplianceReport) query"
+            },
+            {
+              "name": "secondaryIndexHealth",
+              "kind": "query",
+              "signature": "() -> (SecondaryIndexHealth) query"
+            },
+            {
+              "name": "seedDemoParticipantDirectory",
+              "kind": "update",
+              "signature": "() -> (vec ParticipantDirectoryEntry)"
+            },
+            {
+              "name": "setComplianceProfile",
+              "kind": "update",
+              "signature": "(next: ComplianceProfile) -> (bool)"
+            },
+            {
+              "name": "setConnectorActive",
+              "kind": "update",
+              "signature": "(id: text, active: bool) -> (bool)"
+            },
+            {
+              "name": "setConnectorGuidelineProfile",
+              "kind": "update",
+              "signature": "(connectorId: text, profileId: text) -> (ConnectorGuidelineProfile)"
+            },
+            {
+              "name": "setConnectorSignaturePolicy",
+              "kind": "update",
+              "signature": "(id: text, policy: SignaturePolicy) -> (ConnectorConfig)"
+            },
+            {
+              "name": "setDefaultGuidelineProfile",
+              "kind": "update",
+              "signature": "(profileId: text) -> (GuidelineProfileSummary)"
+            },
+            {
+              "name": "setGuideline",
+              "kind": "update",
+              "signature": "(next: UsageGuideline) -> (bool)"
+            },
+            {
+              "name": "setMemphisAudience",
+              "kind": "update",
+              "signature": "(audience: text) -> (bool)",
+              "doc": "Set the web origin whose sessions this contract accepts. Safe to change — unlike the namespace on the gate, it touches no identity: it only says where a token must have been minted. Change it when the submitting frontend moves to a new domain. It must be a bare origin (scheme + host + optional port) because Memphis compares it byte-exactly."
+            },
+            {
+              "name": "setMemphisGate",
+              "kind": "update",
+              "signature": "(memphis: principal, origin: text, version: nat64) -> (bool)"
+            },
+            {
+              "name": "setMemphisGateByCid",
+              "kind": "update",
+              "signature": "(cid: nat64, origin: text, version: nat64) -> (bool)"
+            },
+            {
+              "name": "setOperatingDayPhase",
+              "kind": "update",
+              "signature": "(currency: text, phase: text) -> (OperatingDayStatus)"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(value: bool) -> (bool)"
+            },
+            {
+              "name": "setSettlementDebitLimit",
+              "kind": "update",
+              "signature": "(bicfi: text, maxDebitMinorUnits: opt nat) -> (SettlementLiquidityLimit)"
+            },
+            {
+              "name": "setSettlementLedger",
+              "kind": "update",
+              "signature": "(config: SettlementLedgerConfig) -> (SettlementLedgerConfig)"
+            },
+            {
+              "name": "setSettlementParticipantAccount",
+              "kind": "update",
+              "signature": "(bicfi: text, account: IcrcAccount) -> (bool)"
+            },
+            {
+              "name": "settleQueuedPacs008",
+              "kind": "update",
+              "signature": "(paymentId: nat) -> (HubPayment)"
+            },
+            {
+              "name": "settlementLiquidityPosition",
+              "kind": "query",
+              "signature": "(bicfi: text) -> (SettlementLiquidityPosition) query"
+            },
+            {
+              "name": "statusReportToXml",
+              "kind": "query",
+              "signature": "(doc: StatusReport) -> (text) query"
+            },
+            {
+              "name": "submitDemoPain001",
+              "kind": "update",
+              "signature": "() -> (HubPayment)"
+            },
+            {
+              "name": "submitPain001",
+              "kind": "update",
+              "signature": "(instruction: CustomerCreditTransferInitiation, rawXml: opt blob) -> (HubPayment)"
+            },
+            {
+              "name": "submitPain001WithProfile",
+              "kind": "update",
+              "signature": "(profileId: text, instruction: CustomerCreditTransferInitiation, rawXml: opt blob) -> (HubPayment)"
+            },
+            {
+              "name": "submitPain001Xml",
+              "kind": "update",
+              "signature": "(xml: blob) -> (SubmitXmlResult)"
+            },
+            {
+              "name": "submitPain001XmlWithProfile",
+              "kind": "update",
+              "signature": "(profileId: text, xml: blob) -> (SubmitXmlResult)"
+            },
+            {
+              "name": "submitTransportEnvelope",
+              "kind": "update",
+              "signature": "(env: TransportEnvelope) -> (TransportSubmitResult)"
+            },
+            {
+              "name": "submitTransportEnvelopeWithMemphis",
+              "kind": "update",
+              "signature": "(env: TransportEnvelope, token: blob) -> (MemphisTransportSubmitResult)"
+            },
+            {
+              "name": "supportedStandards",
+              "kind": "query",
+              "signature": "() -> (vec SupportedStandard) query"
+            },
+            {
+              "name": "transferOwner",
+              "kind": "update",
+              "signature": "(newOwner: principal) -> (bool)"
+            },
+            {
+              "name": "transportCount",
+              "kind": "query",
+              "signature": "() -> (nat) query"
+            },
+            {
+              "name": "upsertParticipantDirectoryEntry",
+              "kind": "update",
+              "signature": "(input: ParticipantDirectoryInput) -> (ParticipantDirectoryEntry)"
+            },
+            {
+              "name": "useExternalSignatureAuth",
+              "kind": "update",
+              "signature": "(id: text, scheme: text, publicKeyHash: opt blob, verifier: principal) -> (ConnectorConfig)"
+            },
+            {
+              "name": "useMemphisSessionAuth",
+              "kind": "update",
+              "signature": "(id: text) -> (ConnectorConfig)"
+            },
+            {
+              "name": "useThebesCallerAuth",
+              "kind": "update",
+              "signature": "(id: text) -> (ConnectorConfig)"
+            },
+            {
+              "name": "validateAdministrativeWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, doc: AdministrativeMessage) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateAdministrativeXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateAdministrativeXmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateCamt053Xml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateCamt053XmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateCamt054Xml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateCamt054XmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateCoverPayment",
+              "kind": "query",
+              "signature": "(doc: CoverPayment, rawXml: opt blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateCoverPaymentWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, doc: CoverPayment, rawXml: opt blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateCoverPaymentXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateCoverPaymentXmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDemoCoverPayment",
+              "kind": "query",
+              "signature": "() -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDemoCrossBorderPacs008WithProfile",
+              "kind": "query",
+              "signature": "(profileId: text) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDemoCrossBorderPain001WithProfile",
+              "kind": "query",
+              "signature": "(profileId: text) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDemoPacs008",
+              "kind": "query",
+              "signature": "() -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDemoPacs008WithProfile",
+              "kind": "query",
+              "signature": "(profileId: text) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDemoPacs009",
+              "kind": "query",
+              "signature": "() -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDemoPain001",
+              "kind": "query",
+              "signature": "() -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDemoPain001WithProfile",
+              "kind": "query",
+              "signature": "(profileId: text) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDirectDebitWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, doc: DirectDebitMessage, rawXml: opt blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDirectDebitXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateDirectDebitXmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateInvestigation",
+              "kind": "query",
+              "signature": "(doc: InvestigationMessage) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateInvestigationWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, doc: InvestigationMessage) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateInvestigationXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateInvestigationXmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateIsoBreadth",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateIsoBreadthWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateIsoDocument",
+              "kind": "query",
+              "signature": "(xml: blob) -> (IsoDocumentReport) query",
+              "doc": "An official-shape message (any of the 43 schema profiles, with or without its AppHdr) under the active guideline: the schema, the business reading, and the rule set the default profile is bound to."
+            },
+            {
+              "name": "validateIsoDocumentWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (IsoDocumentReport) query"
+            },
+            {
+              "name": "validateIsoDocumentWithRuleSet",
+              "kind": "query",
+              "signature": "(ruleSetId: text, xml: blob) -> (IsoDocumentReport) query",
+              "doc": "The same reading under a named rule set, whatever the profile binding."
+            },
+            {
+              "name": "validatePacs008",
+              "kind": "query",
+              "signature": "(doc: Pacs008CreditTransfer, rawXml: opt blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePacs008WithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, doc: Pacs008CreditTransfer, rawXml: opt blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePacs008Xml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePacs008XmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePacs009",
+              "kind": "query",
+              "signature": "(doc: Pacs009FinancialInstitutionCreditTransfer, rawXml: opt blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePacs009WithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, doc: Pacs009FinancialInstitutionCreditTransfer, rawXml: opt blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePacs009Xml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePacs009XmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePain001",
+              "kind": "query",
+              "signature": "(doc: CustomerCreditTransferInitiation, rawXml: opt blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePain001WithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, doc: CustomerCreditTransferInitiation, rawXml: opt blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePain001Xml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validatePain001XmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateParticipantDirectoryEntry",
+              "kind": "query",
+              "signature": "(input: ParticipantDirectoryInput) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateRequestToPayWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, doc: RequestToPayMessage) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateRequestToPayXml",
+              "kind": "query",
+              "signature": "(xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateRequestToPayXmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateStatusReportWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, doc: StatusReport, expectedKind: text) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateStatusReportXml",
+              "kind": "query",
+              "signature": "(xml: blob, expectedKind: opt text) -> (ValidationReport) query"
+            },
+            {
+              "name": "validateStatusReportXmlWithProfile",
+              "kind": "query",
+              "signature": "(profileId: text, xml: blob, expectedKind: opt text) -> (ValidationReport) query"
+            },
+            {
+              "name": "verifyAuditChain",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "verifyCertifiedDisclosure",
+              "kind": "query",
+              "signature": "() -> (ValidationReport) query"
+            },
+            {
+              "name": "verifyCertifiedDisclosureJson",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "verifyOraclePhases",
+              "kind": "query",
+              "signature": "() -> (vec PhaseVerification) query"
+            },
+            {
+              "name": "verifyOracleReadiness",
+              "kind": "query",
+              "signature": "() -> (OracleReadiness) query"
+            },
+            {
+              "name": "verifyParticipantWorkflowCorrelation",
+              "kind": "query",
+              "signature": "() -> (ValidationReport) query"
+            },
+            {
+              "name": "verifyPaymentPhases",
+              "kind": "query",
+              "signature": "(paymentId: nat) -> (vec PhaseVerification) query"
+            },
+            {
+              "name": "verifyPfmiSelfAssessment",
+              "kind": "query",
+              "signature": "() -> (ValidationReport) query"
+            },
+            {
+              "name": "xmlCodecVersion",
+              "kind": "query",
+              "signature": "() -> (text) query"
+            },
+            {
+              "name": "xmlProfileFixtureRegistry",
+              "kind": "query",
+              "signature": "() -> (vec XmlProfileFixture) query"
+            }
+          ]
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin",
+          "MemphisAuth",
+          "Pagination"
+        ],
+        "sdk": [],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "iso20022",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.iso20022].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "restaurant",
+      "name": "Restaurant",
+      "repo": "Mercatura-Forum/thebes-example-restaurant",
+      "ref": "00e42c64b8a83e28fd3fca8951aba61a231e3abd",
+      "shows": "menu + customer orders + kitchen queue",
+      "guard": "forward-only order lifecycle",
+      "summary": "An on-chain restaurant built on Thebes Protocol: a Motoko backend that holds the menu, the dining-room floor, reservations, orders and invoices, and a React frontend whose home page is the live floor — every table drawn from chain state, arrangeable by the kitchen on a real floor plan.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/208885335789510/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-restaurant/blob/00e42c64b8a83e28fd3fca8951aba61a231e3abd/AGENTS.md",
+      "contracts": [
+        {
+          "name": "restaurant",
+          "type": "backend-motoko",
+          "cid": 60251409432242,
+          "interface": "interfaces/restaurant/restaurant.did",
+          "methods": [
+            {
+              "name": "addAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "addMenuItem",
+              "kind": "update",
+              "signature": "(name: text, priceE8s: nat, photoPath: opt text) -> (Result_1)"
+            },
+            {
+              "name": "addMenuItemOrTrap",
+              "kind": "update",
+              "signature": "(name: text, priceE8s: nat, photoPath: opt text) -> (nat)"
+            },
+            {
+              "name": "addTable",
+              "kind": "update",
+              "signature": "(number: nat, seats: nat) -> ()"
+            },
+            {
+              "name": "amKitchen",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "cancelReservation",
+              "kind": "update",
+              "signature": "(id: nat) -> ()"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "completeReservation",
+              "kind": "update",
+              "signature": "(id: nat, showed: bool) -> ()"
+            },
+            {
+              "name": "floorEventsView",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (vec record { at: int; detail: text; kind: text; orderId: nat; tableNumber: nat; }) query"
+            },
+            {
+              "name": "floorSealView",
+              "kind": "query",
+              "signature": "() -> (vec record { checkedAt: int; occupied: nat; reservedNow: nat; tablesOnFloor: nat; violations: nat; }) query"
+            },
+            {
+              "name": "floorView",
+              "kind": "query",
+              "signature": "() -> (vec record { gridH: nat; gridW: nat; guestName: text; nextResAt: int; nowNs: int; number: nat; orderId: nat; orderIsMine: bool; orderStatus: text; orderTotalE8s: nat; partySize: nat; posX: nat; posY: nat; resEnd: int; resSeated: bool; resStart: int; reservationId: nat; seats: nat; status: text; }) query"
+            },
+            {
+              "name": "getAdmins",
+              "kind": "query",
+              "signature": "() -> (vec principal) query"
+            },
+            {
+              "name": "getMenu",
+              "kind": "query",
+              "signature": "() -> (vec MenuItem) query"
+            },
+            {
+              "name": "getMenuItem",
+              "kind": "query",
+              "signature": "(id: nat) -> (opt MenuItem) query"
+            },
+            {
+              "name": "getOpenOrders",
+              "kind": "query",
+              "signature": "() -> (vec Order) query"
+            },
+            {
+              "name": "getOrder",
+              "kind": "query",
+              "signature": "(id: nat) -> (opt Order) query"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "getOwnerStats",
+              "kind": "query",
+              "signature": "(dayStartNs: int, dayEndNs: int) -> (record { totalOrders: nat; totalRevenue: nat; }) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "() -> (vec record { detail: text; rule: text; tableNumber: nat; }) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "kitchenView",
+              "kind": "query",
+              "signature": "() -> (vec record { id: nat; itemCount: nat; status: text; tableNumber: nat; timestamp: int; totalAmount: nat; }) query"
+            },
+            {
+              "name": "markDelivered",
+              "kind": "update",
+              "signature": "(orderId: nat) -> (Result)"
+            },
+            {
+              "name": "markDeliveredOrTrap",
+              "kind": "update",
+              "signature": "(orderId: nat) -> ()"
+            },
+            {
+              "name": "markOrderReady",
+              "kind": "update",
+              "signature": "(orderId: nat) -> (Result)"
+            },
+            {
+              "name": "markOrderReadyOrTrap",
+              "kind": "update",
+              "signature": "(orderId: nat) -> ()"
+            },
+            {
+              "name": "menuView",
+              "kind": "query",
+              "signature": "() -> (vec record { available: bool; id: nat; name: text; photoPath: text; priceE8s: nat; }) query"
+            },
+            {
+              "name": "moveOrderToTable",
+              "kind": "update",
+              "signature": "(orderId: nat, tableNumber: nat) -> ()"
+            },
+            {
+              "name": "myInvoicesView",
+              "kind": "query",
+              "signature": "() -> (vec record { createdAt: int; id: nat; itemCount: nat; status: text; totalE8s: nat; }) query"
+            },
+            {
+              "name": "myOrdersView",
+              "kind": "query",
+              "signature": "() -> (vec record { id: nat; itemCount: nat; status: text; tableNumber: nat; timestamp: int; totalAmount: nat; }) query"
+            },
+            {
+              "name": "myReservationsView",
+              "kind": "query",
+              "signature": "() -> (vec record { endNs: int; id: nat; nowNs: int; partySize: nat; startNs: int; status: text; tableNumber: nat; }) query"
+            },
+            {
+              "name": "placeOrder",
+              "kind": "update",
+              "signature": "(items: vec OrderItem) -> (Result_1)"
+            },
+            {
+              "name": "placeOrderFlatOrTrap",
+              "kind": "update",
+              "signature": "(menuItemIds: vec nat, quantities: vec nat, tableNumber: nat) -> (nat)"
+            },
+            {
+              "name": "removeAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "reservationsBookView",
+              "kind": "query",
+              "signature": "() -> (vec record { endNs: int; guestName: text; id: nat; nowNs: int; partySize: nat; startNs: int; status: text; tableNumber: nat; }) query"
+            },
+            {
+              "name": "reserveTable",
+              "kind": "update",
+              "signature": "(guestName: text, tableNumber: nat, partySize: nat, startNs: int, endNs: int) -> (Result_1)"
+            },
+            {
+              "name": "reserveTableOrTrap",
+              "kind": "update",
+              "signature": "(guestName: text, tableNumber: nat, partySize: nat, startNs: int, endNs: int) -> (nat)"
+            },
+            {
+              "name": "retireTable",
+              "kind": "update",
+              "signature": "(number: nat) -> ()"
+            },
+            {
+              "name": "seatReservation",
+              "kind": "update",
+              "signature": "(id: nat) -> ()"
+            },
+            {
+              "name": "seedDemo",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "setItemAvailable",
+              "kind": "update",
+              "signature": "(id: nat, available: bool) -> (Result)"
+            },
+            {
+              "name": "setItemAvailableOrTrap",
+              "kind": "update",
+              "signature": "(id: nat, available: bool) -> ()"
+            },
+            {
+              "name": "setMenuItemPhoto",
+              "kind": "update",
+              "signature": "(id: nat, photoPath: text) -> (Result)"
+            },
+            {
+              "name": "setMenuItemPhotoOrTrap",
+              "kind": "update",
+              "signature": "(id: nat, photoPath: text) -> ()"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(v: bool) -> (bool)"
+            },
+            {
+              "name": "setTablePosition",
+              "kind": "update",
+              "signature": "(number: nat, x: nat, y: nat) -> ()",
+              "doc": "Arrange the floor: put a table at a grid cell (kitchen only). x=0,y=0 sends it back to the shelf (auto-flow). The no-overlap guard is the same law the oracle audits."
+            },
+            {
+              "name": "setTableSeats",
+              "kind": "update",
+              "signature": "(number: nat, seats: nat) -> ()"
+            },
+            {
+              "name": "startPreparingOrder",
+              "kind": "update",
+              "signature": "(orderId: nat) -> (Result)"
+            },
+            {
+              "name": "startPreparingOrderOrTrap",
+              "kind": "update",
+              "signature": "(orderId: nat) -> ()"
+            },
+            {
+              "name": "transferOwner",
+              "kind": "update",
+              "signature": "(n: principal) -> (bool)"
+            },
+            {
+              "name": "updateMenuPrice",
+              "kind": "update",
+              "signature": "(id: nat, newPrice: nat) -> (Result)"
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 208885335789510
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin",
+          "Invoices"
+        ],
+        "sdk": [
+          "MemphisAuth",
+          "RecoveryPhrasePanel",
+          "decodeBool",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArg",
+          "encodeArgs",
+          "mediaUrl",
+          "query",
+          "ready",
+          "update",
+          "useMediaUpload",
+          "useMemphis",
+          "useQuery",
+          "useUpdate"
+        ],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "restaurant",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.restaurant].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "store",
+      "name": "Store",
+      "repo": "Mercatura-Forum/thebes-example-store",
+      "ref": "a4a9295140e112052b30a7ddceca85ac396dc382",
+      "shows": "storefront with on-chain product photos",
+      "guard": "atomic stock decrement",
+      "summary": "An on-chain storefront built on Thebes Protocol: a Motoko backend that holds the catalog, carts, checkout holds, orders and invoices, and a React frontend served as certified assets — with a procedural 3D hero, hand-drawn product art, categories and scoped search.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/231151000642772/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-store/blob/a4a9295140e112052b30a7ddceca85ac396dc382/AGENTS.md",
+      "contracts": [
+        {
+          "name": "store",
+          "type": "backend-motoko",
+          "cid": 262529626459267,
+          "interface": "interfaces/store/store.did",
+          "methods": [
+            {
+              "name": "addAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "addCategory",
+              "kind": "update",
+              "signature": "(name: text) -> (CategoryId)"
+            },
+            {
+              "name": "addProduct",
+              "kind": "update",
+              "signature": "(name: text, description: text, priceE8s: nat, initialStock: nat, categoryId: nat, photoPath: opt text) -> (ProductId)"
+            },
+            {
+              "name": "addToCart",
+              "kind": "update",
+              "signature": "(productId: ProductId, quantity: nat) -> ()"
+            },
+            {
+              "name": "adminCancelOrder",
+              "kind": "update",
+              "signature": "(orderId: OrderId) -> ()"
+            },
+            {
+              "name": "amAdmin",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "beginCheckout",
+              "kind": "update",
+              "signature": "() -> (Result_2)"
+            },
+            {
+              "name": "beginCheckoutOrTrap",
+              "kind": "update",
+              "signature": "() -> (int)"
+            },
+            {
+              "name": "cancelCheckout",
+              "kind": "update",
+              "signature": "() -> ()"
+            },
+            {
+              "name": "cancelOrder",
+              "kind": "update",
+              "signature": "(orderId: OrderId) -> (Result_1)"
+            },
+            {
+              "name": "cancelOrderOrTrap",
+              "kind": "update",
+              "signature": "(orderId: OrderId) -> ()"
+            },
+            {
+              "name": "checkout",
+              "kind": "update",
+              "signature": "(code: text) -> (Result)"
+            },
+            {
+              "name": "checkoutOrTrap",
+              "kind": "update",
+              "signature": "(code: text) -> (nat)"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "clearCart",
+              "kind": "update",
+              "signature": "() -> ()"
+            },
+            {
+              "name": "conservationView",
+              "kind": "query",
+              "signature": "() -> (vec record { checkedAt: int; productsChecked: nat; unitsOnHand: nat; unitsReserved: nat; violations: nat; }) query"
+            },
+            {
+              "name": "createDiscount",
+              "kind": "update",
+              "signature": "(code: text, percentBps: nat, fixedE8s: nat, minSubtotalE8s: nat, maxRedemptions: nat, expiresAtNs: int) -> ()"
+            },
+            {
+              "name": "deliverOrder",
+              "kind": "update",
+              "signature": "(orderId: OrderId) -> ()"
+            },
+            {
+              "name": "getAdminProductsView",
+              "kind": "query",
+              "signature": "() -> (vec record { archived: bool; available: nat; categoryId: nat; categoryName: text; description: text; id: nat; name: text; onHand: nat; photoPath: text; priceE8s: nat; received: nat; \"reserved\": nat; returned: nat; sold: nat; }) query"
+            },
+            {
+              "name": "getAdmins",
+              "kind": "query",
+              "signature": "() -> (vec principal) query"
+            },
+            {
+              "name": "getAllOrdersView",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (vec record { buyer: principal; createdAt: int; discountCode: text; discountE8s: nat; id: nat; itemCount: nat; status: text; subtotalE8s: nat; totalE8s: nat; }) query"
+            },
+            {
+              "name": "getAuditView",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (vec record { at: int; detail: text; id: nat; kind: text; orderId: nat; productId: nat; who: principal; }) query"
+            },
+            {
+              "name": "getCartView",
+              "kind": "query",
+              "signature": "() -> (vec record { available: nat; name: text; photoPath: text; priceE8s: nat; productId: nat; quantity: nat; }) query"
+            },
+            {
+              "name": "getCategoriesView",
+              "kind": "query",
+              "signature": "() -> (vec record { id: nat; name: text; productCount: nat; }) query"
+            },
+            {
+              "name": "getDiscountsView",
+              "kind": "query",
+              "signature": "() -> (vec record { active: bool; code: text; expiresAt: int; fixedE8s: nat; maxRedemptions: nat; minSubtotalE8s: nat; percentBps: nat; redemptions: nat; }) query"
+            },
+            {
+              "name": "getMyReservationLinesView",
+              "kind": "query",
+              "signature": "() -> (vec record { name: text; photoPath: text; productId: nat; quantity: nat; unitPriceE8s: nat; }) query"
+            },
+            {
+              "name": "getMyReservationView",
+              "kind": "query",
+              "signature": "() -> (vec record { expiresAt: int; itemCount: nat; nowNs: int; subtotalE8s: nat; }) query"
+            },
+            {
+              "name": "getOrderEventsView",
+              "kind": "query",
+              "signature": "(orderId: nat) -> (vec record { at: int; detail: text; kind: text; }) query"
+            },
+            {
+              "name": "getOrderHistoryView",
+              "kind": "query",
+              "signature": "() -> (vec record { createdAt: int; discountCode: text; discountE8s: nat; id: nat; itemCount: nat; status: text; subtotalE8s: nat; totalE8s: nat; }) query"
+            },
+            {
+              "name": "getOrderLinesView",
+              "kind": "query",
+              "signature": "(orderId: nat) -> (vec record { name: text; productId: nat; quantity: nat; unitPriceE8s: nat; }) query"
+            },
+            {
+              "name": "getOrderView",
+              "kind": "query",
+              "signature": "(orderId: nat) -> (vec record { createdAt: int; discountCode: text; discountE8s: nat; id: nat; invoiceId: nat; itemCount: nat; status: text; subtotalE8s: nat; totalE8s: nat; }) query"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "getProductsView",
+              "kind": "query",
+              "signature": "() -> (vec ProductView) query"
+            },
+            {
+              "name": "getShopStatsView",
+              "kind": "query",
+              "signature": "() -> (vec record { activeHolds: nat; activeProducts: nat; auditEvents: nat; categories: nat; discountsActive: nat; invoiceCount: nat; ordersCancelled: nat; ordersDelivered: nat; ordersPlaced: nat; ordersRefunded: nat; ordersShipped: nat; ordersTotal: nat; products: nat; revenueE8s: nat; unitsOnHand: nat; unitsReserved: nat; unitsReturned: nat; unitsSold: nat; }) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "() -> (vec record { actual: nat; expected: nat; name: text; productId: nat; rule: text; }) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "myInvoicesView",
+              "kind": "query",
+              "signature": "() -> (vec InvoiceView) query"
+            },
+            {
+              "name": "quoteCheckoutView",
+              "kind": "query",
+              "signature": "(code: text) -> (vec record { codeOk: bool; discountE8s: nat; note: text; subtotalE8s: nat; totalE8s: nat; }) query"
+            },
+            {
+              "name": "refundOrder",
+              "kind": "update",
+              "signature": "(orderId: OrderId) -> ()"
+            },
+            {
+              "name": "removeAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "removeFromCart",
+              "kind": "update",
+              "signature": "(productId: ProductId) -> ()"
+            },
+            {
+              "name": "renameCategory",
+              "kind": "update",
+              "signature": "(id: CategoryId, name: text) -> ()"
+            },
+            {
+              "name": "restockProduct",
+              "kind": "update",
+              "signature": "(productId: ProductId, additionalStock: nat) -> ()"
+            },
+            {
+              "name": "seedDemo",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "setCartQuantity",
+              "kind": "update",
+              "signature": "(productId: ProductId, quantity: nat) -> ()"
+            },
+            {
+              "name": "setDiscountActive",
+              "kind": "update",
+              "signature": "(code: text, active: bool) -> ()"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(v: bool) -> (bool)"
+            },
+            {
+              "name": "setProductArchived",
+              "kind": "update",
+              "signature": "(productId: ProductId, archived: bool) -> ()"
+            },
+            {
+              "name": "setProductPhoto",
+              "kind": "update",
+              "signature": "(productId: ProductId, photoPath: text) -> ()"
+            },
+            {
+              "name": "shipOrder",
+              "kind": "update",
+              "signature": "(orderId: OrderId) -> ()"
+            },
+            {
+              "name": "transferOwner",
+              "kind": "update",
+              "signature": "(n: principal) -> (bool)"
+            },
+            {
+              "name": "updateProduct",
+              "kind": "update",
+              "signature": "(productId: ProductId, name: text, description: text, priceE8s: nat, categoryId: nat) -> ()"
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 231151000642772
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin",
+          "Invoices"
+        ],
+        "sdk": [
+          "MemphisGate",
+          "SignOutChip",
+          "decodeBool",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArgs",
+          "mediaUrl",
+          "query",
+          "ready",
+          "update",
+          "useMediaUpload",
+          "useQuery",
+          "useUpdate"
+        ],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "store",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.store].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "university",
+      "name": "University",
+      "repo": "Mercatura-Forum/thebes-example-university",
+      "ref": "a95aead7bbe7f7d2528b891eb91cd92eadc58b2a",
+      "shows": "registrar — prerequisites, waitlists, transcripts",
+      "guard": "seats/prereqs/load enforced atomically + on-chain GPA from an append-only transcript",
+      "summary": "Quad — an on-chain registrar built on Thebes Protocol: a Motoko backend that holds the course catalog (with prerequisites and credits), per-student enrollments, waitlists and append-only transcripts, and a React frontend served as certified assets.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/191581724526353/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-university/blob/a95aead7bbe7f7d2528b891eb91cd92eadc58b2a/AGENTS.md",
+      "contracts": [
+        {
+          "name": "university",
+          "type": "backend-motoko",
+          "cid": 267175616171384,
+          "interface": "interfaces/university/university.did",
+          "methods": [
+            {
+              "name": "addAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "addCourse",
+              "kind": "update",
+              "signature": "(code: text, title: text, credits: nat, capacity: nat, instructor: text, prereqs: vec nat, photoPath: opt text) -> (nat)"
+            },
+            {
+              "name": "catalogView",
+              "kind": "query",
+              "signature": "() -> (vec record { capacity: nat; code: text; credits: nat; enrolled: nat; id: nat; instructor: text; lockReason: text; myState: text; nowNs: int; photoPath: text; prereqIds: text; title: text; waitlistLen: nat; }) query"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "drop",
+              "kind": "update",
+              "signature": "(courseId: nat) -> ()"
+            },
+            {
+              "name": "enroll",
+              "kind": "update",
+              "signature": "(courseId: nat) -> ()"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "() -> (vec record { detail: text; rule: text; }) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "isRegistrationOpen",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "joinWaitlist",
+              "kind": "update",
+              "signature": "(courseId: nat) -> (nat)"
+            },
+            {
+              "name": "leaveWaitlist",
+              "kind": "update",
+              "signature": "(courseId: nat) -> ()"
+            },
+            {
+              "name": "myStandingView",
+              "kind": "query",
+              "signature": "() -> (vec record { creditsCompleted: nat; creditsInProgress: nat; enrolledCount: nat; gpaX100: nat; maxLoad: nat; nowNs: int; transcriptCount: nat; }) query"
+            },
+            {
+              "name": "myTranscriptView",
+              "kind": "query",
+              "signature": "() -> (vec record { at: int; code: text; courseId: nat; credits: nat; gradeX100: nat; title: text; }) query"
+            },
+            {
+              "name": "recordGrade",
+              "kind": "update",
+              "signature": "(student: principal, courseId: nat, gradeX100: nat) -> ()"
+            },
+            {
+              "name": "rollView",
+              "kind": "query",
+              "signature": "(courseId: nat) -> (vec record { load: nat; student: principal; }) query"
+            },
+            {
+              "name": "seedDemo",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "setCoursePhoto",
+              "kind": "update",
+              "signature": "(courseId: nat, photoPath: text) -> ()"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(v: bool) -> (bool)"
+            },
+            {
+              "name": "setRegistrationOpen",
+              "kind": "update",
+              "signature": "(open: bool) -> ()"
+            },
+            {
+              "name": "transferCredit",
+              "kind": "update",
+              "signature": "(student: principal, courseId: nat, gradeX100: nat) -> ()"
+            },
+            {
+              "name": "transferOwner",
+              "kind": "update",
+              "signature": "(n: principal) -> (bool)"
+            },
+            {
+              "name": "universitySealView",
+              "kind": "query",
+              "signature": "() -> (vec record { checkedAt: int; courses: nat; seatsFilled: nat; seatsTotal: nat; students: nat; transcriptLines: nat; violations: nat; waitlisted: nat; }) query"
+            }
+          ]
+        },
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 191581724526353
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin"
+        ],
+        "sdk": [
+          "MemphisGate",
+          "SignOutChip",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArg",
+          "encodeArgs",
+          "mediaUrl",
+          "query",
+          "ready",
+          "update",
+          "useMediaUpload",
+          "useQuery",
+          "useUpdate"
+        ],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "university",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.university].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    },
+    {
+      "id": "xray",
+      "name": "Medical imaging",
+      "repo": "Mercatura-Forum/thebes-example-xray",
+      "ref": "552d2b5a55dba5d82eccf69c81fb19e395491504",
+      "shows": "\"Lumen\" — X-ray studies (Patient→Study→Series→Image), images in the media contract",
+      "guard": "clinical RBAC + gap-free (density-checked) access log + five-law archive oracle",
+      "summary": "A Thebes Protocol example: a radiology reading room where patients, imaging studies, and diagnostic reports live on the chain, and the image pixels live in the Thebes media contract. It shows how to build an access-controlled, privacy-sensitive application — role-based staff, an immutable access log, and binary media — entirely on Thebes.",
+      "live": "https://memphis.mercaturaforum.com/_/raw/57650296797843/index.html",
+      "agents_md": "https://github.com/Mercatura-Forum/thebes-example-xray/blob/552d2b5a55dba5d82eccf69c81fb19e395491504/AGENTS.md",
+      "contracts": [
+        {
+          "name": "web",
+          "type": "frontend",
+          "cid": 57650296797843
+        },
+        {
+          "name": "xray",
+          "type": "backend-motoko",
+          "cid": 71554513306883,
+          "interface": "interfaces/xray/xray.did",
+          "methods": [
+            {
+              "name": "accessLogCount",
+              "kind": "query",
+              "signature": "() -> (nat) query"
+            },
+            {
+              "name": "accessLogView",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (vec record { action: text; at: int; id: nat; studyId: nat; who: principal; }) query"
+            },
+            {
+              "name": "addAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "addImage",
+              "kind": "update",
+              "signature": "(seriesId: nat, imagePath: text, instanceNumber: nat) -> (Result_1)"
+            },
+            {
+              "name": "addImageOrTrap",
+              "kind": "update",
+              "signature": "(seriesId: nat, imagePath: text, instanceNumber: nat) -> (nat)"
+            },
+            {
+              "name": "addPatient",
+              "kind": "update",
+              "signature": "(mrn: text, name: text, sex: text, birthYear: nat) -> (Result_1)"
+            },
+            {
+              "name": "addPatientOrTrap",
+              "kind": "update",
+              "signature": "(mrn: text, name: text, sex: text, birthYear: nat) -> (nat)"
+            },
+            {
+              "name": "addSeries",
+              "kind": "update",
+              "signature": "(studyId: nat, description: text) -> (Result_1)"
+            },
+            {
+              "name": "addSeriesOrTrap",
+              "kind": "update",
+              "signature": "(studyId: nat, description: text) -> (nat)"
+            },
+            {
+              "name": "addStudy",
+              "kind": "update",
+              "signature": "(patientId: nat, modality: text, bodyPart: text, description: text) -> (Result_1)"
+            },
+            {
+              "name": "addStudyOrTrap",
+              "kind": "update",
+              "signature": "(patientId: nat, modality: text, bodyPart: text, description: text) -> (nat)"
+            },
+            {
+              "name": "assignRole",
+              "kind": "update",
+              "signature": "(who: principal, role: text) -> (Result)"
+            },
+            {
+              "name": "assignRoleOrTrap",
+              "kind": "update",
+              "signature": "(who: principal, role: text) -> ()"
+            },
+            {
+              "name": "claimOwner",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "finalizeReport",
+              "kind": "update",
+              "signature": "(studyId: nat) -> (Result)"
+            },
+            {
+              "name": "finalizeReportOrTrap",
+              "kind": "update",
+              "signature": "(studyId: nat) -> ()"
+            },
+            {
+              "name": "getAdmins",
+              "kind": "query",
+              "signature": "() -> (vec principal) query"
+            },
+            {
+              "name": "getOwner",
+              "kind": "query",
+              "signature": "() -> (opt principal) query"
+            },
+            {
+              "name": "invariantReportView",
+              "kind": "query",
+              "signature": "() -> (vec record { detail: text; rule: text; }) query"
+            },
+            {
+              "name": "isPaused",
+              "kind": "query",
+              "signature": "() -> (bool) query"
+            },
+            {
+              "name": "lumenSealView",
+              "kind": "query",
+              "signature": "() -> (vec record { accessEvents: nat; checkedAt: int; images: nat; patients: nat; reportsDraft: nat; reportsFinal: nat; series: nat; staff: nat; studies: nat; violations: nat; }) query"
+            },
+            {
+              "name": "modalityBoardView",
+              "kind": "query",
+              "signature": "() -> (vec record { acquired: nat; modality: text; reported: nat; scheduled: nat; }) query"
+            },
+            {
+              "name": "myRole",
+              "kind": "query",
+              "signature": "() -> (vec record {role: text;}) query"
+            },
+            {
+              "name": "openStudyOrTrap",
+              "kind": "update",
+              "signature": "(studyId: nat) -> ()"
+            },
+            {
+              "name": "patientCount",
+              "kind": "query",
+              "signature": "() -> (nat) query"
+            },
+            {
+              "name": "patientView",
+              "kind": "query",
+              "signature": "(patientId: nat) -> (vec record { birthYear: nat; createdAt: int; id: nat; mrn: text; name: text; sex: text; }) query"
+            },
+            {
+              "name": "patientsView",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (vec record { birthYear: nat; createdAt: int; id: nat; mrn: text; name: text; sex: text; studyCount: nat; }) query"
+            },
+            {
+              "name": "removeAdmin",
+              "kind": "update",
+              "signature": "(w: principal) -> (bool)"
+            },
+            {
+              "name": "revokeRole",
+              "kind": "update",
+              "signature": "(who: principal) -> (Result)"
+            },
+            {
+              "name": "revokeRoleOrTrap",
+              "kind": "update",
+              "signature": "(who: principal) -> ()"
+            },
+            {
+              "name": "saveReport",
+              "kind": "update",
+              "signature": "(studyId: nat, findings: text, impression: text) -> (Result)"
+            },
+            {
+              "name": "saveReportOrTrap",
+              "kind": "update",
+              "signature": "(studyId: nat, findings: text, impression: text) -> ()"
+            },
+            {
+              "name": "seedDemo",
+              "kind": "update",
+              "signature": "() -> (bool)"
+            },
+            {
+              "name": "seriesForStudyView",
+              "kind": "query",
+              "signature": "(studyId: nat) -> (vec record { createdAt: int; description: text; id: nat; imageCount: nat; }) query"
+            },
+            {
+              "name": "setPaused",
+              "kind": "update",
+              "signature": "(v: bool) -> (bool)"
+            },
+            {
+              "name": "staffView",
+              "kind": "query",
+              "signature": "() -> (vec record { role: text; who: principal; }) query"
+            },
+            {
+              "name": "studiesForPatientView",
+              "kind": "query",
+              "signature": "(patientId: nat) -> (vec record { bodyPart: text; createdAt: int; description: text; id: nat; imageCount: nat; modality: text; reportStatus: text; seriesCount: nat; status: text; }) query"
+            },
+            {
+              "name": "studyCount",
+              "kind": "query",
+              "signature": "() -> (nat) query"
+            },
+            {
+              "name": "studyImagesView",
+              "kind": "query",
+              "signature": "(studyId: nat) -> (vec record { createdAt: int; id: nat; imagePath: text; instanceNumber: nat; seriesId: nat; }) query"
+            },
+            {
+              "name": "studyView",
+              "kind": "query",
+              "signature": "(studyId: nat) -> (vec record { bodyPart: text; createdAt: int; description: text; id: nat; modality: text; mrn: text; patientId: nat; patientName: text; reportFindings: text; reportImpression: text; reportStatus: text; status: text; }) query"
+            },
+            {
+              "name": "transferOwner",
+              "kind": "update",
+              "signature": "(n: principal) -> (bool)"
+            },
+            {
+              "name": "worklistView",
+              "kind": "query",
+              "signature": "(offset: nat, limit: nat) -> (vec record { bodyPart: text; createdAt: int; imageCount: nat; modality: text; mrn: text; patientId: nat; patientName: text; reportStatus: text; status: text; studyId: nat; }) query"
+            }
+          ]
+        }
+      ],
+      "uses": {
+        "lib": [
+          "Admin",
+          "Pagination"
+        ],
+        "sdk": [
+          "MemphisGate",
+          "SignOutChip",
+          "decodeBool",
+          "decodeNat",
+          "decodeVecRecord",
+          "encodeArg",
+          "encodeArgs",
+          "identity",
+          "mediaUrl",
+          "query",
+          "ready",
+          "update",
+          "useMediaUpload",
+          "useQuery"
+        ],
+        "code": []
+      },
+      "findings": [
+        {
+          "rule": "legacy-persistence",
+          "contract": "xray",
+          "detail": "custom build command compiles without --legacy-persistence; such a build cannot be upgraded in place later",
+          "fix": "For a contract not yet deployed: add --legacy-persistence to the moc command in [canisters.xray].build, or replace build with source = \"<path to main.mo>\". For a contract already live, do not change its persistence mode in an upgrade: measure the live module first."
+        }
+      ]
+    }
+  ],
+  "starters": [
+    {
+      "name": "counter",
+      "path": "examples/counter",
+      "shows": "the smallest complete contract — one update, one query",
+      "languages": "Motoko · Rust",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/tree/729faa00b85593bedfe84045cf9262d6d27a7113/examples/counter"
+    },
+    {
+      "name": "guestbook",
+      "path": "examples/guestbook",
+      "shows": "append-only list keyed by the caller; query the whole list",
+      "languages": "Motoko · Rust",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/tree/729faa00b85593bedfe84045cf9262d6d27a7113/examples/guestbook"
+    },
+    {
+      "name": "todo",
+      "path": "examples/todo",
+      "shows": "keyed map — add, toggle done, list",
+      "languages": "Motoko · Rust",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/tree/729faa00b85593bedfe84045cf9262d6d27a7113/examples/todo"
+    },
+    {
+      "name": "kv-store",
+      "path": "examples/kv-store",
+      "shows": "set / get / delete / list keys",
+      "languages": "Motoko · Rust",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/tree/729faa00b85593bedfe84045cf9262d6d27a7113/examples/kv-store"
+    },
+    {
+      "name": "icrc-me",
+      "path": "examples/icrc-me",
+      "shows": "the Thebes token standard — full ICRC-1/2/3/10 ledger",
+      "languages": "Motoko",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/tree/729faa00b85593bedfe84045cf9262d6d27a7113/examples/icrc-me"
+    },
+    {
+      "name": "e-commerce",
+      "path": "examples/e-commerce",
+      "shows": "a minimal single-file storefront — products, cart, orders",
+      "languages": "Motoko + vanilla JS",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/tree/729faa00b85593bedfe84045cf9262d6d27a7113/examples/e-commerce"
+    },
+    {
+      "name": "price-oracle",
+      "path": "examples/price-oracle",
+      "shows": "HTTP outcalls — a quorum-agreed feed + a survey reduced to a guarded median (guide)",
+      "languages": "Motoko (Thebes compiler)",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/tree/729faa00b85593bedfe84045cf9262d6d27a7113/examples/price-oracle"
+    }
+  ],
+  "lib": {
+    "repo": "Mercatura-Forum/thebes-lib",
+    "ref": "15aaa13b0e859da96e0202ea73c414b1e876fdce",
+    "modules": [
+      {
+        "name": "Admin",
+        "import": "mo:thebes-lib/Admin",
+        "summary": "Admin.mo — the STANDARD admin surface every Thebes app embeds. This is a PURE MODULE, not an actor. It owns no state itself; instead the host actor holds a single Admin.State value in a top-level var (which is stable by default under persistent actor), and passes it into these functions. This is the \"externalize-state\" pattern: state survives upgrades because it lives in the actor, and all logic l",
+        "source": "https://github.com/Mercatura-Forum/thebes-lib/blob/15aaa13b0e859da96e0202ea73c414b1e876fdce/src/Admin.mo",
+        "functions": [
+          {
+            "name": "init",
+            "signature": "() : State"
+          },
+          {
+            "name": "claimOwner",
+            "signature": "(s : State, caller : Principal) : Bool"
+          },
+          {
+            "name": "transferOwner",
+            "signature": "(s : State, caller : Principal, newOwner : Principal) : Bool"
+          },
+          {
+            "name": "getOwner",
+            "signature": "(s : State) : ?Principal"
+          },
+          {
+            "name": "isOwner",
+            "signature": "(s : State, caller : Principal) : Bool"
+          },
+          {
+            "name": "isAdmin",
+            "signature": "(s : State, caller : Principal) : Bool"
+          },
+          {
+            "name": "addAdmin",
+            "signature": "(s : State, caller : Principal, who : Principal) : Bool"
+          },
+          {
+            "name": "removeAdmin",
+            "signature": "(s : State, caller : Principal, who : Principal) : Bool"
+          },
+          {
+            "name": "getAdmins",
+            "signature": "(s : State) : [Principal]"
+          },
+          {
+            "name": "setPaused",
+            "signature": "(s : State, caller : Principal, value : Bool) : Bool"
+          },
+          {
+            "name": "isPaused",
+            "signature": "(s : State) : Bool"
+          },
+          {
+            "name": "requireOwner",
+            "signature": "(s : State, caller : Principal)"
+          },
+          {
+            "name": "requireAdmin",
+            "signature": "(s : State, caller : Principal)"
+          },
+          {
+            "name": "requireNotPaused",
+            "signature": "(s : State)"
+          }
+        ]
+      },
+      {
+        "name": "Invoices",
+        "import": "mo:thebes-lib/Invoices",
+        "summary": "Invoices.mo — a reusable invoicing surface for Thebes apps. A PURE MODULE (no actor, no state of its own). The host actor holds one Invoices.State in a top-level let (stable under persistent actor, because mo:core/Map mutates in place) and passes it in. What you get: • create / createIssued — open an invoice from line items. Totals are ALWAYS recomputed on-chain from the line items and tax rate; a",
+        "source": "https://github.com/Mercatura-Forum/thebes-lib/blob/15aaa13b0e859da96e0202ea73c414b1e876fdce/src/Invoices.mo",
+        "functions": [
+          {
+            "name": "init",
+            "signature": "() : State"
+          },
+          {
+            "name": "statusText",
+            "signature": "(s : Status) : Text"
+          },
+          {
+            "name": "computeTotals",
+            "signature": "(lineItems : [LineItem], taxBps : Nat) : Totals"
+          },
+          {
+            "name": "create",
+            "signature": "(s : State, now : Int, issuer : Principal, recipient : Principal, lineItems : [LineItem], taxBps : Nat,) : Invoice"
+          },
+          {
+            "name": "createIssued",
+            "signature": "(s : State, now : Int, issuer : Principal, recipient : Principal, lineItems : [LineItem], taxBps : Nat,) : Invoice"
+          },
+          {
+            "name": "issue",
+            "signature": "(s : State, now : Int, caller : Principal, id : InvoiceId) : Result.Result<Invoice, Text>"
+          },
+          {
+            "name": "markPaid",
+            "signature": "(s : State, now : Int, caller : Principal, id : InvoiceId) : Result.Result<Invoice, Text>"
+          },
+          {
+            "name": "void",
+            "signature": "(s : State, now : Int, caller : Principal, id : InvoiceId) : Result.Result<Invoice, Text>"
+          },
+          {
+            "name": "get",
+            "signature": "(s : State, id : InvoiceId) : ?Invoice"
+          },
+          {
+            "name": "count",
+            "signature": "(s : State) : Nat"
+          },
+          {
+            "name": "all",
+            "signature": "(s : State) : [Invoice]"
+          },
+          {
+            "name": "forPrincipal",
+            "signature": "(s : State, who : Principal) : [Invoice]"
+          }
+        ]
+      },
+      {
+        "name": "Media",
+        "import": "mo:thebes-lib/Media",
+        "summary": "Media.mo — on-chain, certified user media (logos, avatars, photos) as a source-import module, ported from the Egypt-L1 Rust media canister. A PURE MODULE (no actor, no state of its own). The host actor holds one Media.Store in a top-level let (stable under persistent actor) and passes it in — the Admin.mo/Users.mo pattern. Apps get media uploads inside their OWN backend contract; no second caniste",
+        "source": "https://github.com/Mercatura-Forum/thebes-lib/blob/15aaa13b0e859da96e0202ea73c414b1e876fdce/src/Media.mo",
+        "functions": [
+          {
+            "name": "errorText",
+            "signature": "(e : MediaError) : Text"
+          },
+          {
+            "name": "init",
+            "signature": "() : Store"
+          },
+          {
+            "name": "sha256",
+            "signature": "(msg : [Nat8]) : Blob"
+          },
+          {
+            "name": "hexEncode",
+            "signature": "(b : Blob) : Text"
+          },
+          {
+            "name": "hexDecode32",
+            "signature": "(s : Text) : ?Blob"
+          },
+          {
+            "name": "base64Encode",
+            "signature": "(input : [Nat8]) : Text"
+          },
+          {
+            "name": "hashLeaf",
+            "signature": "(path : Text, bodySha256 : Blob) : Blob"
+          },
+          {
+            "name": "hashInternal",
+            "signature": "(left : Blob, right : Blob) : Blob"
+          },
+          {
+            "name": "emptyRoot",
+            "signature": "() : Blob"
+          },
+          {
+            "name": "computeRoot",
+            "signature": "(leaves : [Leaf]) : Blob"
+          },
+          {
+            "name": "witnessFor",
+            "signature": "(leaves : [Leaf], targetPath : Text) : ?Witness"
+          },
+          {
+            "name": "verifyWitness",
+            "signature": "(w : Witness, root : Blob) : Bool"
+          },
+          {
+            "name": "currentLeaves",
+            "signature": "(s : Store) : [Leaf]"
+          },
+          {
+            "name": "root",
+            "signature": "(s : Store) : Blob"
+          },
+          {
+            "name": "startUpload",
+            "signature": "(s : Store, admin : Admin.State, caller : Principal, uploadId : Text, mediaClass : Class, contentType : Text, totalChunks : Nat,) : Result.Result<(), MediaError>"
+          },
+          {
+            "name": "storeChunk",
+            "signature": "(s : Store, admin : Admin.State, caller : Principal, uploadId : Text, chunkIndex : Nat, body : Blob,) : Result.Result<(), MediaError>"
+          },
+          {
+            "name": "finishUpload",
+            "signature": "(s : Store, admin : Admin.State, caller : Principal, uploadId : Text,) : Result.Result<FinishReply, MediaError>"
+          },
+          {
+            "name": "resetStaging",
+            "signature": "(s : Store, caller : Principal, uploadId : Text) : Bool"
+          },
+          {
+            "name": "clearAvatar",
+            "signature": "(s : Store, caller : Principal) : Bool"
+          },
+          {
+            "name": "deletePhoto",
+            "signature": "(s : Store, caller : Principal, sha256Hex : Text) : Result.Result<Bool, MediaError>"
+          },
+          {
+            "name": "deleteLogo",
+            "signature": "(s : Store, admin : Admin.State, caller : Principal, name : Text) : Result.Result<Bool, MediaError>"
+          },
+          {
+            "name": "chunkProgress",
+            "signature": "(s : Store, uploadId : Text) : ?ChunkProgress"
+          },
+          {
+            "name": "getAvatar",
+            "signature": "(s : Store, principalText : Text) : ?"
+          },
+          {
+            "name": "getLogo",
+            "signature": "(s : Store, name : Text) : ?"
+          },
+          {
+            "name": "mediaInfo",
+            "signature": "(s : Store, rawPath : Text) : ?MediaInfo"
+          },
+          {
+            "name": "listPathsFor",
+            "signature": "(s : Store, admin : Admin.State, caller : Principal,) : Result.Result<[Text], MediaError>"
+          },
+          {
+            "name": "listPaths",
+            "signature": "(s : Store) : [Text]"
+          },
+          {
+            "name": "storageStats",
+            "signature": "(s : Store) : StorageStats"
+          },
+          {
+            "name": "httpRequest",
+            "signature": "(s : Store, req : HttpRequest) : HttpResponse"
+          },
+          {
+            "name": "getMediaWithWitness",
+            "signature": "(s : Store, rawPath : Text) : CertifiedMediaReply"
+          },
+          {
+            "name": "startUploadOrTrap",
+            "signature": "(s : Store, admin : Admin.State, caller : Principal, uploadId : Text, mediaClass : Class, contentType : Text, totalChunks : Nat,)"
+          },
+          {
+            "name": "storeChunkOrTrap",
+            "signature": "(s : Store, admin : Admin.State, caller : Principal, uploadId : Text, chunkIndex : Nat, body : Blob,)"
+          },
+          {
+            "name": "finishUploadOrTrap",
+            "signature": "(s : Store, admin : Admin.State, caller : Principal, uploadId : Text) : FinishReply"
+          },
+          {
+            "name": "deletePhotoOrTrap",
+            "signature": "(s : Store, caller : Principal, sha256Hex : Text) : Bool"
+          },
+          {
+            "name": "deleteLogoOrTrap",
+            "signature": "(s : Store, admin : Admin.State, caller : Principal, name : Text) : Bool"
+          }
+        ]
+      },
+      {
+        "name": "MemphisAuth",
+        "import": "mo:thebes-lib/MemphisAuth",
+        "summary": "MemphisAuth.mo — the STANDARD Memphis identity integration for Thebes apps. ════════════════════════════════════════════════════════════════════════════ THE IDENTITY MODEL ════════════════════════════════════════════════════════════════════════════ On Thebes today, for an ingress call, msg.caller is the SENDER principal of the request — i.e. whatever key signed the envelope (an agent key, a wallet",
+        "source": "https://github.com/Mercatura-Forum/thebes-lib/blob/15aaa13b0e859da96e0202ea73c414b1e876fdce/src/MemphisAuth.mo",
+        "functions": [
+          {
+            "name": "init",
+            "signature": "(memphis : Principal, origin : Text, version : Nat64) : State"
+          },
+          {
+            "name": "initFromText",
+            "signature": "(memphisText : Text, origin : Text, version : Nat64) : State"
+          },
+          {
+            "name": "principalOfCid",
+            "signature": "(cid : Nat64) : Principal"
+          },
+          {
+            "name": "initFromCid",
+            "signature": "(cid : Nat64, origin : Text, version : Nat64) : State"
+          },
+          {
+            "name": "actorOf",
+            "signature": "(s : State) : Memphis"
+          },
+          {
+            "name": "verify",
+            "signature": "(s : State, token : Blob) : async* Result.Result<Identity, AuthError>"
+          },
+          {
+            "name": "verifyWithAudience",
+            "signature": "(s : State, token : Blob, audience : Text) : async* Result.Result<Identity, AuthError>"
+          },
+          {
+            "name": "forget",
+            "signature": "(s : State, token : Blob)"
+          },
+          {
+            "name": "evictExpired",
+            "signature": "(s : State, nowNs : Nat64)"
+          }
+        ]
+      },
+      {
+        "name": "Pagination",
+        "import": "mo:thebes-lib/Pagination",
+        "summary": "Pagination.mo — bounded, offset-cursor paging over an ordered array. The storage law says every unbounded collection must be paginated. This is the shared helper: callers materialize an ordered slice (e.g. Iter.toArray(Map.entries(map)), which mo:core/Map returns in key order) and hand it here with an offset + limit. Returns the page plus the next offset (null when exhausted) and the total count —",
+        "source": "https://github.com/Mercatura-Forum/thebes-lib/blob/15aaa13b0e859da96e0202ea73c414b1e876fdce/src/Pagination.mo",
+        "functions": [
+          {
+            "name": "page",
+            "signature": "(all : [T], offset : Nat, limit : Nat) : Page<T>"
+          }
+        ]
+      },
+      {
+        "name": "Users",
+        "import": "mo:thebes-lib/Users",
+        "summary": "Users.mo — user registration + profiles + role tiers, built ON TOP of Admin. A PURE MODULE (no actor, no state of its own). The host actor holds one Users.State in a top-level let (stable under persistent actor, because mo:core/Map is mutated in place) and passes it in. What you get: • register(name) — create/update the caller's profile (idempotent). • setAvatar(path) — store the caller's media-co",
+        "source": "https://github.com/Mercatura-Forum/thebes-lib/blob/15aaa13b0e859da96e0202ea73c414b1e876fdce/src/Users.mo",
+        "functions": [
+          {
+            "name": "init",
+            "signature": "() : State"
+          },
+          {
+            "name": "isRegistered",
+            "signature": "(s : State, p : Principal) : Bool"
+          },
+          {
+            "name": "roleOf",
+            "signature": "(admin : Admin.State, s : State, p : Principal) : Role"
+          },
+          {
+            "name": "requireRole",
+            "signature": "(admin : Admin.State, s : State, caller : Principal, min : Role)"
+          },
+          {
+            "name": "register",
+            "signature": "(s : State, caller : Principal, displayName : Text, now : Int) : Profile"
+          },
+          {
+            "name": "setAvatar",
+            "signature": "(s : State, caller : Principal, avatarPath : Text) : Bool"
+          },
+          {
+            "name": "get",
+            "signature": "(s : State, p : Principal) : ?Profile"
+          },
+          {
+            "name": "count",
+            "signature": "(s : State) : Nat"
+          },
+          {
+            "name": "all",
+            "signature": "(s : State) : [(Principal, Profile)]"
+          }
+        ]
+      }
+    ]
+  },
+  "sdk": {
+    "repo": "Mercatura-Forum/thebes-sdk",
+    "ref": "8ad44fd342d289183a595093b99eaaeba4f7a6c7",
+    "package": "@thebes/sdk",
+    "version": "0.6.0",
+    "install": "npm install github:Mercatura-Forum/thebes-sdk#v0.6.0",
+    "entry_points": [
+      ".",
+      "./boundary.js",
+      "./memphis-connect.js",
+      "./noble-ed25519-3.1.0.js",
+      "./passkey.js",
+      "./recovery.js",
+      "./runtime/*",
+      "./session",
+      "./thebes"
+    ],
+    "exports": [
+      "ConnectChip",
+      "ConnectOptions",
+      "ConnectSession",
+      "EMPTY_ARGS_HEX",
+      "FinishReply",
+      "LegacySessionKey",
+      "MediaClass",
+      "MediaUploadState",
+      "MemphisAuth",
+      "MemphisConnectAuth",
+      "MemphisConnectGate",
+      "MemphisGate",
+      "MemphisSession",
+      "QueryState",
+      "RecoveryPhrasePanel",
+      "SignOutChip",
+      "UpdateState",
+      "decodeBool",
+      "decodeNat",
+      "decodeVecRecord",
+      "downscaleImage",
+      "encodeArg",
+      "encodeArgs",
+      "ensureSession",
+      "getSession",
+      "identity",
+      "isLive",
+      "mediaUrl",
+      "onSessionChange",
+      "publicKey",
+      "query",
+      "ready",
+      "resumeFromRedirect",
+      "signIn",
+      "signOut",
+      "update",
+      "uploadMedia",
+      "useAuth",
+      "useConnectAuth",
+      "useMediaUpload",
+      "useMemphis",
+      "useMemphisConnect",
+      "useQuery",
+      "useUpdate"
+    ],
+    "files": [
+      {
+        "path": "runtime/boundary.js",
+        "does": "The browser boundary client (window.EgyptBoundary): Candid encode and decode, a persisted browser identity (one Ed25519 key per browser, kept in IndexedDB) that signs every update, call submission and receipt polling. identity() is the principal a contract sees as msg.caller; on a first visit await ready() before reading it."
+      },
+      {
+        "path": "runtime/noble-ed25519-3.1.0.js",
+        "does": "The unmodified @noble/ed25519 3.1.0 file (MIT). boundary.js and passkey.js load it from beside themselves only in a browser without WebCrypto Ed25519. Ship it next to them."
+      },
+      {
+        "path": "runtime/passkey.js",
+        "does": "The Memphis passkey client (window.MemphisPasskey): the WebAuthn ceremony, signup with a passkey and a recovery phrase, sign-in from a phone (device link), sessions. Runs on the Memphis origin only (see Identity)."
+      },
+      {
+        "path": "runtime/recovery.js",
+        "does": "The recovery-phrase factor: a BIP39 phrase whose derived key registers as a factor and signs in like a passkey. Loaded alongside passkey.js."
+      },
+      {
+        "path": "runtime/memphis-connect.js",
+        "does": "window.memphis.connect(): sign-in for an application served from its own domain, as a popup or a full-page redirect."
+      },
+      {
+        "path": "src/thebes.ts",
+        "does": "The typed wrapper over the boundary client: query, update, media upload, decoders. Framework-agnostic."
+      },
+      {
+        "path": "src/useThebes.ts",
+        "does": "React hooks: useQuery, useUpdate, useMediaUpload."
+      },
+      {
+        "path": "src/useMemphis.ts",
+        "does": "React hook useMemphis: the passkey session, Memphis origin only."
+      },
+      {
+        "path": "src/session.ts",
+        "does": "The framework-free session API: ensureSession, getSession, signIn, signOut, resumeFromRedirect, onSessionChange."
+      },
+      {
+        "path": "src/useMemphisConnect.ts",
+        "does": "React hook useMemphisConnect(app), a thin face over session.ts."
+      },
+      {
+        "path": "src/MemphisGate.tsx",
+        "does": "<MemphisGate>, useAuth() and <SignOutChip> for an application on the Memphis origin."
+      },
+      {
+        "path": "src/MemphisConnectGate.tsx",
+        "does": "<MemphisConnectGate app>, useConnectAuth() and <ConnectChip> for an application on its own domain."
+      }
+    ]
+  },
+  "cli": {
+    "install": "https://github.com/Mercatura-Forum/Thebes-Protocol-/releases",
+    "commands": [
+      {
+        "command": "thebes-deploy setup",
+        "does": "check the local toolchain"
+      },
+      {
+        "command": "thebes-deploy new <name>",
+        "does": "scaffold a whole project (backend + optional frontend + manifest)"
+      },
+      {
+        "command": "thebes-deploy add auth",
+        "does": "add Memphis passkey sign-in to this project"
+      },
+      {
+        "command": "thebes-deploy init",
+        "does": "scaffold a bare thebes.toml into an existing directory"
+      },
+      {
+        "command": "thebes-deploy identity new <name>",
+        "does": "create a local signing key"
+      },
+      {
+        "command": "thebes-deploy build",
+        "does": "compile every canister in the manifest"
+      },
+      {
+        "command": "thebes-deploy deploy",
+        "does": "build + install + upload + verify (you sign)"
+      },
+      {
+        "command": "thebes-deploy upgrade <name>",
+        "does": "ship a new version to the same cid, keeping its state"
+      },
+      {
+        "command": "thebes-deploy login --api-key <tbk_…>",
+        "does": "store an API key for metered deploys"
+      },
+      {
+        "command": "thebes-deploy credits",
+        "does": "show credit balance and deploys it buys"
+      },
+      {
+        "command": "thebes-deploy deploy --metered",
+        "does": "deploy through the gateway, charged to credits"
+      },
+      {
+        "command": "thebes-deploy call | query <name> <method> [--arg '(…)']",
+        "does": "invoke a method"
+      },
+      {
+        "command": "thebes-deploy verify <name>",
+        "does": "re-run post-install verification"
+      }
+    ]
+  },
+  "docs": [
+    {
+      "path": "SKILL.md",
+      "title": "Deploying on Thebes",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/SKILL.md"
+    },
+    {
+      "path": "AGENTS.md",
+      "title": "AGENTS.md — navigating the Thebes ecosystem from this repository",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/AGENTS.md"
+    },
+    {
+      "path": "docs/cli-deploy.md",
+      "title": "Dependencies, API keys, and installing canisters",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/cli-deploy.md"
+    },
+    {
+      "path": "docs/deploying.md",
+      "title": "Deploying with thebes-deploy",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/deploying.md"
+    },
+    {
+      "path": "docs/http-outcalls.md",
+      "title": "HTTP outcalls — fetching the open internet from a smart contract",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/http-outcalls.md"
+    },
+    {
+      "path": "docs/quickstart.md",
+      "title": "Quickstart",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/quickstart.md"
+    },
+    {
+      "path": "docs/repository-map.md",
+      "title": "How the repositories fit together",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/repository-map.md"
+    },
+    {
+      "path": "docs/spec.md",
+      "title": "Thebes — technical specification",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/spec.md"
+    },
+    {
+      "path": "docs/upgrading.md",
+      "title": "Upgrading a contract in place",
+      "url": "https://github.com/Mercatura-Forum/Thebes-Protocol-/blob/729faa00b85593bedfe84045cf9262d6d27a7113/docs/upgrading.md"
+    }
+  ]
+}

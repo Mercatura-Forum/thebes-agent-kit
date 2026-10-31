@@ -1,0 +1,131 @@
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type Profile = 
+ record {
+   avatarPath: opt text;
+   createdAt: int;
+   displayName: text;
+ };
+type Page = 
+ record {
+   items: vec record {
+                principal;
+                Profile;
+              };
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Message = 
+ record {
+   deleted: bool;
+   id: nat;
+   reactions: vec record {
+                    text;
+                    vec principal;
+                  };
+   roomId: nat;
+   sender: principal;
+   "text": text;
+   timestamp: int;
+ };
+service : {
+  addAdmin: (w: principal) -> (bool);
+  amAdmin: () -> (bool) query;
+  claimOwner: () -> (bool);
+  createRoom: (name: text, topic: text) -> (nat);
+  /// Delete a message: its author may take it back; admins may moderate it.
+  /// A TOMBSTONE remains — the conversation's shape is never quietly rewritten.
+  deleteMessage: (roomId: nat, messageId: nat) -> ();
+  getAdmins: () -> (vec principal) query;
+  getOwner: () -> (opt principal) query;
+  invariantReportView: () ->
+   (vec record {
+          detail: text;
+          roomId: nat;
+          rule: text;
+        }) query;
+  isBanned: (p: principal) -> (bool) query;
+  isPaused: () -> (bool) query;
+  memphisSignOut: (token: blob) -> ();
+  /// The room, joined server-side: name + avatar + reactions per message.
+  messagesView: (roomId: nat, n: nat) ->
+   (vec
+     record {
+       avatarPath: text;
+       deleted: bool;
+       id: nat;
+       mine: bool;
+       myReactions: text;
+       name: text;
+       nowNs: int;
+       reactions: text;
+       sender: principal;
+       "text": text;
+       timestamp: int;
+     }) query;
+  myProfile: () -> (opt Profile) query;
+  myProfileView: () ->
+   (vec record {
+          avatarPath: text;
+          createdAt: int;
+          displayName: text;
+        }) query;
+  /// Legacy single-room surface: posts to room 1.
+  post: ("text": text) -> ();
+  postAs: (token: blob, "text": text) -> (Result);
+  /// Post to a room. Rejected while banned, unregistered, or inside the cooldown.
+  postTo: (roomId: nat, "text": text) -> (nat);
+  /// The client pings this while the room is open; posting also counts.
+  presenceBeat: () -> ();
+  profileOf: (p: principal) -> (opt Profile) query;
+  react: (roomId: nat, messageId: nat, emoji: text) -> ();
+  recent: (n: nat) -> (vec Message) query;
+  /// Create or update the caller's display name.
+  register: (displayName: text) -> (Profile);
+  removeAdmin: (w: principal) -> (bool);
+  roomsView: () ->
+   (vec
+     record {
+       id: nat;
+       keptMessages: nat;
+       lastActivity: int;
+       name: text;
+       topic: text;
+       totalEverSent: nat;
+     }) query;
+  /// Paginated member roster in principal order.
+  roster: (offset: nat, limit: nat) -> (Page) query;
+  /// Members with presence, most recently seen first (paged).
+  rosterView: (offset: nat, limit: nat) ->
+   (vec
+     record {
+       avatarPath: text;
+       createdAt: int;
+       displayName: text;
+       here: bool;
+       "principal": principal;
+     }) query;
+  /// One line for the footer: rooms, messages on the books, violations.
+  salonSealView: () ->
+   (vec
+     record {
+       checkedAt: int;
+       keptMessages: nat;
+       membersHere: nat;
+       roomCount: nat;
+       totalEverSent: nat;
+       violations: nat;
+     }) query;
+  /// Seed a small salon on a fresh deploy: a default room + demo voices.
+  seedDemo: () -> (bool);
+  setBanned: (who: principal, value: bool) -> ();
+  /// Store the caller's media-contract avatar path (e.g. "/avatar/{principal}").
+  setMyAvatar: (path: text) -> (bool);
+  setMyAvatarOrTrap: (path: text) -> ();
+  setPaused: (v: bool) -> (bool);
+  transferOwner: (n: principal) -> (bool);
+  userCount: () -> (nat) query;
+}

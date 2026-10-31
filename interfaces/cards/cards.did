@@ -1,0 +1,97 @@
+service : {
+  addBot: (tableId: nat) -> (nat);
+  bid: (tableId: nat, number: nat, suitRank: nat) -> ();
+  claimOwner: () -> (bool);
+  closeTable: (tableId: nat) -> ();
+  conservationView: () ->
+   (vec
+     record {
+       checkedAt: int;
+       liveGames: nat;
+       tablesChecked: nat;
+       violations: nat;
+     }) query;
+  createTable: (gameText: text, displayName: text) -> (nat);
+  estimate: (tableId: nat, value: nat) -> ();
+  gameStateView: (tableId: nat) ->
+   (vec
+     record {
+       bidNumber: nat;
+       bidSuitRank: nat;
+       current: nat;
+       dealer: nat;
+       declarer: nat;
+       eventSeq: nat;
+       game: text;
+       handNumber: nat;
+       idleNs: int;
+       lastMoveAt: int;
+       leadSuit: int;
+       matchHands: nat;
+       mySeat: int;
+       nowNs: int;
+       phase: text;
+       trump: nat;
+       version: nat;
+       winnerSeat: int;
+     }) query;
+  getOwner: () -> (opt principal) query;
+  invariantReportView: (tableId: nat) ->
+   (vec record {
+          actual: nat;
+          expected: nat;
+          rule: text;
+        }) query;
+  joinTable: (tableId: nat, displayName: text) -> (nat);
+  leaderboardView: (limit: nat) ->
+   (vec record {
+          games: nat;
+          name: text;
+          points: int;
+          wins: nat;
+        }) query;
+  myHandView: (tableId: nat) -> (vec record {card: nat;}) query;
+  myStatsView: () ->
+   (vec record {
+          games: nat;
+          name: text;
+          points: int;
+          wins: nat;
+        }) query;
+  nudge: (tableId: nat) -> ();
+  openTables: () ->
+   (vec
+     record {
+       bots: nat;
+       game: text;
+       handNumber: nat;
+       id: nat;
+       phase: text;
+       seatsTaken: nat;
+     }) query;
+  passBid: (tableId: nat) -> ();
+  playCard: (tableId: nat, card: nat) -> ();
+  rematch: (tableId: nat) -> ();
+  seatsView: (tableId: nat) ->
+   (vec
+     record {
+       cardsLeft: nat;
+       estimate: int;
+       isBot: bool;
+       name: text;
+       played: int;
+       score: int;
+       seat: nat;
+       seated: bool;
+       tricksWon: nat;
+     }) query;
+  startHand: (tableId: nat) -> ();
+  tableEventsView: (tableId: nat, offset: nat, limit: nat) ->
+   (vec record {
+          at: int;
+          card: int;
+          detail: text;
+          kind: text;
+          seat: int;
+        }) query;
+}

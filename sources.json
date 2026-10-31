@@ -1,0 +1,83 @@
+{
+  "comment": "Every repository the index is built from, pinned to a commit. Bump a ref, then run tools/build-index.mjs.",
+  "toolchain": {
+    "moc": "1.4.1"
+  },
+  "sources": [
+    {
+      "repo": "Mercatura-Forum/Thebes-Protocol-",
+      "ref": "729faa00b85593bedfe84045cf9262d6d27a7113",
+      "kind": "hub"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-sdk",
+      "ref": "8ad44fd342d289183a595093b99eaaeba4f7a6c7",
+      "kind": "sdk"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-lib",
+      "ref": "15aaa13b0e859da96e0202ea73c414b1e876fdce",
+      "kind": "lib"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-store",
+      "ref": "a4a9295140e112052b30a7ddceca85ac396dc382",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-chat",
+      "ref": "31668742b5f5a096117c8296939c7ffdc41aeedc",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-finance",
+      "ref": "eeb44bf50746d7ffacc411a43714b44a35440a62",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-booking",
+      "ref": "afd630c91a9c6410107f7d1dde3b9d554b323c97",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-restaurant",
+      "ref": "00e42c64b8a83e28fd3fca8951aba61a231e3abd",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-crm",
+      "ref": "6d94fe1b18ae5b12af943e4b42f603bf6e6b45d6",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-loyalty",
+      "ref": "b523998fc3394f7145a7be83fcd2a1ad35ebaf7d",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-university",
+      "ref": "a95aead7bbe7f7d2528b891eb91cd92eadc58b2a",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-cards",
+      "ref": "99394cda68e0b74d860eba364a4d55d820e4f6df",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-invoicing",
+      "ref": "438c22545bc0ae6eb995a4d1527d62c4f51a66cb",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-xray",
+      "ref": "552d2b5a55dba5d82eccf69c81fb19e395491504",
+      "kind": "example"
+    },
+    {
+      "repo": "Mercatura-Forum/thebes-example-open-banking-iso20022",
+      "ref": "4da19cf20ff2f63c37f7581388e13ae8e0c44ff0",
+      "kind": "example"
+    }
+  ]
+}

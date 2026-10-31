@@ -1,0 +1,48 @@
+{
+  "name": "thebes-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for building, checking and deploying applications on Thebes",
+  "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://thebesprotocol.com/developers",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "thebes",
+    "ai-agent",
+    "deploy",
+    "hosting",
+    "motoko"
+  ],
+  "author": "Thebes Protocol contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mercatura-Forum/thebes-agent-kit.git",
+    "directory": "mcp"
+  },
+  "bin": {
+    "thebes-mcp": "src/server.mjs"
+  },
+  "files": [
+    "src",
+    "data",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "prepack": "node scripts/bundle-data.mjs copy && node scripts/bundle-data.mjs check",
+    "postpack": "node scripts/bundle-data.mjs clean",
+    "pack:check": "node scripts/pack-check.mjs"
+  },
+  "dependencies": {
+    "@dfinity/candid": "3.4.3",
+    "@dfinity/principal": "3.4.3",
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "qrcode": "1.5.4",
+    "zod": "4.6.7"
+  }
+}

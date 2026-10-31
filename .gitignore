@@ -1,0 +1,6 @@
+.cache/
+for-team/
+node_modules/
+mcp/data/
+mcp/LICENSE
+mcp/NOTICE

@@ -1,0 +1,153 @@
+type TxView = 
+ record {
+   accountId: nat;
+   amountCents: nat;
+   category: text;
+   id: nat;
+   kind: text;
+   note: text;
+   receiptPath: text;
+   timestamp: int;
+   transferId: nat;
+ };
+type TxKind = 
+ variant {
+   expense;
+   income;
+ };
+type Transaction = 
+ record {
+   accountId: nat;
+   amountCents: nat;
+   category: text;
+   id: nat;
+   kind: TxKind;
+   note: text;
+   owner: principal;
+   receiptPath: opt text;
+   timestamp: int;
+   transferId: opt nat;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: nat;
+ };
+type Page = 
+ record {
+   items: vec Transaction;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type BudgetView = 
+ record {
+   category: text;
+   limitCents: nat;
+   spentCents: nat;
+ };
+type BalanceCheck = 
+ record {
+   consistent: bool;
+   recomputed: int;
+   stored: int;
+ };
+type AccountView = 
+ record {
+   balanceCents: int;
+   createdAt: int;
+   creditLimitCents: nat;
+   id: nat;
+   kind: text;
+   name: text;
+ };
+type AccountKind = 
+ variant {
+   cash;
+   checking;
+   credit;
+   savings;
+ };
+type Account = 
+ record {
+   balanceCents: int;
+   createdAt: int;
+   creditLimitCents: nat;
+   id: nat;
+   kind: AccountKind;
+   name: text;
+   owner: principal;
+ };
+service : {
+  accountsView: () -> (vec AccountView) query;
+  budgetsView: (startNs: int, endNs: int) -> (vec BudgetView) query;
+  cashflowView: (startNs: int, endNs: int, buckets: nat) ->
+   (vec record {
+          bucketStartNs: int;
+          expenseCents: nat;
+          incomeCents: nat;
+        }) query;
+  claimOwner: () -> (bool);
+  createAccount: (name: text, kindText: text, creditLimitCents: nat) -> (nat);
+  financeSealView: () ->
+   (vec
+     record {
+       accounts: nat;
+       checkedAt: int;
+       inconsistentAccounts: nat;
+       ledgerSumCents: int;
+       storedSumCents: int;
+       transactions: nat;
+     }) query;
+  getAccount: (accountId: nat) -> (opt Account) query;
+  getBudgetStatus: (category: text, startNs: int, endNs: int) ->
+   (record {
+      limitCents: nat;
+      remaining: int;
+      spentCents: nat;
+    }) query;
+  getOwner: () -> (opt principal) query;
+  getTransactions: (accountId: nat, offset: nat, limit: nat) -> (Page) query;
+  invariantReportView: () -> (vec record {
+                                    detail: text;
+                                    rule: text;
+                                  }) query;
+  isPaused: () -> (bool) query;
+  listAccounts: () -> (vec Account) query;
+  netWorthView: () ->
+   (vec
+     record {
+       accounts: nat;
+       assetsCents: int;
+       creditCents: int;
+       netCents: int;
+       nowNs: int;
+     }) query;
+  postTransaction: (accountId: nat, kindText: text, amountCents: nat,
+   category: text, note: text, receiptPath: opt text) -> (Result);
+  postTransactionOrTrap: (accountId: nat, kindText: text, amountCents: 
+   nat, category: text, note: text, receiptPath: opt text) -> (nat);
+  seedDemo: () -> (bool);
+  setBudget: (category: text, limitCents: nat) -> ();
+  setPaused: (v: bool) -> (bool);
+  setReceipt: (txId: nat, receiptPath: text) -> (Result_1);
+  setReceiptOrTrap: (txId: nat, receiptPath: text) -> ();
+  transactionsView: (accountId: nat, offset: nat, limit: nat) ->
+   (vec TxView) query;
+  transfer: (fromId: nat, toId: nat, amountCents: nat, note: text) ->
+   (Result);
+  transferOrTrap: (fromId: nat, toId: nat, amountCents: nat, note: text) ->
+   (nat);
+  transferOwner: (n: principal) -> (bool);
+  verifyBalance: (accountId: nat) ->
+   (record {
+      consistent: bool;
+      recomputed: int;
+      stored: int;
+    }) query;
+  verifyBalanceView: (accountId: nat) -> (vec BalanceCheck) query;
+}

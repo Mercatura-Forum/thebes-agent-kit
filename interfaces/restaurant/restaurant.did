@@ -1,0 +1,201 @@
+type Result_1 = 
+ variant {
+   err: text;
+   ok: nat;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type OrderStatus = 
+ variant {
+   delivered;
+   pending;
+   preparing;
+   ready;
+ };
+type OrderItem = 
+ record {
+   menuItemId: nat;
+   quantity: nat;
+ };
+type Order = 
+ record {
+   customerId: principal;
+   id: nat;
+   items: vec OrderItem;
+   status: OrderStatus;
+   tableNumber: opt nat;
+   timestamp: int;
+   totalAmount: nat;
+ };
+type MenuItem = 
+ record {
+   available: bool;
+   id: nat;
+   name: text;
+   photoPath: opt text;
+   priceE8s: nat;
+ };
+service : {
+  addAdmin: (w: principal) -> (bool);
+  addMenuItem: (name: text, priceE8s: nat, photoPath: opt text) -> (Result_1);
+  addMenuItemOrTrap: (name: text, priceE8s: nat, photoPath: opt text) ->
+   (nat);
+  addTable: (number: nat, seats: nat) -> ();
+  amKitchen: () -> (bool) query;
+  cancelReservation: (id: nat) -> ();
+  claimOwner: () -> (bool);
+  completeReservation: (id: nat, showed: bool) -> ();
+  floorEventsView: (offset: nat, limit: nat) ->
+   (vec
+     record {
+       at: int;
+       detail: text;
+       kind: text;
+       orderId: nat;
+       tableNumber: nat;
+     }) query;
+  floorSealView: () ->
+   (vec
+     record {
+       checkedAt: int;
+       occupied: nat;
+       reservedNow: nat;
+       tablesOnFloor: nat;
+       violations: nat;
+     }) query;
+  floorView: () ->
+   (vec
+     record {
+       gridH: nat;
+       gridW: nat;
+       guestName: text;
+       nextResAt: int;
+       nowNs: int;
+       number: nat;
+       orderId: nat;
+       orderIsMine: bool;
+       orderStatus: text;
+       orderTotalE8s: nat;
+       partySize: nat;
+       posX: nat;
+       posY: nat;
+       resEnd: int;
+       resSeated: bool;
+       resStart: int;
+       reservationId: nat;
+       seats: nat;
+       status: text;
+     }) query;
+  getAdmins: () -> (vec principal) query;
+  getMenu: () -> (vec MenuItem) query;
+  getMenuItem: (id: nat) -> (opt MenuItem) query;
+  getOpenOrders: () -> (vec Order) query;
+  getOrder: (id: nat) -> (opt Order) query;
+  getOwner: () -> (opt principal) query;
+  getOwnerStats: (dayStartNs: int, dayEndNs: int) ->
+   (record {
+      totalOrders: nat;
+      totalRevenue: nat;
+    }) query;
+  invariantReportView: () ->
+   (vec record {
+          detail: text;
+          rule: text;
+          tableNumber: nat;
+        }) query;
+  isPaused: () -> (bool) query;
+  kitchenView: () ->
+   (vec
+     record {
+       id: nat;
+       itemCount: nat;
+       status: text;
+       tableNumber: nat;
+       timestamp: int;
+       totalAmount: nat;
+     }) query;
+  markDelivered: (orderId: nat) -> (Result);
+  markDeliveredOrTrap: (orderId: nat) -> ();
+  markOrderReady: (orderId: nat) -> (Result);
+  markOrderReadyOrTrap: (orderId: nat) -> ();
+  menuView: () ->
+   (vec
+     record {
+       available: bool;
+       id: nat;
+       name: text;
+       photoPath: text;
+       priceE8s: nat;
+     }) query;
+  moveOrderToTable: (orderId: nat, tableNumber: nat) -> ();
+  myInvoicesView: () ->
+   (vec
+     record {
+       createdAt: int;
+       id: nat;
+       itemCount: nat;
+       status: text;
+       totalE8s: nat;
+     }) query;
+  myOrdersView: () ->
+   (vec
+     record {
+       id: nat;
+       itemCount: nat;
+       status: text;
+       tableNumber: nat;
+       timestamp: int;
+       totalAmount: nat;
+     }) query;
+  myReservationsView: () ->
+   (vec
+     record {
+       endNs: int;
+       id: nat;
+       nowNs: int;
+       partySize: nat;
+       startNs: int;
+       status: text;
+       tableNumber: nat;
+     }) query;
+  placeOrder: (items: vec OrderItem) -> (Result_1);
+  placeOrderFlatOrTrap: (menuItemIds: vec nat, quantities: vec nat,
+   tableNumber: nat) -> (nat);
+  removeAdmin: (w: principal) -> (bool);
+  reservationsBookView: () ->
+   (vec
+     record {
+       endNs: int;
+       guestName: text;
+       id: nat;
+       nowNs: int;
+       partySize: nat;
+       startNs: int;
+       status: text;
+       tableNumber: nat;
+     }) query;
+  reserveTable: (guestName: text, tableNumber: nat, partySize: nat, startNs:
+   int, endNs: int) -> (Result_1);
+  reserveTableOrTrap: (guestName: text, tableNumber: nat, partySize: 
+   nat, startNs: int, endNs: int) -> (nat);
+  retireTable: (number: nat) -> ();
+  seatReservation: (id: nat) -> ();
+  seedDemo: () -> (bool);
+  setItemAvailable: (id: nat, available: bool) -> (Result);
+  setItemAvailableOrTrap: (id: nat, available: bool) -> ();
+  setMenuItemPhoto: (id: nat, photoPath: text) -> (Result);
+  setMenuItemPhotoOrTrap: (id: nat, photoPath: text) -> ();
+  setPaused: (v: bool) -> (bool);
+  /// Arrange the floor: put a table at a grid cell (kitchen only). x=0,y=0
+  /// sends it back to the shelf (auto-flow). The no-overlap guard is the same
+  /// law the oracle audits.
+  setTablePosition: (number: nat, x: nat, y: nat) -> ();
+  setTableSeats: (number: nat, seats: nat) -> ();
+  startPreparingOrder: (orderId: nat) -> (Result);
+  startPreparingOrderOrTrap: (orderId: nat) -> ();
+  transferOwner: (n: principal) -> (bool);
+  updateMenuPrice: (id: nat, newPrice: nat) -> (Result);
+}

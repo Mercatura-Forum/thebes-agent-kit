@@ -1,0 +1,1982 @@
+type XmlProfileFixture = 
+ record {
+   direction: text;
+   expectedRuleIds: vec text;
+   id: text;
+   messageKind: text;
+   notes: text;
+   profile: text;
+   sourceOracle: text;
+   validity: text;
+ };
+type WorkflowState = 
+ record {
+   eventCount: nat;
+   events: vec WorkflowEvent;
+   id: text;
+   kind: text;
+   messageIds: vec text;
+   participants: vec text;
+   primaryReference: text;
+   startedAt: int;
+   status: text;
+   uetrs: vec text;
+   updatedAt: int;
+ };
+type WorkflowEvent = 
+ record {
+   at: int;
+   auditId: opt nat;
+   by: principal;
+   detail: text;
+   messageId: text;
+   messageKind: text;
+   relatedMessageId: opt text;
+   status: text;
+   uetr: opt text;
+ };
+type WorkflowCorrelationResult = 
+ record {
+   audit: AuditRecord;
+   ok: bool;
+   report: ValidationReport;
+   workflow: opt WorkflowState;
+ };
+type ValidationReport = 
+ record {
+   guidelineId: text;
+   issueCount: nat;
+   issues: vec ValidationIssue;
+   messageKind: text;
+   messageVersion: text;
+   ok: bool;
+ };
+type ValidationIssue = 
+ record {
+   message: text;
+   path: text;
+   ruleId: text;
+   severity: text;
+   tier: text;
+ };
+type UsageGuideline = 
+ record {
+   allowedClearingSystems: vec text;
+   authority: text;
+   categoryPurposeCodes: vec text;
+   characterSet: text;
+   countryCodes: vec text;
+   currencies: vec CurrencyRule;
+   description: text;
+   id: text;
+   maxMessageBytes: nat;
+   messageVersions: vec MessageVersion;
+   oneTransactionPerPacs008: bool;
+   purposeCodes: vec text;
+   requireAccountCurrencyMatchesInstructed: bool;
+   requireBahBusinessMessageIdMatchesMessageId: bool;
+   requireBusinessApplicationHeader: bool;
+   requireUetr: bool;
+   requiredAgentCountry: opt text;
+   requiredIbanCountry: opt text;
+   settlementMethod: text;
+ };
+type TransportSubmitResult = 
+ variant {
+   accepted: TransportRecord;
+   deadLetter: TransportRecord;
+ };
+type TransportRecord = 
+ record {
+   connectorId: text;
+   format: text;
+   id: nat;
+   issueCount: nat;
+   issues: vec ValidationIssue;
+   payloadHash: blob;
+   paymentId: opt nat;
+   receivedAt: int;
+   remoteId: text;
+   sequence: nat;
+   status: text;
+   traceId: text;
+ };
+type TransportEnvelope = 
+ record {
+   connectorId: text;
+   endpoint: opt text;
+   format: text;
+   payload: blob;
+   payloadHash: blob;
+   remoteId: text;
+   sentAt: int;
+   sequence: nat;
+   signature: opt blob;
+   traceId: text;
+ };
+type SupportedStandard = 
+ record {
+   name: text;
+   url: text;
+ };
+type SubmitXmlResult = 
+ variant {
+   err: ValidationReport;
+   ok: HubPayment;
+ };
+type StatusReportXmlDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: StatusReport;
+ };
+type StatusReport = 
+ record {
+   creationDateTime: text;
+   messageId: text;
+   messageKind: text;
+   messageVersion: text;
+   originalMessageId: text;
+   originalUetr: text;
+   reason: opt text;
+   transactionStatus: text;
+ };
+type StatementXmlDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: vec StatementEntry;
+ };
+type StatementEntry = 
+ record {
+   accountIban: opt text;
+   accountOtherId: opt text;
+   amount: ActiveCurrencyAndAmount;
+   bookedAt: int;
+   counterpartyName: text;
+   creditDebit: text;
+   entryId: text;
+   paymentId: nat;
+   remittance: vec text;
+   status: text;
+   uetr: text;
+ };
+type StableIndexVerifyReport = 
+ record {
+   issueCount: nat;
+   issues: vec text;
+   metadata: Metadata;
+   ok: bool;
+ };
+type SignaturePolicy = 
+ record {
+   domain: text;
+   mode: text;
+   publicKeyHash: opt blob;
+   requireSignature: bool;
+   scheme: text;
+   verifier: opt principal;
+ };
+type SettlementRequestItem = 
+ record {
+   cycle: opt text;
+   declaredMovements: opt nat;
+   instructionId: text;
+   movements: vec Movement;
+ };
+type SettlementRequest = 
+ record {
+   creationDateTime: text;
+   declaredCount: nat;
+   items: vec SettlementRequestItem;
+   messageId: text;
+ };
+type SettlementRecord = 
+ record {
+   amount: ActiveCurrencyAndAmount;
+   creditorAccount: IcrcAccount;
+   creditorAgent: text;
+   debtorAccount: IcrcAccount;
+   debtorAgent: text;
+   fee: nat;
+   ledgerBlockIndex: nat;
+   ledgerCanister: principal;
+   settledAt: int;
+   transferMode: text;
+ };
+type SettlementQueueEntry = 
+ record {
+   amount: ActiveCurrencyAndAmount;
+   bypassFifo: bool;
+   creditorAgent: text;
+   debtorAgent: text;
+   paymentId: nat;
+   priority: nat;
+   queuedAt: int;
+   reason: text;
+   reservedDebitMinorUnits: nat;
+   status: text;
+   updatedAt: int;
+ };
+type SettlementParticipantAccount = 
+ record {
+   account: IcrcAccount;
+   bicfi: text;
+ };
+type SettlementOffsetResult = 
+ record {
+   ledgerBlockIndex: opt nat;
+   netAmountMinorUnits: nat;
+   netCreditorAgent: opt text;
+   netDebtorAgent: opt text;
+   paymentA: HubPayment;
+   paymentB: HubPayment;
+   transferMode: text;
+ };
+type SettlementLiquidityPosition = 
+ record {
+   availableDebitMinorUnits: opt nat;
+   bicfi: text;
+   debitLimitMinorUnits: opt nat;
+   queuedPaymentCount: nat;
+   reservedDebitMinorUnits: nat;
+ };
+type SettlementLiquidityLimit = 
+ record {
+   active: bool;
+   bicfi: text;
+   maxDebitMinorUnits: nat;
+   reservedDebitMinorUnits: nat;
+ };
+type SettlementLiquidityCheck = 
+ record {
+   bicfi: text;
+   debitLimitMinorUnits: opt nat;
+   ok: bool;
+   reason: opt text;
+   requestedDebitMinorUnits: nat;
+   reservedDebitMinorUnits: nat;
+ };
+type SettlementLedgerConfig = 
+ record {
+   currency: opt text;
+   enabled: bool;
+   fee: nat;
+   ledgerCanister: opt principal;
+   transferMode: text;
+ };
+type SettlementInstruction = 
+ record {
+   clearingSystem: opt text;
+   settlementMethod: text;
+ };
+type SettlementDispatchResult = 
+ variant {
+   dispatched: HubPayment;
+   queued: SettlementQueueEntry;
+   settled: HubPayment;
+ };
+type SecondaryIndexHealth = 
+ record {
+   outboundQueue: OrderedIndexInvariantReport;
+   outboundQueueSize: nat;
+   paymentAccount: OrderedIndexInvariantReport;
+   paymentAccountSize: nat;
+   paymentCreditorAgent: OrderedIndexInvariantReport;
+   paymentCreditorAgentSize: nat;
+   paymentStatus: OrderedIndexInvariantReport;
+   paymentStatusSize: nat;
+   settlementQueue: OrderedIndexInvariantReport;
+   settlementQueueSize: nat;
+   stableOutboundQueue: StableIndexVerifyReport;
+   stablePaymentAccount: StableIndexVerifyReport;
+   stablePaymentCreditorAgent: StableIndexVerifyReport;
+   stablePaymentStatus: StableIndexVerifyReport;
+   stableSettlementQueue: StableIndexVerifyReport;
+ };
+type SchemaProfileSummary = 
+ record {
+   family: text;
+   namespace: text;
+   rootName: text;
+   schemaSha256: text;
+   types: nat;
+ };
+type RuleView = 
+ record {
+   basis: text;
+   check: text;
+   families: vec text;
+   id: text;
+ };
+type RuleSetSummary = 
+ record {
+   authority: text;
+   basis: vec text;
+   id: text;
+   implemented: vec record {
+                      text;
+                      nat;
+                    };
+   name: text;
+   reconciliation: text;
+   ruleCount: nat;
+ };
+type ReversalItem = 
+ record {
+   amount: opt Amount;
+   originalEndToEndId: opt text;
+   originalUetr: opt text;
+   reasonCode: opt text;
+   reasonProprietary: opt text;
+   reversalId: opt text;
+ };
+type Reversal = 
+ record {
+   creationDateTime: text;
+   declaredCount: nat;
+   family: text;
+   groupReasonCode: opt text;
+   groupReasonProprietary: opt text;
+   items: vec ReversalItem;
+   messageId: text;
+   originalMessageId: opt text;
+   originalMessageName: opt text;
+ };
+type Result = 
+ variant {
+   err: vec ValidationIssue;
+   ok: text;
+ };
+type ResendRequest = 
+ record {
+   creationDateTime: opt text;
+   criteria: vec ResendCriteria;
+   messageId: text;
+   originalQueryId: opt text;
+ };
+type ResendCriteria = 
+ record {
+   businessDate: opt text;
+   fileReference: opt text;
+   originalMessageName: opt text;
+   recipientBic: opt text;
+   sequenceNumber: opt text;
+ };
+type RequestToPayXmlDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: RequestToPayMessage;
+ };
+type RequestToPayMessage = 
+ record {
+   chargeBearer: opt text;
+   creationDateTime: text;
+   creditor: PartyIdentification;
+   creditorAccount: CashAccount;
+   creditorAgent: FinancialInstitutionIdentification;
+   debtor: PartyIdentification;
+   debtorAccount: CashAccount;
+   debtorAgent: FinancialInstitutionIdentification;
+   messageId: text;
+   messageKind: text;
+   messageVersion: text;
+   originalRequestId: opt text;
+   reason: opt text;
+   remittanceInformation: RemittanceInformation;
+   requestId: text;
+   requestedAmount: ActiveCurrencyAndAmount;
+   requestedExecutionDate: opt text;
+   status: opt text;
+ };
+type ReportingRequestItem = 
+ record {
+   accountId: opt text;
+   fromDate: opt text;
+   id: opt text;
+   ownerBic: opt text;
+   requestedMessage: text;
+   toDate: opt text;
+ };
+type ReportingRequest = 
+ record {
+   creationDateTime: text;
+   items: vec ReportingRequestItem;
+   messageId: text;
+ };
+type RemittanceInformation = 
+ record {
+   structuredCreditorReference: opt text;
+   unstructured: vec text;
+ };
+type RegulatoryReporting = 
+ record {
+   authorityCountry: opt text;
+   details: vec text;
+   reportingCode: opt text;
+ };
+type ReceiptDetail = 
+ record {
+   description: opt text;
+   originalMessageId: text;
+   originalMessageName: opt text;
+   statusCode: opt text;
+ };
+type Receipt = 
+ record {
+   creationDateTime: opt text;
+   details: vec ReceiptDetail;
+   messageId: text;
+ };
+type ProcessingRequest = 
+ record {
+   additional: vec text;
+   messageId: text;
+   requestType: text;
+   requesterBic: opt text;
+   session: opt text;
+ };
+type PostalAddress = 
+ record {
+   addressLine: vec text;
+   country: text;
+   postalCode: opt text;
+   townName: text;
+ };
+type PhaseVerification = 
+ record {
+   issueCount: nat;
+   issues: vec ValidationIssue;
+   ok: bool;
+   phase: text;
+ };
+type PhaseOracleSpec = 
+ record {
+   evidenceMethods: vec text;
+   implementedChecks: vec text;
+   limitations: vec text;
+   nextHardening: vec text;
+   oracleSources: vec OracleSource;
+   phase: text;
+   status: text;
+   verifier: text;
+ };
+type PfmiPrincipleAssessment = 
+ record {
+   applicability: text;
+   codeEnforceable: bool;
+   evidence: vec text;
+   locus: text;
+   oraclePhase: opt text;
+   principle: nat;
+   residualGaps: vec text;
+   status: text;
+   title: text;
+   verifierSurface: vec text;
+ };
+type PaymentXmlBundle = 
+ record {
+   camt054Xml: text;
+   codecVersion: text;
+   pacs002Xml: opt text;
+   pacs008Xml: text;
+   pain001Xml: text;
+   pain002Xml: text;
+   returnXml: opt text;
+ };
+type PaymentView = 
+ record {
+   amount: ActiveCurrencyAndAmount;
+   auditId: nat;
+   createdAt: int;
+   creditorAgent: text;
+   debtorAgent: text;
+   duplicateSignal: DuplicateSignal;
+   id: nat;
+   issueCount: nat;
+   messageId: text;
+   ok: bool;
+   settlementBlockIndex: opt nat;
+   settlementLedger: opt principal;
+   status: text;
+   submittedBy: principal;
+   uetr: text;
+   updatedAt: int;
+ };
+type PaymentTypeInformation = 
+ record {
+   categoryPurpose: opt text;
+   localInstrument: opt text;
+   serviceLevel: opt text;
+ };
+type PaymentEvent = 
+ record {
+   at: int;
+   by: principal;
+   detail: text;
+   event: text;
+ };
+type PartyIdentification = 
+ record {
+   lei: opt text;
+   name: text;
+   postalAddress: opt PostalAddress;
+ };
+type ParticipantDirectoryInput = 
+ record {
+   accessTier: text;
+   active: bool;
+   bicfi: text;
+   country: text;
+   displayName: text;
+   lei: opt text;
+   notes: text;
+   parentBicfi: opt text;
+   reachable: bool;
+   supportedMessageFamilies: vec text;
+ };
+type ParticipantDirectoryEntry = 
+ record {
+   accessTier: text;
+   active: bool;
+   bicfi: text;
+   country: text;
+   displayName: text;
+   lei: opt text;
+   notes: text;
+   parentBicfi: opt text;
+   reachable: bool;
+   settlementAccountConfigured: bool;
+   supportedMessageFamilies: vec text;
+   updatedAt: int;
+ };
+type Pain001XmlDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: CustomerCreditTransferInitiation;
+ };
+type Page_9 = 
+ record {
+   items: vec ConnectorConfig;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_8 = 
+ record {
+   items: vec EndOfDayStatementRun;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_7 = 
+ record {
+   items: vec OutboundBatch;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_6 = 
+ record {
+   items: vec ParticipantDirectoryEntry;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_5 = 
+ record {
+   items: vec ComplianceScreeningRecord;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_4 = 
+ record {
+   items: vec PaymentView;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_3 = 
+ record {
+   items: vec HubPayment;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_2 = 
+ record {
+   items: vec SettlementQueueEntry;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_13 = 
+ record {
+   items: vec StatementEntry;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_12 = 
+ record {
+   items: vec AuditView;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_11 = 
+ record {
+   items: vec AuditRecord;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_10 = 
+ record {
+   items: vec CertifiedParticipantBalance;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page_1 = 
+ record {
+   items: vec TransportRecord;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Page = 
+ record {
+   items: vec WorkflowState;
+   nextOffset: opt nat;
+   total: nat;
+ };
+type Pacs009XmlDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: Pacs009FinancialInstitutionCreditTransfer;
+ };
+type Pacs009FinancialInstitutionCreditTransfer = 
+ record {
+   businessApplicationHeader: opt BusinessApplicationHeader;
+   creationDateTime: text;
+   creditorAgent: FinancialInstitutionIdentification;
+   creditorInstitution: FinancialInstitutionIdentification;
+   debtorAgent: FinancialInstitutionIdentification;
+   debtorInstitution: FinancialInstitutionIdentification;
+   endToEndId: text;
+   instructedAmount: ActiveCurrencyAndAmount;
+   instructionId: text;
+   isCover: bool;
+   messageId: text;
+   routing: CrossBorderRouting;
+   settlementInstruction: SettlementInstruction;
+   transactionCount: nat;
+   uetr: opt text;
+   underlyingPacs008MessageId: opt text;
+ };
+type Pacs008XmlDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: Pacs008CreditTransfer;
+ };
+type Pacs008CreditTransfer = 
+ record {
+   businessApplicationHeader: opt BusinessApplicationHeader;
+   creationDateTime: text;
+   creditor: PartyIdentification;
+   creditorAccount: CashAccount;
+   creditorAgent: FinancialInstitutionIdentification;
+   debtor: PartyIdentification;
+   debtorAccount: CashAccount;
+   debtorAgent: FinancialInstitutionIdentification;
+   endToEndId: text;
+   instructedAmount: ActiveCurrencyAndAmount;
+   messageId: text;
+   paymentTypeInformation: opt PaymentTypeInformation;
+   remittanceInformation: RemittanceInformation;
+   settlementInstruction: SettlementInstruction;
+   transactionCount: nat;
+   uetr: opt text;
+ };
+type OutboundBatch = 
+ record {
+   ack: opt DeliveryAck;
+   attemptCount: nat;
+   connectorId: text;
+   createdAt: int;
+   format: text;
+   id: nat;
+   issueCount: nat;
+   issues: vec ValidationIssue;
+   leasedUntil: opt int;
+   maxAttempts: nat;
+   payload: blob;
+   payloadHash: blob;
+   paymentId: opt nat;
+   status: text;
+   updatedAt: int;
+ };
+type OrderedIndexInvariantReport = 
+ record {
+   issueCount: nat;
+   issues: vec text;
+   ok: bool;
+ };
+type OracleSource = 
+ record {
+   id: text;
+   kind: text;
+   name: text;
+   reference: text;
+   use: text;
+ };
+type OracleReadiness = 
+ record {
+   failingCount: nat;
+   generatedAt: int;
+   ok: bool;
+   phaseCount: nat;
+   phases: vec PhaseVerification;
+   registryVersion: text;
+ };
+type OperatingDayStatus = 
+ record {
+   businessDate: opt text;
+   closesAt: opt int;
+   currency: text;
+   cutoffAt: opt int;
+   now: int;
+   phase: text;
+   reason: opt text;
+   settlementAllowed: bool;
+ };
+type OperatingDayOpeningBalance = 
+ record {
+   account: IcrcAccount;
+   balance: nat;
+   bicfi: text;
+   capturedAt: int;
+ };
+type OperatingDayConfig = 
+ record {
+   active: bool;
+   businessDate: text;
+   closesAt: int;
+   currency: text;
+   cutoffAt: int;
+   openedAt: int;
+   phase: text;
+   updatedAt: int;
+ };
+type NotificationToReceive = 
+ record {
+   accountId: opt text;
+   creationDateTime: text;
+   items: vec NotificationItem;
+   messageId: text;
+   notificationId: text;
+ };
+type NotificationItem = 
+ record {
+   accountId: opt text;
+   amount: Amount;
+   debtorAgent: opt text;
+   endToEndId: opt text;
+   expectedValueDate: opt text;
+   id: text;
+   uetr: opt text;
+ };
+type MtStatementDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: vec StatementEntry;
+ };
+type MtParty = 
+ record {
+   receiver: text;
+   sender: text;
+ };
+type MtMessage = 
+ variant {
+   camt052: AccountReport;
+   camt053: vec StatementEntry;
+   camt054: StatementEntry;
+   cover: CoverPayment;
+   investigation: InvestigationMessage;
+   pacs009: Pacs009FinancialInstitutionCreditTransfer;
+   pain001: vec CustomerCreditTransferInitiation;
+   pain008: vec DirectDebitMessage;
+ };
+type MtMapping = 
+ record {
+   fields: vec FieldMap;
+   iso: text;
+   mt: text;
+ };
+type MtDecode = 
+ record {
+   iso: text;
+   issues: vec ValidationIssue;
+   message: opt MtMessage;
+   mtType: text;
+ };
+type Mt103Field = 
+ record {
+   option: opt text;
+   tag: text;
+   value: text;
+ };
+type Mt103Decode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: CustomerCreditTransferInitiation;
+ };
+type Movement = 
+ record {
+   amount: nat;
+   currency: text;
+   debit: bool;
+   participantBic: text;
+ };
+type Metadata = 
+ record {
+   byteLength: nat64;
+   commitHash: blob;
+   entryCount: nat;
+   generation: nat;
+   pages: nat64;
+   regionId: nat;
+ };
+type MessageVersion = 
+ record {
+   kind: text;
+   version: text;
+ };
+type MemphisTransportSubmitResult = 
+ variant {
+   accepted: TransportRecord;
+   authErr: MemphisAuthError;
+   deadLetter: TransportRecord;
+ };
+type MemphisError = 
+ variant {
+   AnchorNotFound;
+   ChallengeExpired;
+   DuplicateCredential;
+   FactorNotFound;
+   InsufficientFactors;
+   InvalidArgument: text;
+   InvariantViolation: record {
+                         details: text;
+                         id: text;
+                       };
+   NotAuthenticated;
+   SessionExpired;
+   Unauthorized;
+ };
+type MemphisAuthError = 
+ variant {
+   Expired;
+   Memphis: MemphisError;
+ };
+type MandateMessage = 
+ record {
+   creationDateTime: text;
+   mandates: vec MandateItem;
+   messageId: text;
+ };
+type MandateItem = 
+ record {
+   creditorAgent: text;
+   debtorAccount: text;
+   debtorAgent: text;
+   finalCollection: opt text;
+   firstCollection: opt text;
+   mandateId: text;
+   maxAmount: opt Amount;
+   requestId: opt text;
+   sequence: text;
+ };
+type MandateCancellationItem = 
+ record {
+   originalMandateId: text;
+   reason: text;
+ };
+type MandateCancellation = 
+ record {
+   creationDateTime: text;
+   items: vec MandateCancellationItem;
+   messageId: text;
+ };
+type MandateAmendmentItem = 
+ record {
+   mandate: MandateItem;
+   originalMandateId: text;
+   reason: text;
+ };
+type MandateAmendment = 
+ record {
+   creationDateTime: text;
+   items: vec MandateAmendmentItem;
+   messageId: text;
+ };
+type MandateAcceptanceItem = 
+ record {
+   accepted: bool;
+   originalMandateId: text;
+   reason: opt text;
+ };
+type MandateAcceptance = 
+ record {
+   creationDateTime: text;
+   items: vec MandateAcceptanceItem;
+   messageId: text;
+ };
+type LiquidityTransfer = 
+ record {
+   amount: Amount;
+   creationDateTime: opt text;
+   creditorAccount: opt text;
+   creditorBic: opt text;
+   debtorAccount: opt text;
+   debtorBic: opt text;
+   endToEndId: text;
+   instructionId: opt text;
+   messageId: text;
+   settlementDate: opt text;
+ };
+type LegacyPaymentFileDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: vec CustomerCreditTransferInitiation;
+ };
+type IsoDocumentReport = 
+ record {
+   family: text;
+   hasHeader: bool;
+   report: ValidationReport;
+   ruleSet: opt text;
+ };
+type InvestigationXmlDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: InvestigationMessage;
+ };
+type InvestigationMessage = 
+ record {
+   additionalInfo: vec text;
+   assignmentId: text;
+   creationDateTime: text;
+   messageId: text;
+   messageKind: text;
+   messageVersion: text;
+   originalMessageId: text;
+   originalUetr: opt text;
+   reasonCode: text;
+   requestedAction: opt text;
+ };
+type Investigation = 
+ record {
+   assigneeBic: opt text;
+   assignerBic: opt text;
+   assignmentId: text;
+   caseId: opt text;
+   creationDateTime: text;
+   family: text;
+   instruction: opt text;
+   missingInformation: vec text;
+   modifiedAmount: opt Amount;
+   originalAmount: opt Amount;
+   originalEndToEndId: opt text;
+   originalInstructionId: opt text;
+   originalMessageId: opt text;
+   originalMessageName: opt text;
+   originalSettlementDate: opt text;
+   originalUetr: opt text;
+ };
+type IntegrationProfilePack = 
+ record {
+   connectorFormats: vec text;
+   displayName: text;
+   fixturePath: text;
+   guidelineSurface: text;
+   id: text;
+   legacyInputs: vec text;
+   messageFamilies: vec text;
+   notes: text;
+   status: text;
+ };
+type IcrcAccount = 
+ record {
+   owner: principal;
+   subaccount: opt blob;
+ };
+type HubPayment = 
+ record {
+   auditId: nat;
+   createdAt: int;
+   duplicateSignal: DuplicateSignal;
+   history: vec PaymentEvent;
+   id: nat;
+   instruction: CustomerCreditTransferInitiation;
+   messageId: text;
+   pacs002: opt StatusReport;
+   pacs008: Pacs008CreditTransfer;
+   pain002: StatusReport;
+   returnReport: opt StatusReport;
+   settlement: opt SettlementRecord;
+   status: text;
+   submittedBy: principal;
+   uetr: text;
+   updatedAt: int;
+   validationReport: ValidationReport;
+ };
+type GuidelineProfileSummary = 
+ record {
+   builtin: bool;
+   displayName: text;
+   guidelineId: text;
+   id: text;
+   notes: text;
+   status: text;
+   updatedAt: int;
+ };
+type GuidelineProfile = 
+ record {
+   displayName: text;
+   guideline: UsageGuideline;
+   id: text;
+   notes: text;
+   status: text;
+   updatedAt: int;
+ };
+type FxDetails = 
+ record {
+   exchangeRateE8s: nat;
+   quoteExpiry: opt text;
+   quoteId: opt text;
+   settlementAmount: ActiveCurrencyAndAmount;
+   sourceCurrency: text;
+   targetCurrency: text;
+ };
+type FinancialInstitutionIdentification = 
+ record {
+   bicfi: text;
+   name: opt text;
+ };
+type FileHeader = 
+ record {
+   creationDateTime: text;
+   declaredDocuments: opt nat;
+   payloadId: text;
+   payloadType: text;
+   payloads: vec Element;
+   possibleDuplicate: bool;
+ };
+type FieldMap = 
+ record {
+   element: text;
+   field: text;
+   note: text;
+ };
+type Entry = 
+ record {
+   amount: Amount;
+   block: nat;
+   bookingDate: text;
+   counterparty: opt text;
+   credit: bool;
+   endToEndId: opt text;
+   reference: text;
+   remittance: vec text;
+   uetr: opt text;
+   valueDate: text;
+ };
+type EndOfDayStatementRun = 
+ record {
+   businessDate: text;
+   camt053Xml: text;
+   currency: text;
+   entries: vec StatementEntry;
+   fromTimeInclusive: int;
+   generatedAt: int;
+   id: nat;
+   issueCount: nat;
+   issues: vec text;
+   ok: bool;
+   paymentCount: nat;
+   reconciliations: vec EndOfDayParticipantReconciliation;
+   toTimeExclusive: int;
+ };
+type EndOfDayParticipantReconciliation = 
+ record {
+   account: IcrcAccount;
+   bicfi: text;
+   expectedClosingBalance: int;
+   feeDebitMinorUnits: nat;
+   grossCreditMinorUnits: nat;
+   grossDebitMinorUnits: nat;
+   issues: vec text;
+   ledgerBalance: nat;
+   netLedgerDeltaMinorUnits: int;
+   ok: bool;
+   openingBalance: nat;
+ };
+type Element = 
+ record {
+   attributes: vec record {
+                     text;
+                     text;
+                   };
+   children: vec Element;
+   name: text;
+   namespace: text;
+   offset: nat;
+   "text": text;
+ };
+type DuplicateSignal = 
+ record {
+   exactMessageIdDuplicate: bool;
+   exactUetrDuplicate: bool;
+   messageIdBloomMightContain: bool;
+   uetrBloomMightContain: bool;
+ };
+type DuplicateFilterInfo = 
+ record {
+   bits: nat;
+   exactMessageIdIndexSize: nat;
+   exactUetrIndexSize: nat;
+   hashes: nat;
+   messageIdFillPermille: nat;
+   note: text;
+   uetrFillPermille: nat;
+ };
+type DirectDebitXmlDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: DirectDebitMessage;
+ };
+type DirectDebitMessage__2 = 
+ record {
+   creationDateTime: text;
+   declaredCount: nat;
+   family: text;
+   messageId: text;
+   transactions: vec DirectDebit;
+ };
+type DirectDebitMessage = 
+ record {
+   businessApplicationHeader: opt BusinessApplicationHeader;
+   creationDateTime: text;
+   creditor: PartyIdentification;
+   creditorAccount: CashAccount;
+   creditorAgent: FinancialInstitutionIdentification;
+   debtor: PartyIdentification;
+   debtorAccount: CashAccount;
+   debtorAgent: FinancialInstitutionIdentification;
+   endToEndId: text;
+   initiatingParty: PartyIdentification;
+   instructedAmount: ActiveCurrencyAndAmount;
+   mandateId: text;
+   mandateSignatureDate: opt text;
+   messageId: text;
+   messageKind: text;
+   messageVersion: text;
+   paymentTypeInformation: opt PaymentTypeInformation;
+   remittanceInformation: RemittanceInformation;
+   requestedCollectionDate: opt text;
+   sequenceType: text;
+   settlementInstruction: opt SettlementInstruction;
+   transactionCount: nat;
+   uetr: opt text;
+ };
+type DirectDebit = 
+ record {
+   amount: Amount;
+   creditorAgent: text;
+   creditorName: opt text;
+   debtorAccount: opt text;
+   debtorAgent: text;
+   debtorName: opt text;
+   endToEndId: text;
+   instructionId: opt text;
+   mandateId: opt text;
+   sequence: opt text;
+   uetr: text;
+ };
+type DeliveryAck = 
+ record {
+   batchId: nat;
+   connectorId: text;
+   deliveredAt: int;
+   detail: text;
+   payloadHash: blob;
+   remoteReceiptId: text;
+   status: text;
+ };
+type CustomerCreditTransferInitiation = 
+ record {
+   creationDateTime: text;
+   creditor: PartyIdentification;
+   creditorAccount: CashAccount;
+   creditorAgent: FinancialInstitutionIdentification;
+   debtor: PartyIdentification;
+   debtorAccount: CashAccount;
+   debtorAgent: FinancialInstitutionIdentification;
+   endToEndId: text;
+   initiatingParty: PartyIdentification;
+   instructedAmount: ActiveCurrencyAndAmount;
+   messageId: text;
+   paymentTypeInformation: opt PaymentTypeInformation;
+   remittanceInformation: RemittanceInformation;
+   requestedExecutionDate: opt text;
+   requestedUetr: opt text;
+ };
+type CurrencyRule = 
+ record {
+   code: text;
+   fractionDigits: nat;
+   numeric: nat;
+ };
+type CrossBorderRouting = 
+ record {
+   chargeBearer: text;
+   charges: vec Charge;
+   fx: opt FxDetails;
+   instructedAgent: FinancialInstitutionIdentification;
+   instructingAgent: FinancialInstitutionIdentification;
+   intermediaryAgents: vec FinancialInstitutionIdentification;
+   regulatoryReporting: vec RegulatoryReporting;
+   settlementDate: opt text;
+ };
+type CoverPaymentXmlDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: CoverPayment;
+ };
+type CoverPayment = 
+ record {
+   coverMessage: Pacs009FinancialInstitutionCreditTransfer;
+   directMessage: Pacs008CreditTransfer;
+   method: text;
+ };
+type ConnectorGuidelineProfile = 
+ record {
+   connectorId: text;
+   guidelineId: text;
+   profileId: text;
+   updatedAt: int;
+ };
+type ConnectorConfig = 
+ record {
+   active: bool;
+   allowedEndpoints: vec text;
+   allowedFormats: vec text;
+   createdAt: int;
+   id: text;
+   nextInboundSequence: nat;
+   owner: principal;
+   publicKeyHash: opt blob;
+   signaturePolicy: SignaturePolicy;
+   updatedAt: int;
+ };
+type ComplianceScreeningRecord = 
+ record {
+   action: text;
+   decision: text;
+   findingCount: nat;
+   paymentId: nat;
+   profileId: text;
+   report: ComplianceReport;
+   riskScore: nat;
+   screenedAt: int;
+ };
+type ComplianceReport = 
+ record {
+   decision: text;
+   findingCount: nat;
+   findings: vec ComplianceFinding;
+   ok: bool;
+   profileId: text;
+   riskScore: nat;
+ };
+type ComplianceProfile = 
+ record {
+   allowedChargeBearers: vec text;
+   blockedBics: vec text;
+   blockedCountries: vec text;
+   blockedNameFragments: vec text;
+   description: text;
+   highRiskCountries: vec text;
+   highValueThresholdMinorUnits: nat;
+   id: text;
+   maxIntermediaryAgents: nat;
+   requireFxForCurrencyConversion: bool;
+   requireOriginatorAndBeneficiaryAddress: bool;
+   requirePurposeForCrossBorder: bool;
+   requireRegulatoryReportingForCrossBorder: bool;
+ };
+type ComplianceFinding = 
+ record {
+   action: text;
+   message: text;
+   path: text;
+   ruleId: text;
+   score: nat;
+   severity: text;
+ };
+type CheckpointMapEntry = 
+ record {
+   codeSurface: vec text;
+   currentGate: text;
+   id: text;
+   layer: text;
+   nextGate: text;
+   status: text;
+   verifierSurface: vec text;
+ };
+type Charge = 
+ record {
+   agent: FinancialInstitutionIdentification;
+   amount: ActiveCurrencyAndAmount;
+   typeCode: opt text;
+ };
+type CertifiedParticipantBalance = 
+ record {
+   account: IcrcAccount;
+   balance: nat;
+   bicfi: text;
+   capturedAt: int;
+   currency: opt text;
+   ledgerCanister: opt principal;
+   snapshotHash: blob;
+ };
+type CertifiedDisclosureRoot = 
+ record {
+   auditSnapshotHash: blob;
+   balanceCount: nat;
+   balanceRoot: blob;
+   rootHash: blob;
+   updatedAt: int;
+   version: text;
+ };
+type CertifiedDisclosureCertificate = 
+ record {
+   certificate: opt blob;
+   root: CertifiedDisclosureRoot;
+ };
+type CertifiedBalanceDisclosure = 
+ record {
+   balance: CertifiedParticipantBalance;
+   certificate: opt blob;
+   root: CertifiedDisclosureRoot;
+ };
+type CertifiedAuditSnapshot = 
+ record {
+   capturedAt: int;
+   count: nat;
+   guidelineId: text;
+   lastAuditHash: opt blob;
+   lastAuditId: opt nat;
+   merkleRoot: opt blob;
+   mmrLeafCount: nat;
+   mmrPeakCount: nat;
+   mmrRoot: opt blob;
+   snapshotHash: blob;
+ };
+type CertifiedAuditDisclosure = 
+ record {
+   audit: CertifiedAuditSnapshot;
+   certificate: opt blob;
+   root: CertifiedDisclosureRoot;
+ };
+type CashAccount = 
+ record {
+   currency: opt text;
+   iban: opt text;
+   otherId: opt text;
+ };
+type Capability = 
+ record {
+   name: text;
+   notes: text;
+   status: text;
+ };
+type BusinessApplicationHeader = 
+ record {
+   businessMessageId: text;
+   businessService: opt text;
+   creationDateTime: text;
+   fromBic: text;
+   messageDefinitionId: text;
+   toBic: text;
+   uetr: opt text;
+ };
+type BreadthMessage = 
+ variant {
+   accountReport: AccountReport;
+   directDebit: DirectDebitMessage__2;
+   fileHeader: FileHeader;
+   investigation: Investigation;
+   liquidityTransfer: LiquidityTransfer;
+   mandateAcceptance: MandateAcceptance;
+   mandateAmendment: MandateAmendment;
+   mandateCancellation: MandateCancellation;
+   mandateInitiation: MandateMessage;
+   notificationToReceive: NotificationToReceive;
+   processingRequest: ProcessingRequest;
+   receipt: Receipt;
+   reportingRequest: ReportingRequest;
+   resendRequest: ResendRequest;
+   reversal: Reversal;
+   settlementRequest: SettlementRequest;
+ };
+type BreadthEmitOptions = 
+ record {
+   chargeBearer: text;
+   creditorName: opt text;
+   debtorName: opt text;
+   initiatingParty: opt text;
+   originalMessage: opt record {
+                          text;
+                          text;
+                        };
+   originalPaymentInfoId: text;
+   settlementDate: text;
+   settlementMethod: text;
+ };
+type BreadthDecode = 
+ record {
+   family: text;
+   issues: vec ValidationIssue;
+   message: opt BreadthMessage;
+   schemaIssues: vec ValidationIssue;
+ };
+type Balance = 
+ record {
+   amount: Amount;
+   code: text;
+   credit: bool;
+   date: text;
+ };
+type AuditXmlResult = 
+ variant {
+   err: ValidationReport;
+   ok: AuditRecord;
+ };
+type AuditView = 
+ record {
+   at: int;
+   businessMessageId: text;
+   caller: principal;
+   guidelineId: text;
+   id: nat;
+   issueCount: nat;
+   messageKind: text;
+   messageVersion: text;
+   ok: bool;
+   rawXmlHash: opt blob;
+   uetr: text;
+ };
+type AuditTip = 
+ record {
+   count: nat;
+   guidelineId: text;
+   lastAuditHash: opt blob;
+   lastAuditId: opt nat;
+   merkleRoot: opt blob;
+   mmrLeafCount: nat;
+   mmrPeakCount: nat;
+   mmrRoot: opt blob;
+ };
+type AuditRecord = 
+ record {
+   at: int;
+   businessMessageId: text;
+   caller: principal;
+   guidelineId: text;
+   id: nat;
+   issueCount: nat;
+   messageKind: text;
+   messageVersion: text;
+   ok: bool;
+   parentHash: opt blob;
+   rawXmlHash: opt blob;
+   recordHash: blob;
+   report: ValidationReport;
+   uetr: text;
+ };
+type AuditProof = 
+ record {
+   auditId: nat;
+   leaf: blob;
+   leafIndex: nat;
+   root: blob;
+   siblings: vec blob;
+ };
+type Amount = 
+ record {
+   currency: text;
+   minor: nat;
+ };
+type AdministrativeXmlDecode = 
+ variant {
+   err: vec ValidationIssue;
+   ok: AdministrativeMessage;
+ };
+type AdministrativeMessage = 
+ record {
+   additionalInfo: vec text;
+   creationDateTime: text;
+   eventCode: text;
+   messageId: text;
+   messageKind: text;
+   messageVersion: text;
+   reason: opt text;
+   relatedMessageId: opt text;
+   relatedUetr: opt text;
+   status: text;
+ };
+type ActiveCurrencyAndAmount = 
+ record {
+   currency: text;
+   minorUnits: nat;
+ };
+type AccountReport = 
+ record {
+   accountId: text;
+   balances: vec Balance;
+   creationDateTime: text;
+   currency: opt text;
+   entries: vec Entry;
+   fromDateTime: opt text;
+   messageId: text;
+   originalQuery: opt record {
+                        text;
+                        text;
+                      };
+   reportId: text;
+   toDateTime: opt text;
+ };
+/// ISO 20022 Egypt-focused financial hub example for Thebes.
+/// 
+/// The canister owns admin state, an active usage-guideline configuration,
+/// payment lifecycle state, duplicate indexes, and append-only audit evidence.
+/// ISO-specific validation rules live in ISO20022.mo so bank/rail-specific
+/// implementation guidelines can be loaded as data.
+service : {
+  ackOutboundDelivery: (ack: DeliveryAck) -> (opt OutboundBatch);
+  acknowledgePacs002: (paymentId: nat, transactionStatus: text, reason:
+   opt text) -> (HubPayment);
+  addAdmin: (who: principal) -> (bool);
+  administrativeToXml: (doc: AdministrativeMessage) -> (text) query;
+  auditCount: () -> (nat) query;
+  auditDemoPacs008: () -> (AuditRecord);
+  auditPacs008: (doc: Pacs008CreditTransfer, rawXml: opt blob) ->
+   (AuditRecord);
+  auditPacs008Xml: (xml: blob) -> (AuditXmlResult);
+  auditProof: (id: nat) -> (opt AuditProof) query;
+  auditTip: () -> (AuditTip) query;
+  bindGuidelineRuleSet: (profileId: text, ruleSetId: text) -> (bool);
+  camt053Statement: (offset: nat, limit: nat) -> (Page_13) query;
+  camt053StatementByAccount: (accountId: text, fromBookedAtInclusive: 
+   int, toBookedAtExclusive: int, offset: nat, limit: nat) -> (Page_13) query;
+  camt053StatementByAccountStable: (accountId: text, fromBookedAtInclusive:
+   int, toBookedAtExclusive: int, offset: nat, limit: nat) -> (Page_13) query;
+  camt053Xml: (offset: nat, limit: nat) -> (text) query;
+  camt053XmlByAccount: (accountId: text, fromBookedAtInclusive: int,
+   toBookedAtExclusive: int, offset: nat, limit: nat) -> (text) query;
+  camt054Notification: (paymentId: nat) -> (opt StatementEntry) query;
+  camt054Xml: (paymentId: nat) -> (opt text) query;
+  capabilities: () -> (vec Capability) query;
+  certifiedAuditDisclosure: () -> (CertifiedAuditDisclosure) query;
+  certifiedAuditDisclosureJson: () -> (text) query;
+  certifiedDisclosureCertificate: () ->
+   (CertifiedDisclosureCertificate) query;
+  certifiedDisclosureCertificateJson: () -> (text) query;
+  certifiedParticipantBalance: (bicfi: text) ->
+   (opt CertifiedBalanceDisclosure) query;
+  checkSettlementLiquidity: (paymentId: nat) ->
+   (SettlementLiquidityCheck) query;
+  checkpointMap: () -> (vec CheckpointMapEntry) query;
+  checkpointSecondaryIndexes: () -> (SecondaryIndexHealth);
+  claimOwner: () -> (bool);
+  clearConnectorGuidelineProfile: (connectorId: text) -> (bool);
+  complianceReportToXml: (report: ComplianceReport) -> (text) query;
+  configureOperatingDay: (config: OperatingDayConfig) -> (OperatingDayStatus);
+  connectorEnvelopeSigningHash: (env: TransportEnvelope) -> (blob) query;
+  correlateAdministrativeWorkflow: (doc: AdministrativeMessage) ->
+   (WorkflowCorrelationResult);
+  correlateDemoDirectDebitReturnWorkflow: () -> (WorkflowState);
+  correlateDemoRequestToPayWorkflow: () -> (WorkflowState);
+  correlateDirectDebitWorkflow: (doc: DirectDebitMessage, rawXml:
+   opt blob) -> (WorkflowCorrelationResult);
+  correlateInvestigationWorkflow: (doc: InvestigationMessage) ->
+   (WorkflowCorrelationResult);
+  correlateRequestToPayWorkflow: (doc: RequestToPayMessage) ->
+   (WorkflowCorrelationResult);
+  coverPaymentToXml: (doc: CoverPayment) -> (text) query;
+  decodeAdministrativeXml: (xml: blob) -> (AdministrativeXmlDecode) query;
+  decodeCamt053Xml: (xml: blob) -> (StatementXmlDecode) query;
+  decodeCamt054Xml: (xml: blob) -> (StatementXmlDecode) query;
+  decodeCoverPaymentXml: (xml: blob) -> (CoverPaymentXmlDecode) query;
+  decodeCsvPayments: (csv: blob) -> (LegacyPaymentFileDecode) query;
+  decodeDirectDebitXml: (xml: blob) -> (DirectDebitXmlDecode) query;
+  decodeFixedWidthPayments: (payload: blob) ->
+   (LegacyPaymentFileDecode) query;
+  decodeInvestigationXml: (xml: blob) -> (InvestigationXmlDecode) query;
+  decodeIsoBreadth: (xml: blob) -> (BreadthDecode) query;
+  decodeIsoBreadthWithProfile: (profileId: text, xml: blob) ->
+   (BreadthDecode) query;
+  /// A FIN message read into its record under the active guideline; `hint` names the type when block 2 is absent.
+  decodeMt: (payload: blob, hint: opt text) -> (MtDecode) query;
+  decodeMt103: (mt: blob) -> (Mt103Decode) query;
+  decodeMt940: (mt: blob) -> (MtStatementDecode) query;
+  decodeMt942: (mt: blob) -> (MtStatementDecode) query;
+  decodeMtWithProfile: (profileId: text, payload: blob, hint: opt text) ->
+   (MtDecode) query;
+  decodePacs008Xml: (xml: blob) -> (Pacs008XmlDecode) query;
+  decodePacs009Xml: (xml: blob) -> (Pacs009XmlDecode) query;
+  decodePain001Xml: (xml: blob) -> (Pain001XmlDecode) query;
+  decodeRequestToPayXml: (xml: blob) -> (RequestToPayXmlDecode) query;
+  decodeStatusReportXml: (xml: blob) -> (StatusReportXmlDecode) query;
+  demoAdmi002Reject: () -> (AdministrativeMessage) query;
+  demoAdmi002RejectXml: () -> (text) query;
+  demoAdmi004ConnectionCheck: () -> (AdministrativeMessage) query;
+  demoAdmi004ConnectionCheckXml: () -> (text) query;
+  demoAdmi007Ack: () -> (AdministrativeMessage) query;
+  demoAdmi007AckXml: () -> (text) query;
+  demoAdmi011ConnectionAck: () -> (AdministrativeMessage) query;
+  demoAdmi011ConnectionAckXml: () -> (text) query;
+  demoCamt029: () -> (InvestigationMessage) query;
+  demoCamt055: () -> (RequestToPayMessage) query;
+  demoCamt055Xml: () -> (text) query;
+  demoCamt056: () -> (InvestigationMessage) query;
+  demoCamt056Xml: () -> (text) query;
+  demoCamt110: () -> (InvestigationMessage) query;
+  demoCamt110Xml: () -> (text) query;
+  demoCamt111: () -> (InvestigationMessage) query;
+  demoCamt111Xml: () -> (text) query;
+  demoComplianceReportXml: () -> (text) query;
+  demoCoverPayment: () -> (CoverPayment) query;
+  demoCoverPaymentXml: () -> (text) query;
+  demoCrossBorderPacs008: () -> (Pacs008CreditTransfer) query;
+  demoCrossBorderPain001: () -> (CustomerCreditTransferInitiation) query;
+  demoPacs003: () -> (DirectDebitMessage) query;
+  demoPacs003Xml: () -> (text) query;
+  demoPacs008: () -> (Pacs008CreditTransfer) query;
+  demoPacs008Xml: () -> (text) query;
+  demoPacs009Core: () -> (Pacs009FinancialInstitutionCreditTransfer) query;
+  demoPacs009Xml: () -> (text) query;
+  demoPacs028: () -> (InvestigationMessage) query;
+  demoPain001: () -> (CustomerCreditTransferInitiation) query;
+  demoPain001Xml: () -> (text) query;
+  demoPain008: () -> (DirectDebitMessage) query;
+  demoPain008Xml: () -> (text) query;
+  demoPain013: () -> (RequestToPayMessage) query;
+  demoPain013Xml: () -> (text) query;
+  demoPain014Accepted: () -> (RequestToPayMessage) query;
+  demoPain014AcceptedXml: () -> (text) query;
+  directDebitToXml: (doc: DirectDebitMessage) -> (text) query;
+  dispatchOrQueuePacs008: (paymentId: nat, priority: nat, bypassFifo:
+   bool) -> (SettlementDispatchResult);
+  dispatchPacs008: (paymentId: nat) -> (Pacs008CreditTransfer);
+  duplicateFilterInfo: () -> (DuplicateFilterInfo) query;
+  duplicateSignalFor: (messageId: text, uetr: text) ->
+   (DuplicateSignal) query;
+  /// A record written in its family's official shape, or the fields the schema needs and the record lacks.
+  encodeIsoBreadth: (message: BreadthMessage, options: BreadthEmitOptions) ->
+   (Result) query;
+  /// A record written as the named FIN type; `parties` names the envelope's institutions where the record does not.
+  encodeMt: (message: MtMessage, mtType: text, parties: MtParty) ->
+   (Result) query;
+  failOutboundDelivery: (batchId: nat, detail: text) -> (opt OutboundBatch);
+  getAdmins: () -> (vec principal) query;
+  getAudit: (id: nat) -> (opt AuditRecord) query;
+  getComplianceProfile: () -> (ComplianceProfile) query;
+  getConnector: (id: text) -> (opt ConnectorConfig) query;
+  getConnectorGuidelineProfile: (connectorId: text) ->
+   (opt ConnectorGuidelineProfile) query;
+  getCrossBorderEducationGuideline: () -> (UsageGuideline) query;
+  getDefaultGuidelineProfile: () -> (GuidelineProfileSummary) query;
+  getDefaultGuidelineProfileId: () -> (text) query;
+  getEndOfDayRun: (id: nat) -> (opt EndOfDayStatementRun) query;
+  getGuideline: () -> (UsageGuideline) query;
+  getGuidelineProfile: (profileId: text) -> (opt GuidelineProfile) query;
+  getMemphisAudience: () -> (text) query;
+  getMemphisGateConfig: () ->
+   (record {
+      memphis: principal;
+      origin: text;
+      version: nat64;
+    }) query;
+  getOperatingDay: (currency: text) -> (opt OperatingDayConfig) query;
+  getOutboundBatch: (id: nat) -> (opt OutboundBatch) query;
+  getOwner: () -> (opt principal) query;
+  getParticipantDirectoryEntry: (bicfi: text) ->
+   (opt ParticipantDirectoryEntry) query;
+  getPayment: (id: nat) -> (opt HubPayment) query;
+  getPaymentByUetr: (uetr: text) -> (opt HubPayment) query;
+  getPaymentComplianceReport: (paymentId: nat) ->
+   (opt ComplianceScreeningRecord) query;
+  getSettlementDebitLimit: (bicfi: text) -> (SettlementLiquidityLimit) query;
+  getSettlementLedger: () -> (SettlementLedgerConfig) query;
+  getSettlementParticipantAccount: (bicfi: text) -> (opt IcrcAccount) query;
+  getSettlementQueueEntry: (paymentId: nat) ->
+   (opt SettlementQueueEntry) query;
+  getTransportRecord: (id: nat) -> (opt TransportRecord) query;
+  getWorkflowByMessageId: (messageId: text) -> (opt WorkflowState) query;
+  getWorkflowByUetr: (uetr: text) -> (opt WorkflowState) query;
+  getWorkflowState: (id: text) -> (opt WorkflowState) query;
+  /// The rule set a guideline profile is bound to (CBPRPLUS-EDU is bound to CBPRPLUS unless rebound).
+  guidelineRuleSet: (profileId: text) -> (opt text) query;
+  integrationProfilePacks: () -> (vec IntegrationProfilePack) query;
+  investigationToXml: (doc: InvestigationMessage) -> (text) query;
+  isPaused: () -> (bool) query;
+  /// The families the schema-profile codec reads and writes, by message definition identifier.
+  isoBreadthFamilies: () -> (vec text) query;
+  isoRuleSetRules: (ruleSetId: text) -> (vec RuleView) query;
+  isoRuleSets: () -> (vec RuleSetSummary) query;
+  /// Every official schema the canister carries as a generated profile: the compact codec's families,
+  /// the business application header and the schema-profile codec's families (43).
+  isoSchemaProfiles: () -> (vec SchemaProfileSummary) query;
+  leaseOutboundBatches: (connectorId: text, limit: nat, leaseMillis: 
+   nat) -> (vec OutboundBatch);
+  listAuditViews: (offset: nat, limit: nat) -> (Page_12) query;
+  listAudits: (offset: nat, limit: nat) -> (Page_11) query;
+  listCertifiedParticipantBalances: (offset: nat, limit: nat) ->
+   (Page_10) query;
+  listCertifiedParticipantBalancesJson: (offset: nat, limit: nat) ->
+   (text) query;
+  listConnectorGuidelineProfiles: () -> (vec ConnectorGuidelineProfile) query;
+  listConnectors: (offset: nat, limit: nat) -> (Page_9) query;
+  listDeadLetters: (offset: nat, limit: nat) -> (Page_1) query;
+  listEndOfDayRuns: (offset: nat, limit: nat) -> (Page_8) query;
+  listGuidelineProfiles: () -> (vec GuidelineProfileSummary) query;
+  listHeldPaymentViews: (offset: nat, limit: nat) -> (Page_4) query;
+  listOperatingDayOpeningBalances: (currency: text) ->
+   (vec OperatingDayOpeningBalance) query;
+  listOutboundBatches: (offset: nat, limit: nat) -> (Page_7) query;
+  listOutboundBatchesByConnectorStatus: (connectorId: text, status: text,
+   offset: nat, limit: nat) -> (Page_7) query;
+  listOutboundBatchesByConnectorStatusStable: (connectorId: text, status:
+   text, offset: nat, limit: nat) -> (Page_7) query;
+  listOutboundBatchesForConnector: (connectorId: text, offset: nat, limit:
+   nat) -> (Page_7) query;
+  listParticipantDirectory: (offset: nat, limit: nat) -> (Page_6) query;
+  listPaymentComplianceReports: (offset: nat, limit: nat) -> (Page_5) query;
+  listPaymentViews: (offset: nat, limit: nat) -> (Page_4) query;
+  listPaymentViewsByCreditorAgent: (bicfi: text, offset: nat, limit: 
+   nat) -> (Page_4) query;
+  listPaymentViewsByCreditorAgentStable: (bicfi: text, offset: nat, limit:
+   nat) -> (Page_4) query;
+  listPaymentViewsByStatus: (status: text, offset: nat, limit: nat) ->
+   (Page_4) query;
+  listPaymentViewsByStatusStable: (status: text, offset: nat, limit: 
+   nat) -> (Page_4) query;
+  listPayments: (offset: nat, limit: nat) -> (Page_3) query;
+  listSettlementLiquidityPositions: () ->
+   (vec SettlementLiquidityPosition) query;
+  listSettlementParticipantAccounts: () ->
+   (vec SettlementParticipantAccount) query;
+  listSettlementQueue: (offset: nat, limit: nat) -> (Page_2) query;
+  listSettlementQueueByStatus: (status: text, offset: nat, limit: nat) ->
+   (Page_2) query;
+  listTransportRecords: (offset: nat, limit: nat) -> (Page_1) query;
+  listWorkflowStates: (offset: nat, limit: nat) -> (Page) query;
+  /// The field-to-element mapping tables the bridge implements — the same data the fixture set carries.
+  mtBridgeMappings: () -> (vec MtMapping) query;
+  /// The bridge's message types and the ISO family each reads into.
+  mtBridgeTypes: () -> (vec record {
+                              text;
+                              text;
+                            }) query;
+  openOperatingDay: (currency: text, businessDate: text, cutoffAt: int,
+   closesAt: int) -> (OperatingDayStatus);
+  operatingDayStatus: (currency: text) -> (OperatingDayStatus) query;
+  oraclePhaseRegistry: () -> (vec PhaseOracleSpec) query;
+  outboundBatchCount: () -> (nat) query;
+  pacs008ToXml: (doc: Pacs008CreditTransfer) -> (text) query;
+  pacs009ToXml: (doc: Pacs009FinancialInstitutionCreditTransfer) ->
+   (text) query;
+  pain001ToXml: (doc: CustomerCreditTransferInitiation) -> (text) query;
+  parseMt103Fields: (mt: text) -> (vec Mt103Field) query;
+  paymentCount: () -> (nat) query;
+  paymentXmlBundle: (paymentId: nat) -> (opt PaymentXmlBundle) query;
+  pfmiSelfAssessment: () -> (vec PfmiPrincipleAssessment) query;
+  putGuidelineProfile: (profile: GuidelineProfile) ->
+   (GuidelineProfileSummary);
+  queuePaymentOutbound: (connectorId: text, paymentId: nat, format: text) ->
+   (OutboundBatch);
+  queuePaymentXmlBundle: (connectorId: text, paymentId: nat) ->
+   (OutboundBatch);
+  queueSettlementPayment: (paymentId: nat, priority: nat, bypassFifo: 
+   bool, reason: text) -> (SettlementQueueEntry);
+  rebuildSecondaryIndexes: () -> (SecondaryIndexHealth);
+  refreshCertifiedDisclosure: () -> (CertifiedDisclosureRoot);
+  refreshCertifiedParticipantBalance: (bicfi: text) ->
+   (CertifiedParticipantBalance);
+  refreshCertifiedSettlementBalances: () -> (vec CertifiedParticipantBalance);
+  registerConnector: (id: text, publicKeyHash: opt blob, allowedFormats:
+   vec text, allowedEndpoints: vec text) -> (ConnectorConfig);
+  rejectComplianceHold: (paymentId: nat, reason: text) -> (HubPayment);
+  releaseComplianceHold: (paymentId: nat, reason: text) -> (HubPayment);
+  removeAdmin: (who: principal) -> (bool);
+  requestToPayToXml: (doc: RequestToPayMessage) -> (text) query;
+  resetComplianceProfile: () -> (bool);
+  resetGuidelineToCrossBorderEducationBaseline: () -> (bool);
+  resetGuidelineToEgyptEducationBaseline: () -> (bool);
+  resolveQueuedSettlementOffset: (paymentIdA: nat, paymentIdB: nat) ->
+   (SettlementOffsetResult);
+  retryOutboundBatch: (batchId: nat) -> (opt OutboundBatch);
+  returnPayment: (paymentId: nat, reason: text) -> (HubPayment);
+  /// The message read, written and read again: `#ok` is the written document when the two readings are
+  /// equal — the property the integration kit's breadth runner asserts on every fixture.
+  roundTripIsoBreadth: (xml: blob, options: BreadthEmitOptions) ->
+   (Result) query;
+  runEndOfDay: (currency: text) -> (EndOfDayStatementRun);
+  screenCoverPayment: (doc: CoverPayment) -> (ComplianceReport) query;
+  screenDemoCoverPayment: () -> (ComplianceReport) query;
+  screenPacs008: (doc: Pacs008CreditTransfer) -> (ComplianceReport) query;
+  screenPacs009: (doc: Pacs009FinancialInstitutionCreditTransfer) ->
+   (ComplianceReport) query;
+  secondaryIndexHealth: () -> (SecondaryIndexHealth) query;
+  seedDemoParticipantDirectory: () -> (vec ParticipantDirectoryEntry);
+  setComplianceProfile: (next: ComplianceProfile) -> (bool);
+  setConnectorActive: (id: text, active: bool) -> (bool);
+  setConnectorGuidelineProfile: (connectorId: text, profileId: text) ->
+   (ConnectorGuidelineProfile);
+  setConnectorSignaturePolicy: (id: text, policy: SignaturePolicy) ->
+   (ConnectorConfig);
+  setDefaultGuidelineProfile: (profileId: text) -> (GuidelineProfileSummary);
+  setGuideline: (next: UsageGuideline) -> (bool);
+  /// Set the web origin whose sessions this contract accepts.
+  /// 
+  /// Safe to change — unlike the namespace on the gate, it touches no identity:
+  /// it only says where a token must have been minted. Change it when the
+  /// submitting frontend moves to a new domain. It must be a bare origin
+  /// (scheme + host + optional port) because Memphis compares it byte-exactly.
+  setMemphisAudience: (audience: text) -> (bool);
+  setMemphisGate: (memphis: principal, origin: text, version: nat64) ->
+   (bool);
+  setMemphisGateByCid: (cid: nat64, origin: text, version: nat64) -> (bool);
+  setOperatingDayPhase: (currency: text, phase: text) -> (OperatingDayStatus);
+  setPaused: (value: bool) -> (bool);
+  setSettlementDebitLimit: (bicfi: text, maxDebitMinorUnits: opt nat) ->
+   (SettlementLiquidityLimit);
+  setSettlementLedger: (config: SettlementLedgerConfig) ->
+   (SettlementLedgerConfig);
+  setSettlementParticipantAccount: (bicfi: text, account: IcrcAccount) ->
+   (bool);
+  settleQueuedPacs008: (paymentId: nat) -> (HubPayment);
+  settlementLiquidityPosition: (bicfi: text) ->
+   (SettlementLiquidityPosition) query;
+  statusReportToXml: (doc: StatusReport) -> (text) query;
+  submitDemoPain001: () -> (HubPayment);
+  submitPain001: (instruction: CustomerCreditTransferInitiation, rawXml:
+   opt blob) -> (HubPayment);
+  submitPain001WithProfile: (profileId: text, instruction:
+   CustomerCreditTransferInitiation, rawXml: opt blob) -> (HubPayment);
+  submitPain001Xml: (xml: blob) -> (SubmitXmlResult);
+  submitPain001XmlWithProfile: (profileId: text, xml: blob) ->
+   (SubmitXmlResult);
+  submitTransportEnvelope: (env: TransportEnvelope) ->
+   (TransportSubmitResult);
+  submitTransportEnvelopeWithMemphis: (env: TransportEnvelope, token:
+   blob) -> (MemphisTransportSubmitResult);
+  supportedStandards: () -> (vec SupportedStandard) query;
+  transferOwner: (newOwner: principal) -> (bool);
+  transportCount: () -> (nat) query;
+  upsertParticipantDirectoryEntry: (input: ParticipantDirectoryInput) ->
+   (ParticipantDirectoryEntry);
+  useExternalSignatureAuth: (id: text, scheme: text, publicKeyHash: opt blob,
+   verifier: principal) -> (ConnectorConfig);
+  useMemphisSessionAuth: (id: text) -> (ConnectorConfig);
+  useThebesCallerAuth: (id: text) -> (ConnectorConfig);
+  validateAdministrativeWithProfile: (profileId: text, doc:
+   AdministrativeMessage) -> (ValidationReport) query;
+  validateAdministrativeXml: (xml: blob) -> (ValidationReport) query;
+  validateAdministrativeXmlWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  validateCamt053Xml: (xml: blob) -> (ValidationReport) query;
+  validateCamt053XmlWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  validateCamt054Xml: (xml: blob) -> (ValidationReport) query;
+  validateCamt054XmlWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  validateCoverPayment: (doc: CoverPayment, rawXml: opt blob) ->
+   (ValidationReport) query;
+  validateCoverPaymentWithProfile: (profileId: text, doc: CoverPayment,
+   rawXml: opt blob) -> (ValidationReport) query;
+  validateCoverPaymentXml: (xml: blob) -> (ValidationReport) query;
+  validateCoverPaymentXmlWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  validateDemoCoverPayment: () -> (ValidationReport) query;
+  validateDemoCrossBorderPacs008WithProfile: (profileId: text) ->
+   (ValidationReport) query;
+  validateDemoCrossBorderPain001WithProfile: (profileId: text) ->
+   (ValidationReport) query;
+  validateDemoPacs008: () -> (ValidationReport) query;
+  validateDemoPacs008WithProfile: (profileId: text) ->
+   (ValidationReport) query;
+  validateDemoPacs009: () -> (ValidationReport) query;
+  validateDemoPain001: () -> (ValidationReport) query;
+  validateDemoPain001WithProfile: (profileId: text) ->
+   (ValidationReport) query;
+  validateDirectDebitWithProfile: (profileId: text, doc: DirectDebitMessage,
+   rawXml: opt blob) -> (ValidationReport) query;
+  validateDirectDebitXml: (xml: blob) -> (ValidationReport) query;
+  validateDirectDebitXmlWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  validateInvestigation: (doc: InvestigationMessage) ->
+   (ValidationReport) query;
+  validateInvestigationWithProfile: (profileId: text, doc:
+   InvestigationMessage) -> (ValidationReport) query;
+  validateInvestigationXml: (xml: blob) -> (ValidationReport) query;
+  validateInvestigationXmlWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  validateIsoBreadth: (xml: blob) -> (ValidationReport) query;
+  validateIsoBreadthWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  /// An official-shape message (any of the 43 schema profiles, with or without its AppHdr) under the active
+  /// guideline: the schema, the business reading, and the rule set the default profile is bound to.
+  validateIsoDocument: (xml: blob) -> (IsoDocumentReport) query;
+  validateIsoDocumentWithProfile: (profileId: text, xml: blob) ->
+   (IsoDocumentReport) query;
+  /// The same reading under a named rule set, whatever the profile binding.
+  validateIsoDocumentWithRuleSet: (ruleSetId: text, xml: blob) ->
+   (IsoDocumentReport) query;
+  validatePacs008: (doc: Pacs008CreditTransfer, rawXml: opt blob) ->
+   (ValidationReport) query;
+  validatePacs008WithProfile: (profileId: text, doc: Pacs008CreditTransfer,
+   rawXml: opt blob) -> (ValidationReport) query;
+  validatePacs008Xml: (xml: blob) -> (ValidationReport) query;
+  validatePacs008XmlWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  validatePacs009: (doc: Pacs009FinancialInstitutionCreditTransfer, rawXml:
+   opt blob) -> (ValidationReport) query;
+  validatePacs009WithProfile: (profileId: text, doc:
+   Pacs009FinancialInstitutionCreditTransfer, rawXml: opt blob) ->
+   (ValidationReport) query;
+  validatePacs009Xml: (xml: blob) -> (ValidationReport) query;
+  validatePacs009XmlWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  validatePain001: (doc: CustomerCreditTransferInitiation, rawXml:
+   opt blob) -> (ValidationReport) query;
+  validatePain001WithProfile: (profileId: text, doc:
+   CustomerCreditTransferInitiation, rawXml: opt blob) ->
+   (ValidationReport) query;
+  validatePain001Xml: (xml: blob) -> (ValidationReport) query;
+  validatePain001XmlWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  validateParticipantDirectoryEntry: (input: ParticipantDirectoryInput) ->
+   (ValidationReport) query;
+  validateRequestToPayWithProfile: (profileId: text, doc:
+   RequestToPayMessage) -> (ValidationReport) query;
+  validateRequestToPayXml: (xml: blob) -> (ValidationReport) query;
+  validateRequestToPayXmlWithProfile: (profileId: text, xml: blob) ->
+   (ValidationReport) query;
+  validateStatusReportWithProfile: (profileId: text, doc: StatusReport,
+   expectedKind: text) -> (ValidationReport) query;
+  validateStatusReportXml: (xml: blob, expectedKind: opt text) ->
+   (ValidationReport) query;
+  validateStatusReportXmlWithProfile: (profileId: text, xml: blob,
+   expectedKind: opt text) -> (ValidationReport) query;
+  verifyAuditChain: () -> (bool) query;
+  verifyCertifiedDisclosure: () -> (ValidationReport) query;
+  verifyCertifiedDisclosureJson: () -> (text) query;
+  verifyOraclePhases: () -> (vec PhaseVerification) query;
+  verifyOracleReadiness: () -> (OracleReadiness) query;
+  verifyParticipantWorkflowCorrelation: () -> (ValidationReport) query;
+  verifyPaymentPhases: (paymentId: nat) -> (vec PhaseVerification) query;
+  verifyPfmiSelfAssessment: () -> (ValidationReport) query;
+  xmlCodecVersion: () -> (text) query;
+  xmlProfileFixtureRegistry: () -> (vec XmlProfileFixture) query;
+}

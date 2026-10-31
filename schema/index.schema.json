@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Mercatura-Forum/thebes-agent-kit/blob/main/schema/index.schema.json",
+  "title": "Thebes agent kit index",
+  "type": "object",
+  "required": ["schema", "built_from", "toolchain", "capabilities", "examples", "starters", "lib", "sdk", "cli", "docs"],
+  "additionalProperties": false,
+  "$defs": {
+    "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "repo": { "type": "string", "pattern": "^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$" },
+    "url": { "type": "string", "pattern": "^https://" },
+    "method": {
+      "type": "object",
+      "required": ["name", "kind", "signature"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "kind": { "enum": ["query", "update"] },
+        "signature": { "type": "string", "description": "Candid function type, e.g. (id: nat) -> (Result) query" },
+        "doc": { "type": "string", "description": "The method's doc comment in the source" }
+      }
+    },
+    "contract": {
+      "type": "object",
+      "required": ["name", "type", "cid"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": ["string", "null"], "description": "backend-motoko, backend-rust or frontend" },
+        "cid": { "type": ["integer", "null"], "description": "The contract id of the running copy" },
+        "interface": { "type": "string", "description": "Path of the .did file in this repository" },
+        "methods": { "type": "array", "items": { "$ref": "#/$defs/method" } },
+        "url": { "$ref": "#/$defs/url" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "required": ["rule", "contract", "detail"],
+      "additionalProperties": false,
+      "properties": {
+        "rule": { "type": "string" },
+        "contract": { "type": ["string", "null"] },
+        "detail": { "type": "string" },
+        "fix": { "type": "string" }
+      }
+    }
+  },
+  "properties": {
+    "schema": { "$ref": "#/$defs/url" },
+    "built_from": {
+      "type": "array",
+      "items": { "type": "object", "required": ["repo", "ref"], "additionalProperties": false, "properties": { "repo": { "$ref": "#/$defs/repo" }, "ref": { "$ref": "#/$defs/commit" } } }
+    },
+    "toolchain": { "type": "object", "required": ["moc"], "properties": { "moc": { "type": "string" } } },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "summary", "pointers", "used_by"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "summary": { "type": "string" },
+          "backend": { "type": "string" },
+          "frontend": { "type": "string" },
+          "rules": { "type": "array", "items": { "type": "string" } },
+          "pointers": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/url" } },
+          "used_by": { "type": "array", "items": { "type": "string" }, "description": "Example ids that use this capability, detected from their code" }
+        }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "repo", "ref", "shows", "guard", "summary", "live", "agents_md", "contracts", "uses", "findings"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": ["string", "null"] },
+          "repo": { "$ref": "#/$defs/repo" },
+          "ref": { "$ref": "#/$defs/commit" },
+          "shows": { "type": ["string", "null"], "description": "What the application does" },
+          "guard": { "type": ["string", "null"], "description": "The correctness rule the application enforces" },
+          "summary": { "type": ["string", "null"] },
+          "live": { "type": ["string", "null"], "description": "A running copy" },
+          "agents_md": { "type": ["string", "null"] },
+          "contracts": { "type": "array", "items": { "$ref": "#/$defs/contract" } },
+          "uses": {
+            "type": "object",
+            "required": ["lib", "sdk", "code"],
+            "additionalProperties": false,
+            "properties": {
+              "lib": { "type": "array", "items": { "type": "string" }, "description": "thebes-lib modules imported" },
+              "sdk": { "type": "array", "items": { "type": "string" }, "description": "@thebes/sdk exports imported by the frontend" },
+              "code": { "type": "array", "items": { "type": "string" }, "description": "Platform calls in the backend (http_request, raw_rand)" }
+            }
+          },
+          "findings": { "type": "array", "items": { "$ref": "#/$defs/finding" }, "description": "Platform rules the example's manifest does not keep" }
+        }
+      }
+    },
+    "starters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "path", "shows", "languages", "url"],
+        "additionalProperties": false,
+        "properties": { "name": { "type": "string" }, "path": { "type": "string" }, "shows": { "type": "string" }, "languages": { "type": "string" }, "url": { "$ref": "#/$defs/url" } }
+      }
+    },
+    "lib": {
+      "type": "object",
+      "required": ["repo", "ref", "modules"],
+      "properties": {
+        "repo": { "$ref": "#/$defs/repo" },
+        "ref": { "$ref": "#/$defs/commit" },
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "import", "summary", "source", "functions"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "import": { "type": "string" },
+              "summary": { "type": ["string", "null"] },
+              "source": { "$ref": "#/$defs/url" },
+              "functions": { "type": "array", "items": { "type": "object", "required": ["name", "signature"], "additionalProperties": false, "properties": { "name": { "type": "string" }, "signature": { "type": "string" } } } }
+            }
+          }
+        }
+      }
+    },
+    "sdk": {
+      "type": "object",
+      "required": ["repo", "ref", "package", "version", "install", "entry_points", "exports", "files"],
+      "properties": {
+        "repo": { "$ref": "#/$defs/repo" },
+        "ref": { "$ref": "#/$defs/commit" },
+        "package": { "type": "string" },
+        "version": { "type": "string" },
+        "install": { "type": "string" },
+        "entry_points": { "type": "array", "items": { "type": "string" } },
+        "exports": { "type": "array", "items": { "type": "string" } },
+        "files": { "type": "array", "items": { "type": "object", "required": ["path", "does"], "properties": { "path": { "type": "string" }, "does": { "type": "string" } } } }
+      }
+    },
+    "cli": {
+      "type": "object",
+      "required": ["install", "commands"],
+      "properties": {
+        "install": { "$ref": "#/$defs/url" },
+        "commands": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["command", "does"], "properties": { "command": { "type": "string" }, "does": { "type": "string" } } } }
+      }
+    },
+    "docs": {
+      "type": "array",
+      "items": { "type": "object", "required": ["path", "title", "url"], "properties": { "path": { "type": "string" }, "title": { "type": ["string", "null"] }, "url": { "$ref": "#/$defs/url" } } }
+    }
+  }
+}
